@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brian Hong | Salesforce Solutions Architect</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-navy:   #032D60;
+      --sf-blue:   #00A1E0;
+      --sf-light:  #0D9DDA;
+      --sf-pale:   #E8F4FD;
+      --white:     #FFFFFF;
+      --gray-bg:   #F4F6F9;
+      --gray-dark: #1B1B1B;
+      --gray-mid:  #444F5E;
+      --gray-soft: #8492A6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3, 45, 96, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 161, 224, 0.2);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--sf-blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sf-blue); }
+
+    /* ─── HERO ─── */
+    #hero {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 50%, #053F82 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.08) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.06) 0%, transparent 70%);
+      bottom: -80px; left: -80px;
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 32px;
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Headshot */
+    .hero-photo-wrap {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .hero-photo-ring {
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, var(--sf-blue), #0070D2, #032D60);
+      box-shadow:
+        0 0 0 1px rgba(0,161,224,0.3),
+        0 0 40px rgba(0,161,224,0.25),
+        0 20px 60px rgba(0,0,0,0.4);
+    }
+    .hero-photo-ring img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .hero-badge {
+      background: rgba(0,161,224,0.15);
+      border: 1px solid rgba(0,161,224,0.4);
+      color: var(--sf-blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    /* Hero text */
+    .hero-content { flex: 1; min-width: 0; }
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .hero-name {
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 24px;
+      letter-spacing: 0.01em;
+    }
+    .hero-title strong {
+      color: var(--sf-blue);
+      font-weight: 600;
+    }
+    .hero-divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--sf-blue), transparent);
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--sf-blue);
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(0,161,224,0.4);
+    }
+    .btn-primary:hover {
+      background: #0D9DDA;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,161,224,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+    .btn-outline:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+      transform: translateY(-1px);
+    }
+
+    /* ─── STATS BAR ─── */
+    #stats {
+      background: var(--white);
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 8px 24px;
+    }
+    .stat-item + .stat-item {
+      border-left: 1px solid #E2E8F0;
+    }
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-number span { color: var(--sf-blue); }
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gray-soft);
+      margin-top: 6px;
+    }
+
+    /* ─── SECTIONS SHARED ─── */
+    section { padding: 80px 32px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ─── SPECIALIZATIONS ─── */
+    #specializations { background: var(--gray-bg); }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 24px;
+    }
+    .spec-card {
+      background: var(--white);
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .spec-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sf-blue), #0070D2);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .spec-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(3,45,96,0.1);
+      border-color: rgba(0,161,224,0.3);
+    }
+    .spec-card:hover::before { transform: scaleX(1); }
+    .spec-icon {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      background: var(--sf-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 1.4rem;
+    }
+    .spec-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .spec-card p {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--white); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .about-text p {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .highlight-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .highlight-icon {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      background: var(--sf-pale);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .highlight-item h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      margin-bottom: 2px;
+    }
+    .highlight-item p {
+      font-size: 0.85rem;
+      color: var(--gray-soft);
+      line-height: 1.5;
+    }
+
+    /* ─── CERTIFICATIONS ─── */
+    #certifications { background: var(--gray-bg); }
+    .cert-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .cert-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1.5px solid #CBD5E0;
+      border-radius: 30px;
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--sf-navy);
+      transition: all 0.2s;
+    }
+    .cert-badge:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+      box-shadow: 0 4px 12px rgba(0,161,224,0.15);
+    }
+    .cert-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--sf-blue);
+      flex-shrink: 0;
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 100%);
+      text-align: center;
+      padding: 100px 32px;
+    }
+    #contact .section-tag { justify-content: center; }
+    #contact .section-title { color: var(--white); }
+    .contact-tagline {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #010F22;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    footer a { color: var(--sf-blue); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .hero-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+        padding: 60px 24px;
+      }
+      .hero-photo-ring { width: 200px; height: 200px; }
+      .hero-divider { margin: 0 auto 24px; }
+      .hero-tagline { margin: 0 auto 36px; }
+      .hero-actions { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .stats-inner { flex-direction: column; gap: 24px; }
+      .stat-item + .stat-item { border-left: none; border-top: 1px solid #E2E8F0; padding-top: 24px; }
+      .nav-links { display: none; }
+      section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">Brian <span>Hong</span></div>
+      <ul class="nav-links">
+        <li><a href="#specializations">Expertise</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-ring">
+          <img src="BriansHeadshot.jpeg" alt="Brian Hong — Salesforce Solutions Architect" />
+        </div>
+        <div class="hero-badge">Available for Opportunities</div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Salesforce Professional</div>
+        <h1 class="hero-name">Brian Hong</h1>
+        <p class="hero-title"><strong>Senior Salesforce Solutions Architect</strong> &amp; Consultant</p>
+        <div class="hero-divider"></div>
+        <p class="hero-tagline">
+          Over a decade of transforming businesses with Salesforce — architecting scalable solutions in Sales Cloud, Service Cloud, Omni-Channel, and CPQ that drive measurable results.
+        </p>
+        <div class="hero-actions">
+          <!-- UPDATE: Replace # with your actual LinkedIn URL -->
+          <a href="#" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Connect on LinkedIn
+          </a>
+          <!-- UPDATE: Replace with your actual email -->
+          <a href="mailto:your@email.com" class="btn btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+            Send an Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div id="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">10<span>+</span></div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Core Specializations</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">8<span>+</span></div>
+        <div class="stat-label">Salesforce Certifications</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPECIALIZATIONS -->
+  <section id="specializations">
+    <div class="section-inner">
+      <div class="section-tag">Core Expertise</div>
+      <h2 class="section-title">Salesforce Specializations</h2>
+      <p class="section-sub">Deep, hands-on mastery across the full Salesforce ecosystem — from pipeline management to complex quoting workflows.</p>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="spec-icon">&#9729;</div>
+          <h3>Sales Cloud</h3>
+          <p>End-to-end CRM architecture — opportunity management, forecasting, territory planning, and pipeline automation to accelerate revenue.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">&#127807;</div>
+          <h3>Service Cloud</h3>
+          <p>Customer support solutions built to scale — case management, SLA enforcement, knowledge bases, and field service integration.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">&#128279;</div>
+          <h3>Omni-Channel</h3>
+          <p>Unified cross-channel customer experiences — routing engine configuration, agent workload balancing, and real-time presence management.</p>
+        </div>
+        <div class="spec-card">
+          <div class="spec-icon">&#128200;</div>
+          <h3>CPQ</h3>
+          <p>Salesforce CPQ implementation — product rules, pricing waterfall, approval workflows, and contract lifecycle management from quote to cash.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div>
+          <div class="section-tag">About Me</div>
+          <h2 class="section-title">Building What Matters on Salesforce</h2>
+          <div class="about-text">
+            <p>
+              With over 10 years immersed in the Salesforce ecosystem, I partner with organizations to design and deliver CRM solutions that don't just work — they drive growth, improve efficiency, and give teams the data clarity they need to win.
+            </p>
+            <p>
+              My approach bridges the gap between business strategy and technical execution. Whether I'm architecting a complex CPQ rollout, optimizing Omni-Channel routing logic, or aligning Sales and Service teams on a unified platform, I bring both deep technical skill and a sharp business lens.
+            </p>
+            <p>
+              I've worked across industries — from enterprise SaaS and financial services to healthcare and manufacturing — always focused on scalable, maintainable solutions built for the long term.
+            </p>
+          </div>
+        </div>
+        <div class="about-highlights">
+          <div class="highlight-item">
+            <div class="highlight-icon">&#127919;</div>
+            <div>
+              <h4>Strategic Architecture</h4>
+              <p>Designing Salesforce orgs that align with business goals, not just technical requirements.</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-icon">&#9881;</div>
+            <div>
+              <h4>Implementation &amp; Delivery</h4>
+              <p>From discovery to deployment — hands-on configuration, development, and stakeholder alignment.</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-icon">&#128202;</div>
+            <div>
+              <h4>Data &amp; Analytics</h4>
+              <p>Building reporting frameworks and dashboards that surface insights for every level of the business.</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-icon">&#128101;</div>
+            <div>
+              <h4>Team Enablement</h4>
+              <p>Training, documentation, and change management to ensure lasting adoption after go-live.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-inner">
+      <div class="section-tag">Credentials</div>
+      <h2 class="section-title">Salesforce Certifications</h2>
+      <p class="section-sub">A comprehensive certification portfolio spanning administration, consulting, development, and specialty domains.</p>
+      <div class="cert-grid">
+        <span class="cert-badge"><span class="dot"></span>Salesforce Certified Administrator</span>
+        <span class="cert-badge"><span class="dot"></span>Advanced Administrator</span>
+        <span class="cert-badge"><span class="dot"></span>Sales Cloud Consultant</span>
+        <span class="cert-badge"><span class="dot"></span>Service Cloud Consultant</span>
+        <span class="cert-badge"><span class="dot"></span>CPQ Specialist</span>
+        <span class="cert-badge"><span class="dot"></span>Platform App Builder</span>
+        <span class="cert-badge"><span class="dot"></span>Platform Developer I</span>
+        <span class="cert-badge"><span class="dot"></span>Omni-Channel Routing</span>
+        <span class="cert-badge"><span class="dot"></span>Field Service Consultant</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-tag" style="color: var(--sf-blue);">Get in Touch</div>
+      <h2 class="section-title">Let's Build Something Powerful on Salesforce</h2>
+      <p class="contact-tagline">
+        Whether you're scaling a CRM, launching a new Salesforce product, or looking for a senior Salesforce architect to join your team — I'd love to connect.
+      </p>
+      <div class="contact-actions">
+        <!-- UPDATE: Replace # with your actual LinkedIn URL -->
+        <a href="#" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <!-- UPDATE: Replace with your actual email -->
+        <a href="mailto:your@email.com" class="btn btn-outline" style="color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.25);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Brian Hong &mdash; Salesforce Solutions Architect &mdash; All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

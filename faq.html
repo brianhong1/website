@@ -347,6 +347,8 @@
       display: flex;
       align-items: center;
       padding-top: 60px;
+      padding-left: 32px;
+      padding-right: 32px;
       position: relative;
       overflow: hidden;
     }
@@ -371,7 +373,7 @@
     .page-hero-inner {
       max-width: 800px;
       margin: 0 auto;
-      padding: 80px 32px;
+      padding: 80px 0;
       position: relative;
       z-index: 1;
     }
@@ -400,7 +402,6 @@
     .page-hero-tagline {
       font-size: 1.05rem;
       color: rgba(255,255,255,0.65);
-      max-width: 640px;
       line-height: 1.8;
     }
 
@@ -595,10 +596,10 @@
     #contact .section-tag { color: var(--sf-blue); }
     #contact .section-title { color: var(--white); }
     .contact-tagline {
-      font-size: 1.05rem;
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
       color: rgba(255,255,255,0.6);
-      max-width: 520px;
-      margin: 0 auto 40px;
+      white-space: nowrap;
+      margin: 0 0 40px;
       line-height: 1.7;
     }
     .contact-actions {
@@ -676,7 +677,7 @@
         <li><a href="about.html">My Story</a></li>
         <li><a href="index.html#certifications">Certifications</a></li>
         <li><a href="faq.html" class="nav-active">FAQ</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -698,7 +699,7 @@
     <div class="section-inner">
       <div class="section-tag">Common Questions</div>
       <h2 class="section-title">Everything You Need to Know</h2>
-      <p class="section-sub">Click any question to read the answer. Each topic is addressed directly, without filler.</p>
+      <p class="section-sub" style="white-space: nowrap;">Click any question to read the answer. Each topic is addressed directly, without filler.</p>
       <p style="font-size:0.78rem; color:var(--gray-soft); margin-bottom: 32px; margin-top: -32px;">Last updated: March 2026</p>
 
       <div class="faq-list">
@@ -930,7 +931,7 @@
           </button>
           <div class="faq-panel" role="region">
             <div class="faq-panel-inner">
-              <p>Salesforce consulting costs vary based on scope, engagement model, and complexity. There is no universal rate — what you pay depends on what you're building and how you structure the work.</p>
+              <p>Salesforce consulting costs vary based on scope, engagement model, and complexity. There is no universal rate. What you pay depends on what you're building and how you structure the work.</p>
               <p>The main engagement models:</p>
               <ul>
                 <li><strong>Project-based</strong> – Scoped and priced by deliverable. Best for implementations, rebuilds, or defined initiatives with a clear start and end.</li>
@@ -1009,7 +1010,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Brian Hong &middot; Salesforce Administrator &amp; Consultant &middot; All rights reserved.</p>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
   </footer>
 
   <script>

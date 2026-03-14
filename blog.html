@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clicks to Customers Journal | Brian Hong</title>
+  <meta name="description" content="Insights on Salesforce, sales ops, and building better customer journeys — by Brian Hong." />
+  <link rel="canonical" href="https://brianhong.com/blog.html" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7DQ6CZVNX8');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-navy:   #032D60;
+      --sf-blue:   #00A1E0;
+      --sf-light:  #0D9DDA;
+      --sf-pale:   #E8F4FD;
+      --white:     #FFFFFF;
+      --gray-bg:   #F4F6F9;
+      --gray-dark: #1B1B1B;
+      --gray-mid:  #444F5E;
+      --gray-soft: #8492A6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3, 45, 96, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 161, 224, 0.2);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sf-blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sf-blue); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 50%, #053F82 100%);
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.07) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-hero-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .page-hero-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .page-hero-title em {
+      font-style: italic;
+      font-weight: 700;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .page-hero-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+    }
+
+    /* ─── BLOG LAYOUT ─── */
+    .blog-layout {
+      background: var(--gray-bg);
+      padding: 60px 32px;
+      min-height: 60vh;
+    }
+    .blog-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .blog-sidebar {
+      position: sticky;
+      top: 80px;
+    }
+    .sidebar-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .sidebar-title em {
+      font-style: italic;
+      font-weight: 700;
+      color: var(--sf-blue);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .sidebar-tagline {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .sidebar-divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sf-blue), transparent);
+      border: none;
+      margin-bottom: 24px;
+    }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li { margin-bottom: 2px; }
+    .sidebar-nav a {
+      display: block;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--gray-mid);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .sidebar-nav a:hover {
+      color: var(--sf-blue);
+      background: var(--sf-pale);
+    }
+    .sidebar-nav a.active {
+      color: var(--sf-navy);
+      font-weight: 700;
+      background: var(--sf-pale);
+    }
+
+    /* ─── ARTICLE GRID ─── */
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .article-card {
+      background: var(--white);
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.25s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sf-blue), #0070D2);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s;
+      z-index: 1;
+    }
+    .article-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(3,45,96,0.1);
+      border-color: rgba(0,161,224,0.3);
+    }
+    .article-card:hover::before { transform: scaleX(1); }
+    .article-img {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      flex-shrink: 0;
+    }
+    .article-body {
+      padding: 20px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .article-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 10px;
+    }
+    .article-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .article-excerpt {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 18px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid #E2E8F0;
+    }
+    .article-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sf-blue), var(--sf-navy));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .article-author-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-dark);
+      line-height: 1.2;
+    }
+    .article-author-role {
+      font-size: 0.72rem;
+      color: var(--gray-soft);
+    }
+
+    /* ─── CONTACT ─── */
+    section { padding: 80px 32px; }
+    .section-inner { max-width: 800px; margin: 0 auto; }
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    #contact {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 100%);
+      text-align: center;
+      padding: 100px 32px;
+    }
+    #contact .section-tag { color: var(--sf-blue); }
+    #contact .section-title { color: var(--white); }
+    .contact-tagline {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--sf-blue);
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(0,161,224,0.4);
+    }
+    .btn-primary:hover {
+      background: #0D9DDA;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,161,224,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      border: 1.5px solid rgba(255,255,255,0.25);
+    }
+    .btn-outline:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+      transform: translateY(-1px);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #010F22;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    footer a { color: var(--sf-blue); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .blog-layout { padding: 40px 20px; }
+      .blog-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .blog-sidebar { position: static; }
+      .sidebar-nav {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 4px;
+      }
+      .sidebar-nav li { margin-bottom: 0; white-space: nowrap; }
+      .article-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .page-hero-inner { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Brian <span>Hong</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#specializations">Expertise</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="about.html">My Story</a></li>
+        <li><a href="index.html#certifications">Certifications</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-tag">Insights &amp; Ideas</div>
+      <h1 class="page-hero-title">Clicks to Customers <em>Journal</em></h1>
+      <p class="page-hero-sub">Insights on Salesforce, sales ops, and building better customer journeys, straight from the field.</p>
+    </div>
+  </div>
+
+  <div class="blog-layout">
+    <div class="blog-inner">
+
+      <aside class="blog-sidebar">
+        <div class="sidebar-title">Explore the Customer Journey</div>
+        <p class="sidebar-tagline">Deep dives on Salesforce, sales operations, and practical playbooks for turning clicks into customers.</p>
+        <hr class="sidebar-divider" />
+        <ul class="sidebar-nav">
+          <li><a href="#" data-filter="all" class="active">Latest</a></li>
+          <li><a href="#" data-filter="salesforce">Salesforce</a></li>
+          <li><a href="#" data-filter="sales-strategy">Sales Strategy</a></li>
+          <li><a href="#" data-filter="automation">Automation</a></li>
+          <li><a href="#" data-filter="career">Career</a></li>
+          <li><a href="#" data-filter="resources">Resources</a></li>
+        </ul>
+      </aside>
+
+      <main class="blog-main">
+        <div class="article-grid">
+
+          <!-- Article 1: What Does a Salesforce Consultant Do? -->
+          <a href="what-does-a-salesforce-consultant-do.html" data-category="salesforce" style="text-decoration: none; color: inherit;">
+            <article class="article-card">
+              <div class="article-img"><img src="photos/SalesforceConsultant.png" alt="What Does a Salesforce Consultant Do?" style="width:100%;height:100%;object-fit:cover;" /></div>
+              <div class="article-body">
+                <div class="article-category">Salesforce</div>
+                <h2 class="article-title">What Does a Salesforce Consultant Do?</h2>
+                <p class="article-excerpt">The definitive guide for business decision-makers: covering core responsibilities, key skills, when to hire one, and what an engagement looks like.</p>
+                <div class="article-meta">
+                  <div class="article-avatar">BH</div>
+                  <div>
+                    <div class="article-author-name">Brian Hong</div>
+                    <div class="article-author-role">Salesforce Consultant · Mar 13, 2026</div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </a>
+
+        </div><!-- /.article-grid -->
+      </main>
+
+    </div><!-- /.blog-inner -->
+  </div><!-- /.blog-layout -->
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner" style="max-width: 1100px;">
+      <div class="section-tag">Get in Touch</div>
+      <h2 class="section-title">Ready to Talk About Your Salesforce Project?</h2>
+      <p class="contact-tagline">
+        Whether you are evaluating a new implementation, optimizing an existing org, or looking for ongoing support, I'd love to hear about your goals.
+      </p>
+      <div class="contact-actions">
+        <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a href="mailto:bghong1@gmail.com" class="btn btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
+  </footer>
+
+  <script>
+    const filterLinks = document.querySelectorAll('.sidebar-nav a[data-filter]');
+    const cards = document.querySelectorAll('.article-grid > a[data-category]');
+
+    filterLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        filterLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        const filter = link.dataset.filter;
+        cards.forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

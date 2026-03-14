@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Brian Hong | Salesforce Administrator &amp; Consultant — Columbus, OH</title>
-  <meta name="description" content="Brian Hong is a Salesforce Administrator and Consultant based in Columbus, Ohio with 10+ years of experience in Sales Cloud, Service Cloud, CPQ, Omni-Channel, and data analytics." />
+  <title>Brian Hong | Salesforce Consultant — Columbus, OH</title>
+  <meta name="description" content="Brian Hong is a Salesforce Consultant based in Columbus, Ohio with 10+ years of experience in Sales Cloud, Service Cloud, CPQ, Omni-Channel, and data analytics." />
   <meta name="keywords" content="Brian Hong, Salesforce consultant, Salesforce administrator, Columbus Ohio, Sales Cloud consultant, Service Cloud consultant, CPQ, Omni-Channel, data analytics, messaging, revenue operations" />
   <link rel="canonical" href="https://brianhong.com/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile" />
-  <meta property="og:title" content="Brian Hong | Salesforce Administrator &amp; Consultant — Columbus, OH" />
+  <meta property="og:title" content="Brian Hong | Salesforce Consultant — Columbus, OH" />
   <meta property="og:description" content="10+ years of Salesforce expertise in Sales Cloud, Service Cloud, CPQ, and Omni-Channel. Based in Columbus, Ohio." />
   <meta property="og:url" content="https://brianhong.com/" />
   <meta property="og:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
@@ -143,7 +143,7 @@
         "name": "Who is Brian Hong?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Brian Hong is a Salesforce Administrator and Consultant based in Columbus, Ohio, with over 10 years of experience implementing and optimizing Salesforce CRM solutions across Sales Cloud, Service Cloud, CPQ, and Omni-Channel for enterprise and mid-market businesses."
+          "text": "Brian Hong is a Salesforce Consultant based in Columbus, Ohio, with over 10 years of experience implementing and optimizing Salesforce CRM solutions across Sales Cloud, Service Cloud, CPQ, and Omni-Channel for enterprise and mid-market businesses."
         }
       },
       {
@@ -182,7 +182,7 @@
     "name": "Brian Hong | Salesforce Consultant",
     "url": "https://brianhong.com",
     "author": {"@type": "Person", "name": "Brian Hong"},
-    "description": "Official website of Brian Hong, Salesforce Administrator and Consultant based in Columbus, Ohio."
+    "description": "Official website of Brian Hong, Salesforce Consultant based in Columbus, Ohio."
   }
   </script>
 
@@ -288,7 +288,7 @@
       pointer-events: none;
     }
     .hero-inner {
-      max-width: 1100px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 80px 32px;
       display: flex;
@@ -373,7 +373,6 @@
     .hero-tagline {
       font-size: 1.05rem;
       color: rgba(255,255,255,0.65);
-      max-width: 520px;
       line-height: 1.7;
       margin-bottom: 36px;
     }
@@ -478,7 +477,6 @@
     .section-sub {
       font-size: 1rem;
       color: var(--gray-mid);
-      max-width: 580px;
       line-height: 1.7;
       margin-bottom: 48px;
     }
@@ -627,12 +625,16 @@
     }
     #contact .section-tag { justify-content: center; }
     #contact .section-title { color: var(--white); }
+    .contact-text-group {
+      width: fit-content;
+      margin: 0 auto;
+    }
     .contact-tagline {
-      font-size: 1.05rem;
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
       color: rgba(255,255,255,0.6);
-      max-width: 520px;
-      margin: 0 auto 40px;
+      margin: 0 0 40px;
       line-height: 1.7;
+      white-space: nowrap;
     }
     .contact-actions {
       display: flex;
@@ -670,6 +672,10 @@
       .nav-links { display: none; }
       section { padding: 60px 24px; }
     }
+    @media (min-width: 1280px) {
+      .hero-title { white-space: nowrap; }
+      .hero-text-group { width: fit-content; }
+    }
   </style>
 </head>
 <body>
@@ -694,19 +700,21 @@
     <div class="hero-inner">
       <div class="hero-photo-wrap">
         <div class="hero-photo-ring">
-          <img src="photos/BriansHeadshot.jpeg" alt="Brian Hong, Salesforce Administrator and Consultant based in Columbus, Ohio" />
+          <img src="photos/BriansHeadshot.jpeg" alt="Brian Hong, Salesforce Consultant based in Columbus, Ohio" />
         </div>
         <div class="hero-badge">Available for Opportunities</div>
       </div>
       <div class="hero-content">
         <div class="hero-eyebrow">Salesforce Professional</div>
         <h1 class="hero-name">Brian Hong</h1>
-        <p class="hero-title">Salesforce Consultant in Columbus helping companies optimize CRM and Revenue Operations</p>
-        <div class="hero-divider"></div>
-        <p class="hero-tagline">
-          Salesforce professional with over a decade of transforming businesses. I build scalable solutions across Sales Cloud, Service Cloud, Omni-Channel, and CPQ that drive real, measurable results.<br><br>
-          Revenue Operations (RevOps) Specialist | CRM Automation Expert
-        </p>
+        <div class="hero-text-group">
+          <p class="hero-title">Salesforce Consultant in Columbus helping companies optimize CRM and Revenue Operations</p>
+          <div class="hero-divider"></div>
+          <p class="hero-tagline">
+            Salesforce professional with over a decade of transforming businesses. I build scalable solutions across Sales Cloud, Service Cloud, Omni-Channel, and CPQ that drive real, measurable results.<br><br>
+            Revenue Operations (RevOps) Specialist | CRM Automation Expert
+          </p>
+        </div>
         <div class="hero-actions">
           <!-- UPDATE: Replace # with your actual LinkedIn URL -->
           <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
@@ -861,10 +869,12 @@
   <section id="contact">
     <div class="section-inner">
       <div class="section-tag" style="color: var(--sf-blue);">Get in Touch</div>
-      <h2 class="section-title">Let's Build Something Powerful on Salesforce</h2>
-      <p class="contact-tagline">
-        Whether you're scaling a CRM, launching a new Salesforce product, or looking for a seasoned Salesforce consultant to join your team, I'd love to connect.
-      </p>
+      <div class="contact-text-group">
+        <h2 class="section-title">Let's Build Something Powerful on Salesforce</h2>
+        <p class="contact-tagline">
+          Whether you're scaling a CRM, launching a new Salesforce product, or looking for a seasoned Salesforce consultant to join your team, I'd love to connect.
+        </p>
+      </div>
       <div class="contact-actions">
         <!-- UPDATE: Replace # with your actual LinkedIn URL -->
         <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
@@ -882,7 +892,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Brian Hong &middot; Salesforce Administrator &amp; Consultant &middot; All rights reserved.</p>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
   </footer>
 
 </body>

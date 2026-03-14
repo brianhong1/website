@@ -3,16 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Brian Hong | My Story — Salesforce Administrator &amp; Consultant</title>
+  <title>Brian Hong | My Story — Salesforce Consultant</title>
   <meta name="description" content="Learn about Brian Hong, a Salesforce Administrator and Consultant with 10+ years of experience spanning EdTech, startups, and Salesforce's own corporate team." />
   <link rel="canonical" href="https://brianhong.com/about.html" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile" />
-  <meta property="og:title" content="About Brian Hong | Salesforce Administrator &amp; Consultant" />
+  <meta property="og:title" content="About Brian Hong | Salesforce Consultant" />
   <meta property="og:description" content="From contract IT support to Salesforce's own corporate team. Brian Hong's career story and professional journey." />
   <meta property="og:url" content="https://brianhong.com/about.html" />
   <meta property="og:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Brian Hong | Salesforce Consultant" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About Brian Hong | Salesforce Consultant" />
+  <meta name="twitter:description" content="From contract IT support to Salesforce's own corporate team. Brian Hong's career story and professional journey." />
+  <meta name="twitter:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+
+  <!-- Keywords & Author -->
+  <meta name="keywords" content="Brian Hong, Salesforce consultant, about Brian Hong, Salesforce career, Columbus Ohio, Sales Cloud, Service Cloud, CPQ, Salesforce administrator" />
+  <meta name="author" content="Brian Hong" />
+
+  <!-- Geographic (Local SEO) -->
+  <meta name="geo.region" content="US-OH" />
+  <meta name="geo.placename" content="Columbus, Ohio" />
+  <meta name="geo.position" content="39.9612;-82.9988" />
+  <meta name="ICBM" content="39.9612, -82.9988" />
+
+  <!-- Structured Data (AEO / GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": "https://brianhong.com/about.html",
+        "url": "https://brianhong.com/about.html",
+        "name": "About Brian Hong | Salesforce Consultant",
+        "description": "Learn about Brian Hong, a Salesforce Consultant with 10+ years of experience spanning EdTech, startups, and Salesforce's own corporate team.",
+        "inLanguage": "en-US",
+        "isPartOf": { "@id": "https://brianhong.com/" },
+        "about": {
+          "@type": "Person",
+          "@id": "https://brianhong.com/#person",
+          "name": "Brian Hong",
+          "jobTitle": "Salesforce Consultant",
+          "url": "https://brianhong.com",
+          "image": "https://brianhong.com/photos/BriansHeadshot.jpeg",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Columbus",
+            "addressRegion": "OH",
+            "addressCountry": "US"
+          },
+          "knowsAbout": [
+            "Salesforce Administration",
+            "Sales Cloud",
+            "Service Cloud",
+            "Salesforce CPQ",
+            "CRM Architecture",
+            "Revenue Operations",
+            "Workflow Automation",
+            "Cross-platform Integrations"
+          ],
+          "sameAs": ["https://www.linkedin.com/in/brianghong"]
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://brianhong.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "About Brian Hong",
+            "item": "https://brianhong.com/about.html"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
@@ -135,7 +213,7 @@
     .page-hero-sub {
       font-size: 1.05rem;
       color: rgba(255,255,255,0.6);
-      max-width: 520px;
+      max-width: 760px;
       line-height: 1.7;
     }
 
@@ -163,7 +241,7 @@
     #career { background: var(--gray-bg); }
     #career .section-inner { max-width: 960px; }
     .career-body { margin-top: 0; }
-    .career-body h3 {
+    .career-body h2 {
       font-size: 1.2rem;
       font-weight: 700;
       color: var(--sf-navy);
@@ -171,7 +249,7 @@
       margin-top: 40px;
       letter-spacing: -0.01em;
     }
-    .career-body h3:first-child { margin-top: 0; }
+    .career-body h2:first-child { margin-top: 0; }
     .career-body p {
       font-size: 1rem;
       color: var(--gray-mid);
@@ -210,10 +288,10 @@
     #contact .section-tag { color: var(--sf-blue); }
     #contact .section-title { color: var(--white); margin-bottom: 0; }
     .contact-tagline {
-      font-size: 1.05rem;
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
       color: rgba(255,255,255,0.6);
-      max-width: 520px;
-      margin: 16px auto 40px;
+      white-space: nowrap;
+      margin: 16px 0 40px;
       line-height: 1.7;
     }
     .contact-actions {
@@ -290,7 +368,7 @@
         <li><a href="about.html" class="active">My Story</a></li>
         <li><a href="index.html#certifications">Certifications</a></li>
         <li><a href="faq.html">FAQ</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -313,7 +391,7 @@
           Brian Hong is a Salesforce consultant and systems strategist known for helping organizations optimize their CRM platforms, streamline operations, and improve data-driven decision-making. Based in Columbus, Brian combines deep technical expertise with a business-first mindset to design Salesforce solutions that scale with growing organizations.
         </p>
 
-        <h3>Early Career and Salesforce Expertise</h3>
+        <h2>Early Career and Salesforce Expertise</h2>
         <p>
           Brian began working with Salesforce in 2014, launching his career as a Salesforce Administrator focused on platform optimization and user adoption. Over the years, he built a reputation for improving CRM architecture, automating manual workflows, and translating complex business requirements into scalable technical solutions.
         </p>
@@ -324,7 +402,7 @@
           Brian's approach focuses on aligning CRM technology with real business outcomes. By combining configuration, automation, and system integration strategies, he helps teams reduce operational friction while enabling leadership to make better decisions with reliable data.
         </p>
 
-        <h3>Professional Growth and Strategic Impact</h3>
+        <h2>Professional Growth and Strategic Impact</h2>
         <p>
           After years of delivering high-impact solutions within the Salesforce ecosystem, Brian expanded his career to pursue broader consulting opportunities across SaaS and technology-driven organizations. This transition allowed him to work on more complex system architectures, cross-platform integrations, and enterprise CRM strategies.
         </p>
@@ -340,7 +418,7 @@
           Brian is particularly known for helping companies transform Salesforce from a basic CRM into a central operational platform that supports sales, service, and executive decision-making.
         </p>
 
-        <h3>Community Involvement and Social Impact</h3>
+        <h2>Community Involvement and Social Impact</h2>
         <p>
           Beyond his professional work, Brian is committed to community impact and nonprofit support. He frequently contributes his Salesforce expertise to organizations that need help modernizing their systems and improving operational efficiency.
         </p>
@@ -348,7 +426,7 @@
           Through pro bono consulting and volunteer initiatives, Brian has helped nonprofit organizations automate processes, improve donor tracking, and streamline application workflows, allowing teams to focus more on mission-driven outcomes rather than administrative tasks.
         </p>
 
-        <h3>Vision and Professional Philosophy</h3>
+        <h2>Vision and Professional Philosophy</h2>
         <p>
           Brian's career is defined by a combination of technical depth, strategic thinking, and a commitment to continuous learning. He believes that technology should simplify operations, empower teams, and create measurable business impact.
         </p>
@@ -383,7 +461,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Brian Hong &middot; Salesforce Administrator &amp; Consultant &middot; All rights reserved.</p>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
   </footer>
 
 </body>

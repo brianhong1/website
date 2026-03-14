@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Does a Salesforce Consultant Do? The Definitive Guide | Brian Hong</title>
+  <meta name="description" content="A definitive guide for business decision-makers on what a Salesforce consultant does, when to hire one, and what separates great consultants from mediocre ones." />
+  <link rel="canonical" href="https://brianhong.com/what-does-a-salesforce-consultant-do.html" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7DQ6CZVNX8');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-navy:   #032D60;
+      --sf-blue:   #00A1E0;
+      --sf-light:  #0D9DDA;
+      --sf-pale:   #E8F4FD;
+      --white:     #FFFFFF;
+      --gray-bg:   #F4F6F9;
+      --gray-dark: #1B1B1B;
+      --gray-mid:  #444F5E;
+      --gray-soft: #8492A6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3, 45, 96, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 161, 224, 0.2);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sf-blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sf-blue); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 50%, #053F82 100%);
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.07) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-hero-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .page-hero-title {
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .page-hero-subtitle {
+      font-size: 1.05rem;
+      font-style: italic;
+      font-family: Georgia, "Times New Roman", serif;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 24px;
+    }
+    .page-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sf-blue), var(--sf-navy));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .hero-meta-text {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
+    }
+    .hero-meta-text strong {
+      color: rgba(255,255,255,0.9);
+      font-weight: 600;
+    }
+
+    /* ─── ARTICLE LAYOUT ─── */
+    .article-layout {
+      background: var(--gray-bg);
+      padding: 60px 32px;
+      min-height: 60vh;
+    }
+    .article-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .article-sidebar {
+      position: sticky;
+      top: 80px;
+    }
+    .sidebar-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .sidebar-divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sf-blue), transparent);
+      border: none;
+      margin-bottom: 16px;
+    }
+    .toc-nav { list-style: none; }
+    .toc-nav li { margin-bottom: 2px; }
+    .toc-nav a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gray-mid);
+      text-decoration: none;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .toc-nav a:hover {
+      color: var(--sf-blue);
+      background: var(--sf-pale);
+    }
+    .toc-nav a.active {
+      color: var(--sf-navy);
+      font-weight: 700;
+      background: var(--sf-pale);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--sf-blue);
+      text-decoration: none;
+      margin-top: 20px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--sf-navy); }
+
+    /* ─── ARTICLE CONTENT ─── */
+    .article-body {
+      background: var(--white);
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 48px 52px;
+    }
+    .article-content .lead {
+      font-size: 1.1rem;
+      color: var(--gray-mid);
+      line-height: 1.85;
+      margin-bottom: 32px;
+      border-left: 3px solid var(--sf-blue);
+      padding-left: 20px;
+    }
+    .article-content p {
+      font-size: 1rem;
+      color: var(--gray-dark);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .article-content h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 52px;
+      margin-bottom: 16px;
+      padding-top: 8px;
+      border-top: 2px solid var(--sf-pale);
+    }
+    .article-content h2:first-of-type {
+      margin-top: 16px;
+      border-top: none;
+      padding-top: 0;
+    }
+    .article-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      line-height: 1.3;
+      margin-top: 32px;
+      margin-bottom: 10px;
+    }
+    .article-content h3 .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--sf-blue);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 10px;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    .article-content ul,
+    .article-content ol {
+      margin: 12px 0 20px 0;
+      padding-left: 24px;
+    }
+    .article-content li {
+      font-size: 1rem;
+      color: var(--gray-dark);
+      line-height: 1.75;
+      margin-bottom: 6px;
+    }
+    .article-content li strong {
+      color: var(--sf-navy);
+      font-weight: 700;
+    }
+    blockquote {
+      background: var(--sf-pale);
+      border-left: 4px solid var(--sf-blue);
+      border-radius: 0 8px 8px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    blockquote p {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.75;
+      margin-bottom: 0 !important;
+      font-style: italic;
+    }
+    blockquote cite {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-soft);
+      font-style: normal;
+    }
+    .engagement-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.9rem;
+    }
+    .engagement-table th {
+      background: var(--sf-navy);
+      color: var(--white);
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+    .engagement-table th:first-child { border-radius: 8px 0 0 0; }
+    .engagement-table th:last-child { border-radius: 0 8px 0 0; }
+    .engagement-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #E2E8F0;
+      color: var(--gray-dark);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .engagement-table tr:last-child td { border-bottom: none; }
+    .engagement-table tr:nth-child(even) td { background: var(--gray-bg); }
+    .phase-label {
+      font-weight: 700;
+      color: var(--sf-navy);
+      white-space: nowrap;
+    }
+    /* ─── CONTACT ─── */
+    #contact {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 100%);
+      text-align: center;
+      padding: 100px 32px;
+    }
+    #contact .section-tag { justify-content: center; color: var(--sf-blue); }
+    #contact .section-title { color: var(--white); }
+    .contact-tagline {
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+      margin: 0 0 40px;
+      line-height: 1.7;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .section-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 13px 28px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: var(--sf-blue);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(0,161,224,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--sf-light);
+      box-shadow: 0 6px 20px rgba(0,161,224,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-outline:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #010F22;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    footer a { color: var(--sf-blue); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .article-layout { padding: 40px 20px; }
+      .article-inner {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .article-sidebar { position: static; }
+      .toc-nav {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 4px;
+      }
+      .toc-nav li { margin-bottom: 0; white-space: nowrap; }
+      .article-body { padding: 28px 24px; }
+      .nav-links { display: none; }
+      .page-hero-inner { padding: 48px 24px; }
+      .article-content h2 { font-size: 1.25rem; }
+      .engagement-table { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Brian <span>Hong</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#specializations">Expertise</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="about.html">My Story</a></li>
+        <li><a href="index.html#certifications">Certifications</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-tag">Salesforce &middot; Definitive Guide</div>
+      <h1 class="page-hero-title">What Does a Salesforce Consultant Do?</h1>
+      <p class="page-hero-subtitle">The Definitive Guide for Business Decision-Makers</p>
+      <div class="page-hero-meta">
+        <div class="hero-avatar">BH</div>
+        <div class="hero-meta-text">
+          <strong>Brian Hong</strong><br>
+          Salesforce Consultant &middot; Published March 13, 2026
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-layout">
+    <div class="article-inner">
+
+      <aside class="article-sidebar">
+        <div class="sidebar-label">In This Guide</div>
+        <hr class="sidebar-divider" />
+        <ul class="toc-nav">
+          <li><a href="#intro" class="active">Overview</a></li>
+          <li><a href="#what-is">What Is a Salesforce Consultant?</a></li>
+          <li><a href="#responsibilities">Core Responsibilities</a></li>
+          <li><a href="#skills">Skills That Matter</a></li>
+          <li><a href="#when-to-hire">When to Hire One</a></li>
+          <li><a href="#engagement">What an Engagement Looks Like</a></li>
+          <li><a href="#business-case">The Business Case</a></li>
+          <li><a href="#career">Considering a Career?</a></li>
+          <li><a href="#bottom-line">The Bottom Line</a></li>
+        </ul>
+
+        <a href="blog.html" class="back-link">
+          ← Back to Journal
+        </a>
+      </aside>
+
+      <main>
+        <article class="article-body">
+          <div class="article-content">
+
+            <div id="intro">
+              <p class="lead">There is a version of this story that every business leader recognizes: your company spent six figures on Salesforce, the implementation took longer than expected, adoption is lower than hoped, and three years later you are not sure the platform is doing anything your spreadsheets could not.</p>
+              <p>The reason that story plays out so often is not Salesforce. It is the absence of the right Salesforce consultant.</p>
+              <p>A skilled Salesforce consultant does not just configure software. They serve as the strategic bridge between where your business is today and where the CRM platform can take it, translating messy, real-world business processes into clean, scalable Salesforce solutions that your teams actually use.</p>
+              <p>Whether you are evaluating Salesforce for the first time, trying to rescue a troubled implementation, or considering a consulting career yourself, this guide breaks down exactly what a Salesforce consultant does, why it matters, and what separates a great one from a mediocre one.</p>
+            </div>
+
+            <h2 id="what-is">What Is a Salesforce Consultant?</h2>
+            <p>A Salesforce consultant is an expert who helps organizations select, implement, customize, and continuously optimize Salesforce to meet their specific business objectives.</p>
+            <p>They combine deep knowledge of the Salesforce platform with business acumen, change management expertise, and often industry-specific experience. The result is a professional who can walk into a room full of sales reps, ops managers, and IT leaders, and translate what each person needs into a single cohesive system.</p>
+            <p>According to Salesforce Ben, the world's leading independent Salesforce publication, consultants may work for Salesforce Consulting Partners (also called Solution Integrators), boutique agencies, or as independent freelancers. Some serve as long-term embedded partners; others engage on a project basis.</p>
+            <p>There are two primary types of Salesforce consultants you will encounter:</p>
+            <ul>
+              <li><strong>Functional Consultant:</strong> Handles business process analysis, requirements gathering, declarative configuration (no-code/low-code), user training, and change management.</li>
+              <li><strong>Technical Consultant:</strong> Specializes in custom development using Apex, Lightning Web Components, API integrations, and data architecture.</li>
+            </ul>
+            <p>In practice, experienced consultants often blend both skill sets, particularly at the senior level. The division matters most when scoping a project, and knowing which type you need saves time and budget.</p>
+
+            <h2 id="responsibilities">Core Responsibilities of a Salesforce Consultant</h2>
+            <p>Ask ten different Salesforce consultants what they do, and you will get ten slightly different answers, because the role is genuinely dynamic. That said, the following responsibilities appear consistently across engagements.</p>
+
+            <h3><span class="step-num">1</span> Discovery and Requirements Gathering</h3>
+            <p>Before a single field is configured, a Salesforce consultant invests significant time in understanding your business. This means structured workshops with stakeholders across sales, service, marketing, and operations. They ask probing questions: What does your pipeline look like? Where do deals stall? How does your team track customer issues today?</p>
+            <p>The output is a documented picture of your current state, your desired future state, and the specific Salesforce capabilities that will close the gap. This discovery phase is where great consultants earn their fees: a thorough discovery prevents expensive redesigns later.</p>
+
+            <h3><span class="step-num">2</span> Solution Design and Architecture</h3>
+            <p>Once requirements are captured, the Salesforce CRM consultant designs a solution blueprint. This covers which Salesforce Clouds to use (Sales Cloud, Service Cloud, Marketing Cloud, etc.), how data should be structured, what automation to build, and how Salesforce will connect to your other business systems.</p>
+            <p>Good solution design is equal parts technical and strategic. The consultant must balance what is technically possible with what is practical to maintain and what your team will actually adopt.</p>
+
+            <h3><span class="step-num">3</span> Configuration and Development</h3>
+            <p>This is the hands-on build phase. A Salesforce implementation consultant configures objects, fields, workflows, validation rules, page layouts, dashboards, and automation flows. For more complex needs, technical consultants write Apex code, build Lightning Web Components, and design custom integrations.</p>
+            <p>The goal is never to build more than necessary. Overengineered Salesforce orgs are notoriously difficult to maintain. Experienced consultants know when to use standard features and when custom development is genuinely warranted.</p>
+
+            <h3><span class="step-num">4</span> System Integration</h3>
+            <p>Modern businesses run on ecosystems of tools: ERPs, marketing automation platforms, customer support systems, e-commerce engines, and more. A Salesforce consultant architects and implements the connections between Salesforce and these systems using APIs, middleware platforms like MuleSoft, or point-to-point integrations.</p>
+            <p>Seamless integration is often the difference between Salesforce as a silo and Salesforce as the central nervous system of your business.</p>
+
+            <h3><span class="step-num">5</span> Data Migration</h3>
+            <p>Moving historical data from legacy CRMs, spreadsheets, or other systems into Salesforce requires careful planning. Consultants map old data structures to new ones, clean and de-duplicate records, and execute migrations in a way that preserves data integrity and does not disrupt active business operations.</p>
+
+            <h3><span class="step-num">6</span> User Training and Change Management</h3>
+            <p>A perfectly configured Salesforce org is worth nothing if your team does not use it. Salesforce consulting services almost always include user training tailored for different roles, with practical scenarios drawn from your actual business.</p>
+            <p>Change management is the less-discussed but equally critical piece. Consultants coach managers on how to enforce adoption, design reports that motivate behavior change, and structure the rollout to minimize disruption.</p>
+
+            <h3><span class="step-num">7</span> Post-Launch Support and Optimization</h3>
+            <p>The most valuable Salesforce consultants are not one-and-done. They provide post-implementation health checks, address bugs, manage Salesforce's three annual releases, and proactively identify opportunities to extend the platform as your business evolves.</p>
+            <p>This ongoing relationship is where the compounding returns on Salesforce investment are realized.</p>
+
+            <h2 id="skills">The Skills That Separate Great Consultants from Good Ones</h2>
+            <p>Salesforce certifications are the baseline. The best consultants bring a constellation of skills that the platform cannot certify:</p>
+            <ul>
+              <li><strong>Strong listening and communication:</strong> the ability to hear what stakeholders say, identify what they actually mean, and translate both into a system that works.</li>
+              <li><strong>Business analysis:</strong> understanding processes, identifying inefficiencies, and quantifying the value of proposed changes.</li>
+              <li><strong>Project management:</strong> keeping engagements on time, on scope, and on budget while managing competing stakeholder priorities.</li>
+              <li><strong>Emotional intelligence:</strong> navigating organizational politics, resistance to change, and the dynamics of multi-stakeholder projects.</li>
+              <li><strong>Continuous learning:</strong> Salesforce releases three major platform updates per year. Consultants who do not keep pace quickly become irrelevant.</li>
+            </ul>
+            <p>The certification landscape also matters for hiring decisions. Key credentials include the Salesforce Administrator, Platform App Builder, and cloud-specific consultant certifications like Sales Cloud Consultant, Service Cloud Consultant, and Marketing Cloud Consultant. Senior consultants often hold five or more certifications.</p>
+
+            <h2 id="when-to-hire">When Does a Business Need a Salesforce Consultant?</h2>
+            <p>Not every Salesforce question requires a consultant. But certain moments in a company's journey make the investment almost always worthwhile.</p>
+
+            <h3>New Implementations</h3>
+            <p>The initial Salesforce deployment sets the architectural foundation for everything that follows. Getting it wrong is expensive, both in rework costs and in the bad habits that calcify around a poorly structured org. A Salesforce implementation consultant brings a structured methodology, reducing risk dramatically versus an in-house-only approach.</p>
+
+            <h3>Rescue Projects</h3>
+            <p>Some of the highest-ROI consulting engagements are not implementations; they are interventions. When adoption is low, reports are unreliable, or Salesforce has become a tangle of technical debt, an experienced Salesforce CRM consultant can audit the org, prioritize what to fix, and build a roadmap back to a healthy system.</p>
+
+            <h3>Major Platform Expansions</h3>
+            <p>Adding a new Salesforce Cloud, integrating a newly acquired company's org, or deploying advanced AI features like Agentforce all introduce complexity that exceeds most in-house admin capabilities. Consultants bring specialized expertise for these high-stakes moments.</p>
+
+            <h3>Scaling Operations</h3>
+            <p>What works for a 20-person sales team often breaks at 200 people. As businesses scale, Salesforce consulting services help re-architect processes, introduce automation that reduces manual work, and ensure governance structures that can sustain growth.</p>
+
+            <h2 id="engagement">What a Salesforce Consulting Engagement Actually Looks Like</h2>
+            <p>If you are considering hiring a Salesforce consultant, here is a realistic picture of how a typical engagement unfolds:</p>
+
+            <table class="engagement-table">
+              <thead>
+                <tr>
+                  <th>Phase</th>
+                  <th>Duration</th>
+                  <th>Key Activities</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="phase-label">Discovery</span></td>
+                  <td>2–4 weeks</td>
+                  <td>Stakeholder interviews, process mapping, requirements documentation, high-level solution recommendation</td>
+                </tr>
+                <tr>
+                  <td><span class="phase-label">Solution Design</span></td>
+                  <td>1–2 weeks</td>
+                  <td>Detailed solution design, data model, integration architecture, project plan with milestones</td>
+                </tr>
+                <tr>
+                  <td><span class="phase-label">Build &amp; Configuration</span></td>
+                  <td>4–16 weeks</td>
+                  <td>Iterative build, internal testing, user acceptance testing (UAT), and refinement</td>
+                </tr>
+                <tr>
+                  <td><span class="phase-label">Deployment</span></td>
+                  <td>1–2 weeks</td>
+                  <td>Data migration, final training, go-live support, and hypercare monitoring</td>
+                </tr>
+                <tr>
+                  <td><span class="phase-label">Post-Launch Support</span></td>
+                  <td>Ongoing</td>
+                  <td>Quarterly reviews, release management, enhancements, and strategic roadmap planning</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>Timeline and cost vary dramatically based on the number of Salesforce products, the complexity of integrations, data quality, and organizational readiness. Simple Sales Cloud implementations can go live in 6–8 weeks. Multi-cloud, multi-country deployments can run 18+ months.</p>
+
+            <h2 id="business-case">The Business Case for Salesforce Consulting Services</h2>
+
+            <blockquote>
+              <p>"75% of CRM users report improved customer satisfaction, and 52% of companies experience higher ROI after implementing a CRM solution like Salesforce."</p>
+              <cite>— Salesforce internal survey</cite>
+            </blockquote>
+
+            <p>The numbers tell one story. What they do not capture is the cost of getting it wrong. Poorly implemented Salesforce projects generate hidden costs: low adoption means sales data is incomplete, which means forecasts are inaccurate, which means leadership makes decisions on bad information.</p>
+            <p>A competent Salesforce consultant is not a cost center. They are a risk mitigation strategy and a return accelerator. The difference between a $150,000 consulting engagement that delivers a high-functioning org versus a $60,000 shortcut that produces an org no one trusts can be measured in millions of dollars of lost pipeline visibility.</p>
+            <p>For businesses serious about using Salesforce as a competitive advantage rather than an expensive address book, professional Salesforce consulting services are not optional.</p>
+
+            <h2 id="career">Considering a Career as a Salesforce Consultant?</h2>
+            <p>For professionals evaluating this career path, the market data is compelling. According to ZipRecruiter, the average annual salary for a Salesforce consultant in the United States is approximately $127,000 as of late 2025, with senior specialists and CPQ consultants frequently exceeding $200,000.</p>
+            <p>Freelance consultants typically charge $50–$150 per hour, with experienced specialists commanding rates well above that range. The role rewards continuous learning: each new Salesforce certification and each additional cloud specialty translates directly into earning potential.</p>
+            <p>The career path is also well-defined:</p>
+            <ul>
+              <li><strong>Entry-level build consultants</strong> develop configuration fundamentals.</li>
+              <li><strong>Mid-level consultants</strong> design solutions and lead client workshops.</li>
+              <li><strong>Senior consultants</strong> serve as delivery directors and trusted strategic advisors, often the most important person in the room during a client engagement.</li>
+            </ul>
+            <p>For Salesforce administrators with strong business analysis skills and a desire for variety, consulting is a natural and lucrative next step.</p>
+
+            <h2 id="bottom-line">The Bottom Line</h2>
+            <p>A Salesforce consultant wears many hats: business analyst, solution architect, project manager, trainer, and strategic advisor. But underneath all of those roles is a single, consistent purpose: making Salesforce work for your business, not the other way around.</p>
+            <p>The question is not whether your organization can afford a great Salesforce consultant. Given what is at stake in a CRM implementation, the better question is whether you can afford not to have one.</p>
+            <p>If your business is evaluating a Salesforce engagement, or if your current org is not performing the way you expected, consulting with a qualified Salesforce expert is the highest-leverage action you can take today.</p>
+
+          </div>
+        </article>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div class="section-tag">Get in Touch</div>
+      <h2 class="section-title">Ready to Get Your Salesforce Org Working for You?</h2>
+      <p class="contact-tagline">
+        Whether you're scaling a CRM, rescuing a troubled implementation, or looking for a Salesforce consultant to join your team, I'd love to connect.
+      </p>
+      <div class="contact-actions">
+        <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a href="mailto:bghong1@gmail.com" class="btn btn-outline" style="color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.25);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Highlight active ToC item on scroll
+    const sections = document.querySelectorAll('[id]');
+    const tocLinks = document.querySelectorAll('.toc-nav a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`.toc-nav a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

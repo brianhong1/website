@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Closing the Gap Between Support and Product: A Salesforce Jira Real-Time Integration | Brian Hong</title>
+  <meta name="description" content="How automated bi-directional sync replaced a broken manual handoff and gave the Support team back their time." />
+  <meta name="keywords" content="Salesforce Jira integration, Celigo, bi-directional sync, customer support automation, B2B SaaS, Salesforce consultant Columbus Ohio, Brian Hong" />
+  <link rel="canonical" href="https://brianhong.com/salesforce-jira-integration.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Closing the Gap Between Support and Product: A Salesforce Jira Real-Time Integration | Brian Hong" />
+  <meta property="og:description" content="How automated bi-directional sync replaced a broken manual handoff and gave the Support team back their time." />
+  <meta property="og:url" content="https://brianhong.com/salesforce-jira-integration.html" />
+  <meta property="og:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Brian Hong" />
+  <meta property="article:published_time" content="2026-03-27" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Closing the Gap Between Support and Product: A Salesforce Jira Real-Time Integration | Brian Hong" />
+  <meta name="twitter:description" content="How automated bi-directional sync replaced a broken manual handoff and gave the Support team back their time." />
+  <meta name="twitter:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+
+  <!-- Geo -->
+  <meta name="geo.region" content="US-OH" />
+  <meta name="geo.placename" content="Columbus, Ohio" />
+  <meta name="geo.position" content="39.9612;-82.9988" />
+  <meta name="ICBM" content="39.9612, -82.9988" />
+
+  <!-- Structured Data (AEO / GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Closing the Gap Between Support and Product: A Salesforce Jira Real-Time Integration",
+    "description": "How automated bi-directional sync replaced a broken manual handoff and gave the Support team back their time.",
+    "author": {
+      "@type": "Person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com",
+      "jobTitle": "Salesforce Consultant",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      }
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com"
+    },
+    "url": "https://brianhong.com/salesforce-jira-integration.html",
+    "datePublished": "2026-03-27",
+    "dateModified": "2026-03-27",
+    "about": [
+      { "@type": "Thing", "name": "Salesforce" },
+      { "@type": "Thing", "name": "Jira" },
+      { "@type": "Thing", "name": "Celigo" },
+      { "@type": "Thing", "name": "Integration Platform" },
+      { "@type": "Thing", "name": "B2B SaaS" }
+    ],
+    "keywords": "Salesforce Jira integration, Celigo, bi-directional sync, customer support automation, B2B SaaS, Salesforce consultant"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://brianhong.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Projects",
+        "item": "https://brianhong.com/projects.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Salesforce Jira Real-Time Integration",
+        "item": "https://brianhong.com/salesforce-jira-integration.html"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7DQ6CZVNX8');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-navy:   #032D60;
+      --sf-blue:   #00A1E0;
+      --sf-light:  #0D9DDA;
+      --sf-pale:   #E8F4FD;
+      --white:     #FFFFFF;
+      --gray-bg:   #F4F6F9;
+      --gray-dark: #1B1B1B;
+      --gray-mid:  #444F5E;
+      --gray-soft: #8492A6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3, 45, 96, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 161, 224, 0.2);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sf-blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sf-blue); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 50%, #053F82 100%);
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.07) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-hero-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .page-hero-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      max-width: 100%;
+    }
+    .page-hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 900px;
+      line-height: 1.65;
+    }
+
+    /* ─── SECTION SHARED ─── */
+    .section-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    /* ─── PRODUCTS SECTION ─── */
+    .products-section {
+      background: var(--white);
+      padding: 80px 32px;
+      text-align: center;
+    }
+    .products-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .products-grid {
+      display: flex;
+      justify-content: center;
+      gap: 64px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .product-item {
+      display: flex;
+      align-items: center;
+    }
+    .product-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── CASE STUDY CONTENT ─── */
+    .case-section {
+      padding: 80px 32px;
+    }
+    .case-section:nth-child(even) {
+      background: var(--gray-bg);
+    }
+    .case-section:nth-child(odd) {
+      background: var(--white);
+    }
+    .case-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .case-section h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--sf-pale);
+    }
+    .case-section h2 .section-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 6px;
+    }
+    .case-section p {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .case-section p:last-child { margin-bottom: 0; }
+    .case-section ul {
+      list-style: none;
+      margin: 16px 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .case-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .case-section ul li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sf-blue);
+      margin-top: 9px;
+    }
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 28px 0;
+    }
+    .flow-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .flow-step-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .flow-step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--sf-navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .flow-step-line {
+      width: 2px;
+      flex: 1;
+      min-height: 20px;
+      background: rgba(3,45,96,0.15);
+    }
+    .flow-step-body {
+      padding-bottom: 28px;
+      padding-top: 6px;
+    }
+    .flow-step:last-child .flow-step-body { padding-bottom: 0; }
+    .flow-step-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 4px;
+    }
+    .flow-step-text {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .component-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .component-card {
+      background: var(--white);
+      border: 1px solid rgba(3,45,96,0.1);
+      border-left: 4px solid var(--sf-blue);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .case-section:nth-child(odd) .component-card {
+      background: var(--gray-bg);
+    }
+    .component-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      margin-bottom: 8px;
+    }
+    .component-card p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .impact-card {
+      background: var(--sf-pale);
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .impact-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 10px;
+    }
+    .impact-card ul {
+      margin: 0;
+    }
+    .impact-card ul li {
+      font-size: 0.92rem;
+    }
+    @media (max-width: 620px) {
+      .impact-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 100%);
+      text-align: center;
+      padding: 100px 32px;
+    }
+    #contact .section-tag { justify-content: center; color: var(--sf-blue); }
+    #contact .section-title { color: var(--white); }
+    .contact-tagline {
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      color: rgba(255,255,255,0.6);
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: var(--sf-blue);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(0,161,224,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--sf-light);
+      box-shadow: 0 6px 20px rgba(0,161,224,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      gap: 8px;
+    }
+    .btn-outline:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #010F22;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    footer a { color: var(--sf-blue); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-hero-inner { padding: 48px 24px; }
+      .products-section { padding: 60px 24px; }
+      .products-grid { gap: 40px; }
+      .case-section { padding: 56px 24px; }
+      #contact { padding: 72px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Brian <span>Hong</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#specializations">Expertise</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="about.html">My Story</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="index.html#certifications">Certifications</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-tag">Case Study</div>
+      <h1 class="page-hero-title">Closing the Gap Between Support and Product: A Salesforce Jira Real-Time Integration</h1>
+      <p class="page-hero-subtitle">How automated bi-directional sync replaced a broken manual handoff and gave the Support team back their time.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS USED -->
+  <section class="products-section">
+    <div class="products-section-inner">
+      <div class="section-tag" style="justify-content: center;">Tools &amp; Platform</div>
+      <h2 class="section-title">Products Used</h2>
+      <div class="products-grid">
+        <div class="product-item">
+          <span class="product-name">Service Cloud</span>
+        </div>
+        <div class="product-item">
+          <span class="product-name">Jira</span>
+        </div>
+        <div class="product-item">
+          <span class="product-name">Celigo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEXT AND PROBLEM -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">Background</span>Context and Problem</h2>
+      <p>The client is a B2B SaaS company with a clearly defined boundary between their Customer Support team and their Product engineering team. Support lived in Salesforce. Product lived in Jira. For most day-to-day cases, that separation worked fine, but when a case got complex enough to require engineering involvement, the process fell apart fast.</p>
+      <p>There was no automated path between the two systems. When a Support rep escalated a case, the next step was entirely manual: a Slack message, an email, or a hallway conversation. The Product team would then create their own Jira ticket from scratch, often missing critical context or duplicating effort in the process. Once Product picked it up, the return loop to Support was equally fragmented. Reps had no visibility into what was happening unless they chased it down themselves.</p>
+      <p>The real cost was not just wasted time, it was the customer experience. Support reps could not give accurate resolution timelines because they genuinely did not know where things stood. Cases aged longer than they should have. Leadership recognized this as a workflow problem, and brought me in to close the gap between the two systems.</p>
+    </div>
+  </section>
+
+  <!-- ROLE AND RESPONSIBILITIES -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">My Contribution</span>Role and Responsibilities</h2>
+      <p>I owned this project end to end, from scoping the solution through final deployment. That included requirements gathering with both the Support and Product teams, making the technical decisions on integration behavior, configuring the automation on both sides of the connection, and managing testing before go-live.</p>
+      <p>I was the sole technical resource on the integration build. Both teams contributed to the workflow logic discussions, but I was responsible for translating those requirements into working configuration inside Celigo and Salesforce. I also took ownership of documentation so the integration would not become a black box once I rolled off the engagement.</p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">How It Was Built</span>Process</h2>
+      <p>I started with a joint discovery session with leads from both teams. The goal was to understand what information actually mattered to each side and when. Support cared about knowing when Product acknowledged the issue, what the resolution timeline looked like, and when the ticket was closed. Product cared about receiving the right case context the moment a ticket landed in their queue without having to dig back into Salesforce themselves.</p>
+      <p>Once that was clear, I made a key decision: the integration had to be event-driven, not scheduled. A polling-based sync would have introduced update delays that did not match how the Support team actually worked. When a rep escalated a case, they expected Product to know about it immediately, not in thirty minutes when the next batch job ran.</p>
+      <p>Celigo was used as the integration platform because it gave me real-time trigger capability on both sides without requiring custom code development. From there I built the Salesforce automation logic first, then the field mapping and record creation flows in Celigo, and finally the inbound update flows that pushed Jira changes back into Salesforce. The integration flow looked like this:</p>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">T</div>
+            <div class="flow-step-line"></div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Trigger</div>
+            <div class="flow-step-text">Support rep escalates a Salesforce case with a qualifying escalation type, firing a real-time outbound event to Celigo</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">1</div>
+            <div class="flow-step-line"></div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Action 1</div>
+            <div class="flow-step-text">Celigo maps the Salesforce case fields and creates a new Jira ticket on the Product board, including case summary, priority, customer context, and a direct link back to the originating record</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">2</div>
+            <div class="flow-step-line"></div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Action 2</div>
+            <div class="flow-step-text">Product team works the Jira ticket; comments, status updates, and resolution activity are captured as they happen</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">3</div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Action 3</div>
+            <div class="flow-step-text">Celigo writes all Jira updates back to the corresponding Salesforce case immediately, keeping the Support rep informed without any manual follow-up</div>
+          </div>
+        </div>
+      </div>
+      <p>Testing happened in a sandbox environment using real scenarios pulled from historical escalated cases. I walked both teams through the full automation flow before go-live and delivered a short reference document for the Support team explaining exactly what the automation would do, when it would do it, and what remained in their hands.</p>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS AND DELIVERABLES -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">What Was Delivered</span>Solutions and Deliverables</h2>
+      <p>The following components were configured, tested, and deployed as part of this engagement:</p>
+      <div class="component-cards">
+        <div class="component-card">
+          <div class="component-card-title">Salesforce Automation</div>
+          <p>Case escalation trigger that fires an outbound event to Celigo in real time when a qualifying escalation type is detected on a Salesforce case.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Celigo Integration Flow</div>
+          <p>Field mapping from Salesforce case to a new Jira ticket on the Product board, including case summary, priority, customer context, and a direct link back to the originating record.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Inbound Jira Sync</div>
+          <p>Automated flow that writes Product team comments, status updates, and ticket closures back to the corresponding Salesforce case immediately, giving the Support team real-time visibility without manual follow-up.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Field Mapping Documentation</div>
+          <p>Full data relationship map between the two systems covering every field in scope and the transformation logic applied at each sync point.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Admin Runbook</div>
+          <p>Maintenance guide covering error handling, re-trigger procedures, and common troubleshooting scenarios so the integration could be supported without requiring ongoing external help.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT AND RESULTS -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">Outcomes</span>Impact and Results</h2>
+      <p>Once the automation went live, the manual handoff between teams effectively disappeared. Escalated cases hit the Product team's Jira board within seconds of being flagged in Salesforce, and when Product responded or closed out a ticket, Salesforce picked it up automatically. The Support team stopped spending meaningful time each day tracking down status updates, time that went back into customer communication.</p>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-card-label">Support Team</div>
+          <ul>
+            <li>Manual escalation handoff eliminated entirely</li>
+            <li>Escalated cases visible in Jira within seconds of being flagged in Salesforce</li>
+            <li>Time previously spent chasing status updates redirected to customer communication</li>
+            <li>Real-time Jira updates written back to Salesforce automatically, with no rep intervention required</li>
+          </ul>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-label">Product Team</div>
+          <ul>
+            <li>Every escalation arrived with a standardized structure and full case history attached</li>
+            <li>No more ad-hoc ticket creation from Slack messages or emails</li>
+            <li>Triage became faster because context was consistent and complete from the start</li>
+            <li>Direct link back to the originating Salesforce record available on every Jira ticket</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div class="section-tag">Get in Touch</div>
+      <h2 class="section-title">Ready to Get Your Salesforce Org Working for You?</h2>
+      <p class="contact-tagline">
+        Whether you're scaling a CRM, rescuing a troubled implementation, or looking for a Salesforce consultant to join your team, I'd love to connect.
+      </p>
+      <div class="contact-actions">
+        <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a href="mailto:bghong1@gmail.com" class="btn btn-outline" style="color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.25);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community Impact | Brian Hong — Salesforce Consultant, Columbus OH</title>
+  <title>Work Worth Showing | Brian Hong — Salesforce Consultant, Columbus OH</title>
   <meta name="description" content="Brian Hong's pro bono Salesforce consulting work with nonprofit organizations. 9 projects, 400+ hours of community impact across CRM implementation, automation, and data strategy." />
   <meta name="keywords" content="Brian Hong, Salesforce nonprofit consulting, pro bono Salesforce, Columbus Ohio, Salesforce community impact, CRM implementation nonprofit" />
   <link rel="canonical" href="https://brianhong.com/projects.html" />
@@ -46,7 +46,7 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Brian Hong",
-    "jobTitle": "Salesforce Administrator & Consultant",
+    "jobTitle": "Brian Hong | Salesforce Consultant — Columbus, OH",
     "url": "https://brianhong.com",
     "address": {
       "@type": "PostalAddress",
@@ -55,6 +55,47 @@
       "addressCountry": "US"
     },
     "sameAs": ["https://www.linkedin.com/in/brianghong"]
+  }
+  </script>
+
+  <!-- Structured Data: ItemList of Projects -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Salesforce Consulting Projects — Brian Hong",
+    "description": "A portfolio of Salesforce consulting projects spanning B2B SaaS and nonprofit organizations, delivered by Brian Hong in Columbus, Ohio.",
+    "numberOfItems": 4,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Closing the Gap Between Sales and Onboarding",
+        "url": "https://brianhong.com/closing-the-gap-between-sales-and-onboarding.html",
+        "description": "Automated the post-close handoff at a B2B SaaS company using Salesforce Flow and Salesloft, ensuring cases are created, assigned, and customers are introduced to their implementation contact the moment an Opportunity closes."
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Self-Service Scholarship Status Tracker",
+        "url": "https://brianhong.com/self-service-scholarship-status-tracker.html",
+        "description": "Built a self-service scholarship status lookup tool for a national nonprofit using Salesforce Flow and Formstack, cutting support email volume by 90%."
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Closing the Gap Between Support and Product",
+        "url": "https://brianhong.com/salesforce-jira-integration.html",
+        "description": "Built a real-time bi-directional integration between Salesforce Service Cloud and Jira using Celigo, replacing fragmented manual handoffs with an event-driven sync."
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Automating Contract Disbursement: From Google Sheets to Salesforce",
+        "url": "https://brianhong.com/contract-fulfillment-and-disbursements.html",
+        "description": "Replaced a manual spreadsheet-driven disbursement process at a national nonprofit with Salesforce Flow automation on NPSP, cutting administrative time by 90%."
+      }
+    ]
   }
   </script>
 
@@ -223,13 +264,12 @@
 
     /* ─── STATS BAR ─── */
     #stats {
-      background: var(--white);
-      border-bottom: 1px solid #E2E8F0;
+      background: #021E42;
     }
     .stats-inner {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 40px 32px;
+      padding: 48px 32px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -241,12 +281,12 @@
       padding: 8px 24px;
     }
     .stat-item + .stat-item {
-      border-left: 1px solid #E2E8F0;
+      border-left: 1px solid rgba(255,255,255,0.15);
     }
     .stat-number {
       font-size: 2.8rem;
       font-weight: 800;
-      color: var(--sf-navy);
+      color: #ffffff;
       line-height: 1;
       letter-spacing: -0.03em;
     }
@@ -255,8 +295,8 @@
       font-size: 0.8rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--gray-soft);
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
       margin-top: 6px;
     }
 
@@ -282,7 +322,7 @@
     .section-sub {
       font-size: 1rem;
       color: var(--gray-mid);
-      max-width: 580px;
+      max-width: 100%;
       line-height: 1.7;
       margin-bottom: 48px;
     }
@@ -290,17 +330,80 @@
     /* ─── PROJECTS ─── */
     #projects { background: var(--gray-bg); }
 
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--sf-navy);
+      background: transparent;
+      color: var(--sf-navy);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .filter-btn:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+    }
+    .filter-btn.active {
+      background: var(--sf-blue);
+      border-color: var(--sf-blue);
+      color: var(--white);
+    }
+
+    /* Tag pills on cards */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--sf-navy);
+      color: var(--sf-navy);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      background: transparent;
+    }
+    .tag-pill:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+    }
+
+    /* Dimmed state for non-matching cards */
+    .project-card.dimmed {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
     .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
 
     .project-card {
       background: var(--white);
       border: 1px solid #E2E8F0;
       border-radius: 12px;
-      padding: 32px;
+      padding: 24px;
       position: relative;
       overflow: hidden;
       transition: all 0.25s ease;
@@ -361,29 +464,8 @@
     .project-description {
       font-size: 0.9rem;
       color: var(--gray-mid);
-      line-height: 1.75;
-      margin-bottom: 20px;
-    }
-
-    .project-impact {
-      background: var(--sf-pale);
-      border-left: 3px solid var(--sf-blue);
-      border-radius: 0 8px 8px 0;
-      padding: 14px 16px;
-    }
-    .project-impact-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sf-blue);
-      margin-bottom: 5px;
-    }
-    .project-impact p {
-      font-size: 0.875rem;
-      color: var(--sf-navy);
-      font-weight: 500;
       line-height: 1.6;
+      margin-bottom: 12px;
     }
 
     /* ─── CONTACT ─── */
@@ -395,9 +477,9 @@
     #contact .section-tag { color: var(--sf-blue); }
     #contact .section-title { color: var(--white); }
     .contact-tagline {
-      font-size: 1.05rem;
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
       color: rgba(255,255,255,0.6);
-      max-width: 520px;
+      white-space: nowrap;
       margin: 0 auto 40px;
       line-height: 1.7;
     }
@@ -465,7 +547,7 @@
         max-width: 400px;
       }
       .stats-inner { flex-direction: column; gap: 24px; }
-      .stat-item + .stat-item { border-left: none; border-top: 1px solid #E2E8F0; padding-top: 24px; }
+      .stat-item + .stat-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 24px; }
       .nav-links { display: none; }
       section { padding: 60px 24px; }
       .project-grid { grid-template-columns: 1fr; }
@@ -483,6 +565,7 @@
         <li><a href="index.html#specializations">Expertise</a></li>
         <li><a href="index.html#about">About</a></li>
         <li><a href="about.html">My Story</a></li>
+        <li><a href="projects.html" class="nav-active">Projects</a></li>
         <li><a href="index.html#certifications">Certifications</a></li>
         <li><a href="faq.html">FAQ</a></li>
         <li><a href="index.html#contact">Contact</a></li>
@@ -494,11 +577,11 @@
   <div class="page-hero">
     <div class="page-hero-inner">
       <div class="page-hero-content">
-        <div class="hero-eyebrow">Community Impact</div>
-        <h1 class="page-hero-title">Pro Bono Work That Matters</h1>
+        <div class="hero-eyebrow">Project Work</div>
+        <h1 class="page-hero-title">Work Worth Showing</h1>
         <div class="hero-divider"></div>
         <p class="page-hero-tagline">
-          During my time at Salesforce, I made a point to take on pro bono consulting work with nonprofit organizations outside of my regular hours. Not because it was required — it wasn't. But because I believe the same skills I use to build enterprise CRM systems can do genuine good when applied to organizations working toward something larger than revenue. These are those projects.
+          A portfolio of projects spanning both commercial and nonprofit organizations. Each engagement addresses a real challenge with an intentional solution and clear, measurable results. While the industries vary, the approach remains consistent: deeply understand the process, design for user adoption, and deliver solutions that endure well beyond the initial kickoff.
         </p>
       </div>
       <div class="page-hero-image-wrap">
@@ -511,16 +594,24 @@
   <div id="stats">
     <div class="stats-inner">
       <div class="stat-item">
-        <div class="stat-number"><span>9</span></div>
-        <div class="stat-label">Organizations Supported</div>
+        <div class="stat-number">10,000<span>+</span></div>
+        <div class="stat-label">Users Supported at Enterprise Scale</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number"><span>9</span></div>
-        <div class="stat-label">Projects Completed</div>
+        <div class="stat-number">90<span>%</span></div>
+        <div class="stat-label">Reduction in Manual Work</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">400<span>+</span></div>
-        <div class="stat-label">Hours Contributed</div>
+        <div class="stat-number">4<span>+</span></div>
+        <div class="stat-label">Salesforce Orgs Managed at Once</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">10<span>+</span></div>
+        <div class="stat-label">Years on Salesforce Platform</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">6</div>
+        <div class="stat-label">Active Salesforce Certifications</div>
       </div>
     </div>
   </div>
@@ -528,90 +619,79 @@
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-inner">
-      <div class="section-tag">Pro Bono Projects</div>
-      <h2 class="section-title">Work That Goes Beyond the Job Description</h2>
-      <p class="section-sub">Each of these projects was driven by a simple belief: nonprofits deserve the same quality of CRM strategy and implementation that any enterprise client would receive. Here's what that looked like in practice.</p>
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">Each of these engagements reflects the same standard of work: well-scoped, intentionally designed, and built to last. Here is what that looks like in practice.</p>
+
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="Nonprofit">Nonprofit</button>
+        <button class="filter-btn" data-filter="B2B SaaS">B2B SaaS</button>
+        <button class="filter-btn" data-filter="Salesforce">Salesforce</button>
+        <button class="filter-btn" data-filter="Jira">Jira</button>
+        <button class="filter-btn" data-filter="Salesloft">Salesloft</button>
+        <button class="filter-btn" data-filter="Formstack">Formstack</button>
+        <button class="filter-btn" data-filter="Celigo">Celigo</button>
+        <button class="filter-btn" data-filter="NPSP">NPSP</button>
+      </div>
 
       <div class="project-grid">
 
-        <!-- Project 01 -->
-        <div class="project-card">
-          <div class="project-number">Project 01</div>
-          <div class="project-org">New Moms</div>
-          <h3>Empowering New Moms</h3>
-          <div class="project-role">Salesforce Consultant</div>
+        <!-- Card 1 -->
+        <div class="project-card" data-tags="B2B SaaS,Salesforce,Salesloft">
+          <h3>Closing the Gap Between Sales and Onboarding</h3>
           <p class="project-description">
-            For years, New Moms, a Chicago-based nonprofit supporting young mothers and their children, relied on a legacy CRM that fractured critical program and donor data across systems. Staff spent hours reconciling spreadsheets, emails, and paper records just to understand participant progress or prepare reports. Frontline teams couldn't get a full picture of a family's journey, while administrators struggled to prioritize tasks or discern which services were having the greatest impact — inefficiencies that risked slowing services for families when timing mattered most. I led the design and implementation of a unified Salesforce platform to consolidate program, case management, and donor data into a single source of truth.
+            Automated the post-close handoff at a B2B SaaS company where cases weren't being created, went unassigned, and customers received no introduction to their implementation contact. Built interconnected Salesforce Flow and Salesloft components that fire the moment an Opportunity closes.
           </p>
-          <div class="project-impact">
-            <div class="project-impact-label">Impact</div>
-            <p>Administrative workload dropped an estimated 30% as tasks that once required multiple systems now happened automatically within Salesforce. Case managers gained instant access to participant histories, cutting meeting prep from hours to minutes. Unified dashboards accelerated decision-making across program performance, donor engagement, and service delivery. Staff morale rose noticeably — freed from tedious data wrangling, team members reported renewed energy for direct client work. Team leads quickly began using real-time data to identify emerging needs, share outcomes with funders, and demonstrate measurable impact.</p>
+          <a href="closing-the-gap-between-sales-and-onboarding.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
+          <div class="card-tags">
+            <span class="tag-pill" data-tag="B2B SaaS">B2B SaaS</span>
+            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
+            <span class="tag-pill" data-tag="Salesloft">Salesloft</span>
           </div>
         </div>
 
-        <!-- Project 02 -->
-        <div class="project-card">
-          <div class="project-number">Project 02</div>
-          <div class="project-org">Chicago Scholarships</div>
-          <h3>Enforcing Approvals at Chicago Scholarships</h3>
-          <div class="project-role">Salesforce Consultant</div>
+        <!-- Card 2 -->
+        <div class="project-card" data-tags="Nonprofit,Salesforce,NPSP,Formstack">
+          <h3>Self-Service Scholarship Status Tracker</h3>
           <p class="project-description">
-            Chicago Scholarships had a clearly documented approval process on paper, but in practice, staff routinely worked around it, jumping straight to communicating decisions, preparing payments, or updating records based on email threads and ad hoc conversations instead of moving through defined review and approval steps. The result was a growing disconnect between the official workflow and the way work actually got done. I led the design of a unified Salesforce platform to close that gap.
+            Built a self-service scholarship status lookup tool for a national nonprofit, allowing students to check their application status using a unique reference number, with no staff involvement required. Leveraged Salesforce Flow and Formstack to automate matching, evaluation, and email responses, cutting support email volume by 90%.
           </p>
-          <div class="project-impact">
-            <div class="project-impact-label">Impact</div>
-            <p>The engagement rebuilt the scholarship approval process as a gated, system-enforced workflow rather than a set of guidelines. We designed a single end-to-end workflow from application intake through award, disbursement, and close-out, with explicit approval checkpoints at each critical step. Each gate (eligibility, program review, committee recommendation, compliance, funding, and final award) was tied to named approvers, clear decision criteria, and required documentation, ensuring work could no longer bypass the process.</p>
+          <a href="self-service-scholarship-status-tracker.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
+          <div class="card-tags">
+            <span class="tag-pill" data-tag="Nonprofit">Nonprofit</span>
+            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
+            <span class="tag-pill" data-tag="NPSP">NPSP</span>
+            <span class="tag-pill" data-tag="Formstack">Formstack</span>
           </div>
         </div>
 
-        <!-- Project 03 -->
-        <div class="project-card">
-          <div class="project-number">Project 03</div>
-          <div class="project-org">Keck ACCN</div>
-          <h3>From Manual Chaos to Meaningful Engagement: How a Nonprofit for Medical Professionals Transformed Operations with Salesforce Automation</h3>
-          <div class="project-role">Salesforce Consultant</div>
+        <!-- Card 3 -->
+        <div class="project-card" data-tags="B2B SaaS,Salesforce,Jira,Celigo">
+          <h3>Closing the Gap Between Support and Product</h3>
           <p class="project-description">
-            For years, the nonprofit sat at a familiar crossroads: scaling membership growth while wrestling with disjointed systems and outdated manual processes. Its community, medical professionals balancing long shifts, continuing education, and patient care, depended on timely membership renewals and event access. Yet those same members had little time for administrative forms or follow-up emails. Behind the scenes, staff were spending valuable hours re-entering Eventbrite registrations into spreadsheets, chasing down expired memberships, and sending renewal reminders one by one.
-            <br><br>
-            The organization's leadership recognized a fundamental misalignment between staff effort and mission impact. They weren't just losing time. They were losing the capacity to serve members strategically. A modern, integrated platform wasn't a luxury; it was essential to becoming the trusted partner their members needed.
+            Built a real-time bi-directional integration between Salesforce Service Cloud and Jira at a B2B SaaS company where Support and Product had no automated path between systems. Escalations relied on Slack messages and hallway conversations, leaving reps with no visibility into resolution status. Replaced that fragmented handoff with an event-driven sync using Celigo, giving both teams accurate, up-to-date context without any manual effort.
           </p>
-          <div class="project-impact">
-            <div class="project-impact-label">Impact</div>
-            <p>The Eventbrite-to-Salesforce integration became the backbone of this transformation. Previously, staff manually exported attendee lists and reconciled them with membership data. After integration, every registration flowed automatically into Salesforce. Staff could now see who attended which events, view their membership status in real time, and follow up strategically instead of reactively. The result was immediate clarity, and hours of administrative work saved each week.
-            <br><br>
-            Next came membership renewal automation. Using Salesforce workflows and Stripe integration, the organization transformed a labor-intensive process into a seamless experience. Members received timely renewal reminders based on their expiration dates, could pay securely online, and triggered instant notifications for staff once payment cleared. What once took days of coordination collapsed into seconds, giving both members and staff a new level of certainty and control.</p>
+          <a href="salesforce-jira-integration.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
+          <div class="card-tags">
+            <span class="tag-pill" data-tag="B2B SaaS">B2B SaaS</span>
+            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
+            <span class="tag-pill" data-tag="Jira">Jira</span>
+            <span class="tag-pill" data-tag="Celigo">Celigo</span>
           </div>
         </div>
 
-        <!-- Project 04 -->
-        <div class="project-card">
-          <div class="project-number">Project 04</div>
-          <div class="project-org">Furniture Bank</div>
-          <h3>How The Furniture Bank Streamlined Donor Engagement with Salesforce Experience Cloud</h3>
-          <div class="project-role">Salesforce Consultant</div>
+        <!-- Card 4 -->
+        <div class="project-card" data-tags="Nonprofit,Salesforce,NPSP,Formstack">
+          <h3>Automating Contract Disbursement: From Google Sheets to Salesforce</h3>
           <p class="project-description">
-            The Furniture Bank is a nonprofit that helps families furnish their homes after experiencing homelessness, domestic violence, or other hardships. When I came in, their furniture donor intake process was entirely manual. Staff would receive donation offers through an online form, then spend time reviewing each submission individually, re-entering the information into Salesforce by hand, and following up with donors to confirm pickup details. During busy periods this created a real backlog. Donors who offered furniture could wait days for a response, and with no automated tracking in place, submissions occasionally slipped through the cracks. Leadership knew the process needed to change but didn't have a clear picture of what a better system would look like inside Salesforce. That's where I came in.
+            Replaced a manual, spreadsheet-driven disbursement process at a national nonprofit with Salesforce automation, cutting administrative time by 90%. Built on NPSP with Salesforce Flow to track contract fulfillment milestones and trigger disbursements without staff intervention.
           </p>
-          <div class="project-impact">
-            <div class="project-impact-label">Impact</div>
-            <p>I worked with the team to rebuild their donor intake experience from the ground up using Salesforce Experience Cloud. The new form was designed with donors in mind, walking them through each step clearly and collecting all the details the team needed upfront, things like furniture type, condition, quantity, and pickup availability.</p>
-            <br>
-            <p>On the back end, I built automation that triggered as soon as a form was submitted. A new opportunity record was created in Salesforce automatically, populated with the donor's information and routed to the right staff member for follow-up. The team no longer had to manually enter anything. They could log in each morning and see exactly what came in overnight, who needed to be contacted, and which pickups were ready to schedule. Response times improved, fewer donations fell through the cracks, and staff could focus their energy on coordinating logistics rather than managing data entry.</p>
-          </div>
-        </div>
-
-        <!-- Project 05 -->
-        <div class="project-card">
-          <div class="project-number">Project 05</div>
-          <div class="project-org">[ORGANIZATION NAME]</div>
-          <h3>[PROJECT TITLE / INITIATIVE NAME]</h3>
-          <div class="project-role">[YOUR ROLE]</div>
-          <p class="project-description">
-            [DESCRIBE WHAT YOU DID. 2–3 sentences detailing your specific contributions, the tools or Salesforce features involved, and the scope of the work.]
-          </p>
-          <div class="project-impact">
-            <div class="project-impact-label">Impact</div>
-            <p>[DESCRIBE THE OUTCOME — quantitative or qualitative. What changed for the organization or the community it serves as a result of your work?]</p>
+          <a href="contract-fulfillment-and-disbursements.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
+          <div class="card-tags">
+            <span class="tag-pill" data-tag="Nonprofit">Nonprofit</span>
+            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
+            <span class="tag-pill" data-tag="NPSP">NPSP</span>
+            <span class="tag-pill" data-tag="Formstack">Formstack</span>
           </div>
         </div>
 
@@ -639,6 +719,47 @@
       </div>
     </div>
   </section>
+
+  <script>
+    (function () {
+      var activeFilter = 'all';
+
+      function applyFilter(tag) {
+        activeFilter = tag;
+
+        // Update filter bar buttons
+        document.querySelectorAll('.filter-btn').forEach(function (btn) {
+          btn.classList.toggle('active', btn.dataset.filter === tag);
+        });
+
+        // Dim/undim cards
+        document.querySelectorAll('.project-card').forEach(function (card) {
+          if (tag === 'all') {
+            card.classList.remove('dimmed');
+          } else {
+            var tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+            card.classList.toggle('dimmed', !tags.includes(tag));
+          }
+        });
+      }
+
+      // Filter bar clicks
+      document.getElementById('filterBar').addEventListener('click', function (e) {
+        var btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        var tag = btn.dataset.filter;
+        applyFilter(tag === activeFilter && tag !== 'all' ? 'all' : tag);
+      });
+
+      // On-card tag pill clicks
+      document.addEventListener('click', function (e) {
+        var pill = e.target.closest('.tag-pill');
+        if (!pill) return;
+        var tag = pill.dataset.tag;
+        applyFilter(tag === activeFilter ? 'all' : tag);
+      });
+    })();
+  </script>
 
   <!-- FOOTER -->
   <footer>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building a Self-Service Scholarship Status Tracker | Brian Hong</title>
+  <meta name="description" content="How automated Salesforce Flow eliminated 90% of inbound support email for a national nonprofit's scholarship program, giving staff time back and applicants instant status updates." />
+  <meta name="keywords" content="Salesforce Flow automation, nonprofit Salesforce, NPSP case study, Formstack, scholarship management, self-service portal, Salesforce consultant Columbus Ohio, Brian Hong" />
+  <link rel="canonical" href="https://brianhong.com/self-service-scholarship-status-tracker.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Building a Self-Service Scholarship Status Tracker | Brian Hong" />
+  <meta property="og:description" content="How automated Salesforce Flow eliminated 90% of inbound support email for a national nonprofit's scholarship program, giving staff time back and applicants instant status updates." />
+  <meta property="og:url" content="https://brianhong.com/self-service-scholarship-status-tracker.html" />
+  <meta property="og:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Brian Hong" />
+  <meta property="article:published_time" content="2026-03-27" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Building a Self-Service Scholarship Status Tracker | Brian Hong" />
+  <meta name="twitter:description" content="How automated Salesforce Flow eliminated 90% of inbound support email for a national nonprofit's scholarship program." />
+  <meta name="twitter:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+
+  <!-- Geo -->
+  <meta name="geo.region" content="US-OH" />
+  <meta name="geo.placename" content="Columbus, Ohio" />
+  <meta name="geo.position" content="39.9612;-82.9988" />
+  <meta name="ICBM" content="39.9612, -82.9988" />
+
+  <!-- Structured Data (AEO / GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Building a Self-Service Scholarship Status Tracker",
+    "description": "How automated Salesforce Flow eliminated 90% of inbound support email for a national nonprofit's scholarship program, giving staff time back and applicants instant status updates.",
+    "author": {
+      "@type": "Person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com",
+      "jobTitle": "Salesforce Consultant",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      }
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com"
+    },
+    "url": "https://brianhong.com/self-service-scholarship-status-tracker.html",
+    "datePublished": "2026-03-27",
+    "dateModified": "2026-03-27",
+    "about": [
+      { "@type": "Thing", "name": "Salesforce Flow" },
+      { "@type": "Thing", "name": "Nonprofit Success Pack (NPSP)" },
+      { "@type": "Thing", "name": "Formstack" },
+      { "@type": "Thing", "name": "Nonprofit Technology" }
+    ],
+    "keywords": "Salesforce Flow, NPSP, Formstack, nonprofit Salesforce, scholarship management, self-service automation, Salesforce consultant"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://brianhong.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Projects",
+        "item": "https://brianhong.com/projects.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Self-Service Scholarship Status Tracker",
+        "item": "https://brianhong.com/self-service-scholarship-status-tracker.html"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7DQ6CZVNX8');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-navy:   #032D60;
+      --sf-blue:   #00A1E0;
+      --sf-light:  #0D9DDA;
+      --sf-pale:   #E8F4FD;
+      --white:     #FFFFFF;
+      --gray-bg:   #F4F6F9;
+      --gray-dark: #1B1B1B;
+      --gray-mid:  #444F5E;
+      --gray-soft: #8492A6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3, 45, 96, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 161, 224, 0.2);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sf-blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sf-blue); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 50%, #053F82 100%);
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.07) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-hero-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .page-hero-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      max-width: 100%;
+    }
+    .page-hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 900px;
+      line-height: 1.65;
+    }
+
+    /* ─── SECTION SHARED ─── */
+    .section-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    /* ─── PRODUCTS SECTION ─── */
+    .products-section {
+      background: var(--white);
+      padding: 80px 32px;
+      text-align: center;
+    }
+    .products-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .products-grid {
+      display: flex;
+      justify-content: center;
+      gap: 64px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .product-item {
+      display: flex;
+      align-items: center;
+    }
+    .product-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── CASE STUDY CONTENT ─── */
+    .case-section {
+      padding: 80px 32px;
+    }
+    .case-section:nth-child(even) {
+      background: var(--gray-bg);
+    }
+    .case-section:nth-child(odd) {
+      background: var(--white);
+    }
+    .case-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .case-section h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--sf-pale);
+    }
+    .case-section h2 .section-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 6px;
+    }
+    .case-section p {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .case-section p:last-child { margin-bottom: 0; }
+    .case-section ul {
+      list-style: none;
+      margin: 16px 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .case-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .case-section ul li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sf-blue);
+      margin-top: 9px;
+    }
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 28px 0;
+    }
+    .flow-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .flow-step-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .flow-step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--sf-navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .flow-step-line {
+      width: 2px;
+      flex: 1;
+      min-height: 20px;
+      background: rgba(3,45,96,0.15);
+    }
+    .flow-step-body {
+      padding-bottom: 28px;
+      padding-top: 6px;
+    }
+    .flow-step:last-child .flow-step-body { padding-bottom: 0; }
+    .flow-step-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 4px;
+    }
+    .flow-step-text {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .component-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .component-card {
+      background: var(--white);
+      border: 1px solid rgba(3,45,96,0.1);
+      border-left: 4px solid var(--sf-blue);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .case-section:nth-child(odd) .component-card {
+      background: var(--gray-bg);
+    }
+    .component-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      margin-bottom: 8px;
+    }
+    .component-card p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .impact-card {
+      background: var(--sf-pale);
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .impact-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 10px;
+    }
+    .impact-card ul {
+      margin: 0;
+    }
+    .impact-card ul li {
+      font-size: 0.92rem;
+    }
+    @media (max-width: 620px) {
+      .impact-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 100%);
+      text-align: center;
+      padding: 100px 32px;
+    }
+    #contact .section-tag { justify-content: center; color: var(--sf-blue); }
+    #contact .section-title { color: var(--white); }
+    .contact-tagline {
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      color: rgba(255,255,255,0.6);
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: var(--sf-blue);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(0,161,224,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--sf-light);
+      box-shadow: 0 6px 20px rgba(0,161,224,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      gap: 8px;
+    }
+    .btn-outline:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #010F22;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    footer a { color: var(--sf-blue); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-hero-inner { padding: 48px 24px; }
+      .products-section { padding: 60px 24px; }
+      .products-grid { gap: 40px; }
+      .case-section { padding: 56px 24px; }
+      #contact { padding: 72px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Brian <span>Hong</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#specializations">Expertise</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="about.html">My Story</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="index.html#certifications">Certifications</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-tag">Case Study</div>
+      <h1 class="page-hero-title">Building a Self-Service Scholarship Status Tracker</h1>
+      <p class="page-hero-subtitle">How automated Flow eliminated 90% of inbound support email for a national nonprofit's scholarship program, and gave the program room to scale.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS USED -->
+  <section class="products-section">
+    <div class="products-section-inner">
+      <div class="section-tag" style="justify-content: center;">Tools &amp; Platform</div>
+      <h2 class="section-title">Products Used</h2>
+      <div class="products-grid">
+        <div class="product-item">
+          <span class="product-name">NPSP</span>
+        </div>
+        <div class="product-item">
+          <span class="product-name">Formstack</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEXT AND PROBLEM -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">Background</span>Context and Problem</h2>
+      <p>The client is a nationally recognized nonprofit foundation focused on scholarship funding and athlete development programs. Every year, the foundation manages a competitive scholarship application cycle that draws applicants from across the country, students who have worked hard to put together an application and are understandably anxious about where they stand.</p>
+      <p>The problem was straightforward but significant. Once a student submitted an application, they had no way to check in on it. No portal and no automated confirmation beyond the initial submission.</p>
+      <p>Students emailed the foundation asking for status updates. Staff would then pull up the relevant Salesforce record, manually check the application status, and write out an individual response.</p>
+      <p>Hours were being pulled away from staff that should have gone toward reviewing applications, communicating with donors, and running the program.</p>
+    </div>
+  </section>
+
+  <!-- ROLE AND RESPONSIBILITIES -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">My Contribution</span>Role and Responsibilities</h2>
+      <p>I owned the discovery, solution design, configuration, testing, and delivery from start to finish.</p>
+      <p>My specific responsibilities included:</p>
+      <ul>
+        <li>Auditing the existing application intake and case management process in Salesforce to understand how records were structured and where statuses lived</li>
+        <li>Designing the end-to-end solution architecture, including the unique identifier logic, the status lookup mechanism, and the email response framework</li>
+        <li>Building all components natively in Salesforce with no third-party apps or additional licensing required</li>
+        <li>Ensuring the solution was documented and maintainable by non-technical staff after handoff</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">How It Was Built</span>Process</h2>
+      <p>I spent time understanding the organization's operations. The key design decision came early: applicants needed a way to look themselves up without the foundation exposing sensitive applicant data. I decided to assign each applicant a unique, auto-generated scholarship reference number at the point of submission. This became the single key that connected a student to their record, without requiring them to log in or verify identity in ways that would add friction or overhead for staff.</p>
+      <p>From there, I built a lightweight web form, accessible from a link, where a student could enter their scholarship number at any point after submitting. With the logic mapped, the flow looked like this:</p>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">T</div>
+            <div class="flow-step-line"></div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Trigger</div>
+            <div class="flow-step-text">Student enters their scholarship reference number on the self-service status form</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">1</div>
+            <div class="flow-step-line"></div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Action 1</div>
+            <div class="flow-step-text">Salesforce Flow receives the submission and matches the reference number to the correct application record</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">2</div>
+            <div class="flow-step-line"></div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Action 2</div>
+            <div class="flow-step-text">Flow evaluates the current stage of the application in the review process</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-connector">
+            <div class="flow-step-dot">3</div>
+          </div>
+          <div class="flow-step-body">
+            <div class="flow-step-label">Action 3</div>
+            <div class="flow-step-text">Flow triggers a personalized, status-specific email response sent directly to the student</div>
+          </div>
+        </div>
+      </div>
+      <p>A few design choices shaped the implementation. I kept the lookup mechanism inside native Salesforce Flow to avoid any external dependency. The entire process lives inside the org and does not require middleware or an API integration to maintain. Status language in the outbound email was written to be clear and reassuring; the goal was not just to close a ticket, it was to give a student an experience that reflected how much the foundation values them as an applicant. I also built the Flow logic to handle edge cases: invalid reference numbers, applications not yet in the system, and statuses that did not yet have a meaningful update to share.</p>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS AND DELIVERABLES -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">What Was Delivered</span>Solutions and Deliverables</h2>
+      <p>The final system had four primary components, all built natively within Salesforce:</p>
+      <div class="component-cards">
+        <div class="component-card">
+          <div class="component-card-title">Auto-Generated Scholarship Reference Numbers</div>
+          <p>A unique identifier assigned to each applicant record at the point of submission, surfaced to the student in their confirmation communication. This became the single key connecting a student to their record without requiring login or additional identity verification.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Self-Service Status Request Form</div>
+          <p>A lightweight, mobile-accessible form where students could enter their reference number to request an update at any time, without needing to contact staff. Accessible from a direct link shared during the application process.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Salesforce Flow Automation</div>
+          <p>The engine behind the lookup. The Flow matched the submitted reference number to the correct record, read the current application status, and routed logic accordingly, including handling edge cases such as invalid reference numbers, applications not yet in the system, and statuses without a meaningful update to share.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Automated, Status-Specific Email Responses</div>
+          <p>Personalized outbound emails triggered by the Flow, reflecting the exact stage of the applicant's review. Each message was written to be clear and reassuring, not just closing a ticket, but giving students an experience that reflected how much the foundation values them as applicants.</p>
+        </div>
+      </div>
+      <p>Together, these four components replaced a manual, staff-dependent process with a zero-touch system that requires no intervention unless something genuinely exceptional happens.</p>
+    </div>
+  </section>
+
+  <!-- IMPACT AND RESULTS -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">Outcomes</span>Impact and Results</h2>
+      <p>The most immediate outcome was the drop in inbound email volume. Status inquiry emails fell by approximately 90% after the system went live. Staff got that time back, and they were able to prioritize reviewing applications and deepening donor relationships.</p>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-card-label">Staff</div>
+          <ul>
+            <li>~90% reduction in inbound status inquiry emails</li>
+            <li>Time previously spent on manual lookups and individual responses redirected to application review and donor relations</li>
+            <li>No manual drafting or intervention required for routine status requests</li>
+          </ul>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-label">Student Experience</div>
+          <ul>
+            <li>Received a personalized status response within minutes of entering their reference number</li>
+            <li>No longer dependent on staff availability to get an update</li>
+            <li>Foundation's responsiveness demonstrated value for applicants well before a final determination was reached</li>
+          </ul>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-label">Scalability</div>
+          <ul>
+            <li>System designed to handle 50 applications or several thousand; the Flow runs exactly the same at any volume</li>
+            <li>No rebuilding required as the program grows</li>
+            <li>No additional licensing or third-party tools needed to scale</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div class="section-tag">Get in Touch</div>
+      <h2 class="section-title">Ready to Get Your Salesforce Org Working for You?</h2>
+      <p class="contact-tagline">
+        Whether you're scaling a CRM, rescuing a troubled implementation, or looking for a Salesforce consultant to join your team, I'd love to connect.
+      </p>
+      <div class="contact-actions">
+        <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a href="mailto:bghong1@gmail.com" class="btn btn-outline" style="color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.25);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

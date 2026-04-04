@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost Deal Intelligence | Brian Hong</title>
+  <meta name="description" content="Rebuilding how a sales team understood failure. From broken picklist data to real loss intelligence, and a strategy team that finally had answers." />
+  <meta name="keywords" content="lost deal analysis, Salesforce Sales Cloud, win-loss intelligence, sales strategy, B2B SaaS, Salesforce consultant Columbus Ohio, Brian Hong" />
+  <link rel="canonical" href="https://brianhong.com/lost-deal-intelligence.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Lost Deal Intelligence | Brian Hong" />
+  <meta property="og:description" content="Rebuilding how a sales team understood failure. From broken picklist data to real loss intelligence, and a strategy team that finally had answers." />
+  <meta property="og:url" content="https://brianhong.com/lost-deal-intelligence.html" />
+  <meta property="og:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Brian Hong" />
+  <meta property="article:published_time" content="2026-03-27" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lost Deal Intelligence | Brian Hong" />
+  <meta name="twitter:description" content="Rebuilding how a sales team understood failure. From broken picklist data to real loss intelligence, and a strategy team that finally had answers." />
+  <meta name="twitter:image" content="https://brianhong.com/photos/BriansHeadshot.jpeg" />
+
+  <!-- Geo -->
+  <meta name="geo.region" content="US-OH" />
+  <meta name="geo.placename" content="Columbus, Ohio" />
+  <meta name="geo.position" content="39.9612;-82.9988" />
+  <meta name="ICBM" content="39.9612, -82.9988" />
+
+  <!-- Structured Data (AEO / GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Lost Deal Intelligence",
+    "description": "Rebuilding how a sales team understood failure. From broken picklist data to real loss intelligence, and a strategy team that finally had answers.",
+    "author": {
+      "@type": "Person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com",
+      "jobTitle": "Salesforce Consultant",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      }
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com"
+    },
+    "url": "https://brianhong.com/lost-deal-intelligence.html",
+    "datePublished": "2026-03-27",
+    "dateModified": "2026-03-27",
+    "about": [
+      { "@type": "Thing", "name": "Salesforce Sales Cloud" },
+      { "@type": "Thing", "name": "Win-Loss Analysis" },
+      { "@type": "Thing", "name": "Lost Deal Analysis" },
+      { "@type": "Thing", "name": "Sales Intelligence" },
+      { "@type": "Thing", "name": "B2B SaaS" }
+    ],
+    "keywords": "lost deal analysis, Salesforce Sales Cloud, win-loss intelligence, sales strategy, B2B SaaS, Salesforce consultant Columbus Ohio"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://brianhong.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Projects",
+        "item": "https://brianhong.com/projects.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Lost Deal Intelligence",
+        "item": "https://brianhong.com/lost-deal-intelligence.html"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7DQ6CZVNX8');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sf-navy:   #032D60;
+      --sf-blue:   #00A1E0;
+      --sf-light:  #0D9DDA;
+      --sf-pale:   #E8F4FD;
+      --white:     #FFFFFF;
+      --gray-bg:   #F4F6F9;
+      --gray-dark: #1B1B1B;
+      --gray-mid:  #444F5E;
+      --gray-soft: #8492A6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3, 45, 96, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 161, 224, 0.2);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sf-blue); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sf-blue); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 50%, #053F82 100%);
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,161,224,0.07) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-hero-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .page-hero-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      max-width: 100%;
+    }
+    .page-hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 900px;
+      line-height: 1.65;
+    }
+
+    /* ─── SECTION SHARED ─── */
+    .section-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    /* ─── PRODUCTS SECTION ─── */
+    .products-section {
+      background: var(--white);
+      padding: 80px 32px;
+      text-align: center;
+    }
+    .products-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .products-grid {
+      display: flex;
+      justify-content: center;
+      gap: 64px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .product-item {
+      display: flex;
+      align-items: center;
+    }
+    .product-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── CASE STUDY CONTENT ─── */
+    .case-section {
+      padding: 80px 32px;
+    }
+    .case-section:nth-child(even) {
+      background: var(--gray-bg);
+    }
+    .case-section:nth-child(odd) {
+      background: var(--white);
+    }
+    .case-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .case-section h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      color: var(--sf-navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--sf-pale);
+    }
+    .case-section h2 .section-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 6px;
+    }
+    .case-section p {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .case-section p:last-child { margin-bottom: 0; }
+    .case-section ul {
+      list-style: none;
+      margin: 16px 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .case-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .case-section ul li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sf-blue);
+      margin-top: 9px;
+    }
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 28px 0;
+    }
+    .flow-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .flow-step-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .flow-step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--sf-navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .flow-step-line {
+      width: 2px;
+      flex: 1;
+      min-height: 20px;
+      background: rgba(3,45,96,0.15);
+    }
+    .flow-step-body {
+      padding-bottom: 28px;
+      padding-top: 6px;
+    }
+    .flow-step:last-child .flow-step-body { padding-bottom: 0; }
+    .flow-step-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 4px;
+    }
+    .flow-step-text {
+      font-size: 1rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .component-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .component-card {
+      background: var(--white);
+      border: 1px solid rgba(3,45,96,0.1);
+      border-left: 4px solid var(--sf-blue);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .case-section:nth-child(odd) .component-card {
+      background: var(--gray-bg);
+    }
+    .component-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--sf-navy);
+      margin-bottom: 8px;
+    }
+    .component-card p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .impact-card {
+      background: var(--sf-pale);
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .impact-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sf-blue);
+      margin-bottom: 10px;
+    }
+    .impact-card ul {
+      margin: 0;
+    }
+    .impact-card ul li {
+      font-size: 0.92rem;
+    }
+    @media (max-width: 620px) {
+      .impact-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: linear-gradient(135deg, #021E42 0%, var(--sf-navy) 100%);
+      text-align: center;
+      padding: 100px 32px;
+    }
+    #contact .section-tag { justify-content: center; color: var(--sf-blue); }
+    #contact .section-title { color: var(--white); }
+    .contact-tagline {
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      color: rgba(255,255,255,0.6);
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: var(--sf-blue);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(0,161,224,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--sf-light);
+      box-shadow: 0 6px 20px rgba(0,161,224,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      gap: 8px;
+    }
+    .btn-outline:hover {
+      border-color: var(--sf-blue);
+      color: var(--sf-blue);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #010F22;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+    footer a { color: var(--sf-blue); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .page-hero-inner { padding: 48px 24px; }
+      .products-section { padding: 60px 24px; }
+      .products-grid { gap: 40px; }
+      .case-section { padding: 56px 24px; }
+      #contact { padding: 72px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Brian <span>Hong</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#specializations">Expertise</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="about.html">My Story</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="index.html#certifications">Certifications</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-tag">Case Study</div>
+      <h1 class="page-hero-title">Lost Deal Intelligence</h1>
+      <p class="page-hero-subtitle">Rebuilding how a sales team understood failure. From broken picklist data to real loss intelligence, and a strategy team that finally had answers.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS USED -->
+  <section class="products-section">
+    <div class="products-section-inner">
+      <div class="section-tag" style="justify-content: center;">Tools &amp; Platform</div>
+      <h2 class="section-title">Products Used</h2>
+      <div class="products-grid">
+        <div class="product-item">
+          <span class="product-name">Sales Cloud</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEXT AND PROBLEM -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">Background</span>Context and Problem</h2>
+      <p>A B2B SaaS company with a regional sales team of about 30 reps had a data problem hiding in plain sight. When deals died, sales managers required reps to log a loss reason before closing the opportunity. The problem was how they were doing it.</p>
+      <p>The team had been using a multi-select picklist field on the Opportunity object. On the surface, it looked like they were capturing data. Multi-select picklist fields are notoriously difficult to report on in Salesforce. You can't easily filter by a single value, you can't count individual selections cleanly, and you definitely can't build the kind of pivot analysis leadership needs to ask questions like: "Why are we losing to Competitor X in Q3?"</p>
+      <p>Sales leadership knew they had a problem. Win rates had plateaued and there was genuine disagreement internally about why. Some believed pricing was the issue. Others thought it was product gaps. The VP of Sales wanted data to settle the argument, and what they had couldn't answer the question.</p>
+    </div>
+  </section>
+
+  <!-- ROLE AND RESPONSIBILITIES -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">My Contribution</span>Role and Responsibilities</h2>
+      <p>I was brought in to design and build the solution end to end. That meant scoping the data model, making architectural decisions about how records would relate to each other, building the user-facing flow, and creating the reporting layer that would make the data usable.</p>
+      <p>I also owned stakeholder communication, translating what management needed analytically into technical requirements, and then translating the technical constraints back into something the sales team could actually live with day to day. That translation work is often where these projects fall apart. I was responsible for making sure it didn't.</p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">How It Was Built</span>Process</h2>
+      <p>The first thing I did was dig into what management actually wanted to learn — "what questions do you need to be able to answer six months from now?" That conversation surfaced three core needs:</p>
+      <ul>
+        <li><strong>Frequency by category</strong> — Which loss reasons came up most overall?</li>
+        <li><strong>Rep and product breakdown</strong> — How did patterns differ across reps and product lines?</li>
+        <li><strong>Trend over time</strong> — Were specific objections increasing or decreasing quarter over quarter?</li>
+      </ul>
+      <p>None of that was possible with a multi-select picklist field. Each selected value gets stored as a single semicolon-delimited string in the database. Salesforce's reporting engine can't disaggregate that cleanly. So the data structure itself had to change.</p>
+      <p>I made the decision early to move away from the picklist model entirely and use a child object instead. Each loss reason would live as its own record, related to the parent Opportunity through a lookup.</p>
+      <p>From there I built the custom object, defined the fields — reason category, reason detail, and a notes field for additional context — and set up the relationship to Opportunity. The category field used a single-select picklist, so reports could filter cleanly. The detail field gave reps room to add specifics without that specificity polluting the analytics.</p>
+      <p>The data entry problem was next. I built a screen flow triggered automatically when a rep moved an opportunity to Closed Lost. The flow walked them through selecting one or more loss reasons, and each selection created a separate child record. From the rep's perspective, it was a quick guided form. From the reporting perspective, every reason was a discrete, filterable record. Before deploying, I ran the flow past two sales reps.</p>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS AND DELIVERABLES -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">What Was Delivered</span>Solutions and Deliverables</h2>
+      <p>The finished solution had three components:</p>
+      <div class="component-cards">
+        <div class="component-card">
+          <div class="component-card-title">Custom Loss Reason Object</div>
+          <p>Connected to Opportunity via a lookup relationship. Each record captured the category, optional detail, and any rep notes. Configured so that deleting a parent Opportunity also deleted associated Loss Reason records, keeping the org clean.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Screen Flow</div>
+          <p>Triggered on Opportunity stage change to Closed Lost. Allowed reps to log multiple reasons in a single session, creating one record per reason. Included basic validation to prevent blank submissions and presented category options in a clear, consistent order.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-card-title">Reporting Foundation</div>
+          <p>A set of reports and a dashboard built on the Loss Reason object, summarizing volume by category, breakdown by rep, and trend over time by quarter. These weren't complex builds — but they required the data structure to be right first. Clean inputs make reporting straightforward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT AND RESULTS -->
+  <section class="case-section">
+    <div class="case-section-inner">
+      <h2><span class="section-label">Outcomes</span>Impact and Results</h2>
+      <p>Management had visibility into loss patterns within the first full quarter of use. That might sound like a low bar, but it genuinely wasn't — they'd been operating without it for years.</p>
+      <p>The data surfaced things they hadn't expected. One competitor was appearing in loss reasons far more frequently in a specific product segment than leadership had assumed. A pricing objection that managers thought was the primary driver turned out to be third on the list, behind two product-related concerns. Both findings shifted how the sales enablement team prioritized their next training cycle.</p>
+      <p>Rep adoption held up. The flow was short enough that it wasn't a burden, and because the reasons were structured and predictable, reps moved through it quickly.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div class="section-tag">Get in Touch</div>
+      <h2 class="section-title">Ready to Get Your Salesforce Org Working for You?</h2>
+      <p class="contact-tagline">
+        Whether you're scaling a CRM, rescuing a troubled implementation, or looking for a Salesforce consultant to join your team, I'd love to connect.
+      </p>
+      <div class="contact-actions">
+        <a href="https://www.linkedin.com/in/brianghong" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+        <a href="mailto:bghong1@gmail.com" class="btn btn-outline" style="color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.25);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Brian Hong &middot; Salesforce Consultant &middot; All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

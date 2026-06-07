@@ -58,46 +58,7 @@
   }
   </script>
 
-  <!-- Structured Data: ItemList of Projects -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Salesforce Consulting Projects — Brian Hong",
-    "description": "A portfolio of Salesforce consulting projects spanning B2B SaaS and nonprofit organizations, delivered by Brian Hong in Columbus, Ohio.",
-    "numberOfItems": 4,
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Closing the Gap Between Sales and Onboarding",
-        "url": "https://brianhong.com/closing-the-gap-between-sales-and-onboarding.html",
-        "description": "Automated the post-close handoff at a B2B SaaS company using Salesforce Flow and Salesloft, ensuring cases are created, assigned, and customers are introduced to their implementation contact the moment an Opportunity closes."
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Self-Service Scholarship Status Tracker",
-        "url": "https://brianhong.com/self-service-scholarship-status-tracker.html",
-        "description": "Built a self-service scholarship status lookup tool for a national nonprofit using Salesforce Flow and Formstack, cutting support email volume by 90%."
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Closing the Gap Between Support and Product",
-        "url": "https://brianhong.com/salesforce-jira-integration.html",
-        "description": "Built a real-time bi-directional integration between Salesforce Service Cloud and Jira using Celigo, replacing fragmented manual handoffs with an event-driven sync."
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "name": "Automating Contract Disbursement: From Google Sheets to Salesforce",
-        "url": "https://brianhong.com/contract-fulfillment-and-disbursements.html",
-        "description": "Replaced a manual spreadsheet-driven disbursement process at a national nonprofit with Salesforce Flow automation on NPSP, cutting administrative time by 90%."
-      }
-    ]
-  }
-  </script>
+  <!-- Structured Data: ItemList of Projects — generated at load time from PROJECTS (see bottom of page) so it can never drift from what's actually rendered -->
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
@@ -622,106 +583,9 @@
       <h2 class="section-title">Projects</h2>
       <p class="section-sub">Each of these engagements reflects the same standard of work: well-scoped, intentionally designed, and built to last. Here is what that looks like in practice.</p>
 
-      <div class="filter-bar" id="filterBar">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="Nonprofit">Nonprofit</button>
-        <button class="filter-btn" data-filter="B2B SaaS">B2B SaaS</button>
-        <button class="filter-btn" data-filter="Salesforce">Salesforce</button>
-        <button class="filter-btn" data-filter="Jira">Jira</button>
-        <button class="filter-btn" data-filter="Salesloft">Salesloft</button>
-        <button class="filter-btn" data-filter="Formstack">Formstack</button>
-        <button class="filter-btn" data-filter="Celigo">Celigo</button>
-        <button class="filter-btn" data-filter="NPSP">NPSP</button>
-      </div>
+      <div class="filter-bar" id="filterBar"></div>
 
-      <div class="project-grid">
-
-        <!-- Card 0 -->
-        <div class="project-card" data-tags="B2B SaaS,Salesforce,Salesloft">
-          <h3>From Slow Handoffs to Instant Action</h3>
-          <p class="project-description">
-            A B2B SaaS company had steady inbound demo requests, but SDRs were hand-reviewing every lead, manually building Salesloft cadences, and creating opportunities days after meetings were already on the calendar. Built Salesforce Flow automation and Salesloft integration to qualify leads automatically, enroll them in the right cadence without SDR review, and create the opportunity the moment a meeting was confirmed. Reps saved around 10 minutes per lead and leadership finally had pipeline data they could forecast from.
-          </p>
-          <a href="from-slow-handoffs-to-instant-action.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
-          <div class="card-tags">
-            <span class="tag-pill" data-tag="B2B SaaS">B2B SaaS</span>
-            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
-            <span class="tag-pill" data-tag="Salesloft">Salesloft</span>
-          </div>
-        </div>
-
-        <!-- Card 1 -->
-        <div class="project-card" data-tags="B2B SaaS,Salesforce,Salesloft">
-          <h3>Closing the Gap Between Sales and Onboarding</h3>
-          <p class="project-description">
-            Automated the post-close handoff at a B2B SaaS company where cases weren't being created, went unassigned, and customers received no introduction to their implementation contact. Built interconnected Salesforce Flow and Salesloft components that fire the moment an Opportunity closes.
-          </p>
-          <a href="closing-the-gap-between-sales-and-onboarding.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
-          <div class="card-tags">
-            <span class="tag-pill" data-tag="B2B SaaS">B2B SaaS</span>
-            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
-            <span class="tag-pill" data-tag="Salesloft">Salesloft</span>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="project-card" data-tags="Nonprofit,Salesforce,NPSP,Formstack">
-          <h3>Self-Service Scholarship Status Tracker</h3>
-          <p class="project-description">
-            Built a self-service scholarship status lookup tool for a national nonprofit, allowing students to check their application status using a unique reference number, with no staff involvement required. Leveraged Salesforce Flow and Formstack to automate matching, evaluation, and email responses, cutting support email volume by 90%.
-          </p>
-          <a href="self-service-scholarship-status-tracker.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
-          <div class="card-tags">
-            <span class="tag-pill" data-tag="Nonprofit">Nonprofit</span>
-            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
-            <span class="tag-pill" data-tag="NPSP">NPSP</span>
-            <span class="tag-pill" data-tag="Formstack">Formstack</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="project-card" data-tags="B2B SaaS,Salesforce,Jira,Celigo">
-          <h3>Closing the Gap Between Support and Product</h3>
-          <p class="project-description">
-            Built a real-time bi-directional integration between Salesforce Service Cloud and Jira at a B2B SaaS company where Support and Product had no automated path between systems. Escalations relied on Slack messages and hallway conversations, leaving reps with no visibility into resolution status. Replaced that fragmented handoff with an event-driven sync using Celigo, giving both teams accurate, up-to-date context without any manual effort.
-          </p>
-          <a href="salesforce-jira-integration.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
-          <div class="card-tags">
-            <span class="tag-pill" data-tag="B2B SaaS">B2B SaaS</span>
-            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
-            <span class="tag-pill" data-tag="Jira">Jira</span>
-            <span class="tag-pill" data-tag="Celigo">Celigo</span>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="project-card" data-tags="Nonprofit,Salesforce,NPSP,Formstack">
-          <h3>Automating Contract Disbursement: From Google Sheets to Salesforce</h3>
-          <p class="project-description">
-            Replaced a manual, spreadsheet-driven disbursement process at a national nonprofit with Salesforce automation, cutting administrative time by 90%. Built on NPSP with Salesforce Flow to track contract fulfillment milestones and trigger disbursements without staff intervention.
-          </p>
-          <a href="contract-fulfillment-and-disbursements.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
-          <div class="card-tags">
-            <span class="tag-pill" data-tag="Nonprofit">Nonprofit</span>
-            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
-            <span class="tag-pill" data-tag="NPSP">NPSP</span>
-            <span class="tag-pill" data-tag="Formstack">Formstack</span>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="project-card" data-tags="Salesforce">
-          <h3>Lost Deal Intelligence</h3>
-          <p class="project-description">
-            A B2B SaaS company's sales team was logging loss reasons into a multi-select picklist field, data that looked useful but was nearly impossible to report on in Salesforce. The engagement replaced that broken field with a structured single-select system, cleaned up historical records, and built dashboards that surfaced clean win-loss trends by competitor, stage, and rep. For the first time, sales leadership had the data to settle internal debates and drive strategy with confidence.
-          </p>
-          <a href="lost-deal-intelligence.html" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>
-          <div class="card-tags">
-            <span class="tag-pill" data-tag="Salesforce">Salesforce</span>
-          </div>
-        </div>
-
-      </div>
+      <div class="project-grid" id="projectGrid"></div>
     </div>
   </section>
 
@@ -748,42 +612,151 @@
 
   <script>
     (function () {
+      // ── SINGLE SOURCE OF TRUTH ────────────────────────────────────────
+      // To add a project, append one object here. The cards, tag pills,
+      // filter bar, and JSON-LD ItemList schema are all generated from
+      // this array, so nothing else needs to be edited or kept in sync.
+      var PROJECTS = [
+        {
+          title: "From Slow Handoffs to Instant Action",
+          description: "A B2B SaaS company had steady inbound demo requests, but SDRs were hand-reviewing every lead, manually building Salesloft cadences, and creating opportunities days after meetings were already on the calendar. Built Salesforce Flow automation and Salesloft integration to qualify leads automatically, enroll them in the right cadence without SDR review, and create the opportunity the moment a meeting was confirmed. Reps saved around 10 minutes per lead and leadership finally had pipeline data they could forecast from.",
+          url: "from-slow-handoffs-to-instant-action.html",
+          tags: ["B2B SaaS", "Salesforce", "Salesloft"]
+        },
+        {
+          title: "Closing the Gap Between Sales and Onboarding",
+          description: "Automated the post-close handoff at a B2B SaaS company where cases weren't being created, went unassigned, and customers received no introduction to their implementation contact. Built interconnected Salesforce Flow and Salesloft components that fire the moment an Opportunity closes.",
+          url: "closing-the-gap-between-sales-and-onboarding.html",
+          tags: ["B2B SaaS", "Salesforce", "Salesloft"]
+        },
+        {
+          title: "Self-Service Scholarship Status Tracker",
+          description: "Built a self-service scholarship status lookup tool for a national nonprofit, allowing students to check their application status using a unique reference number, with no staff involvement required. Leveraged Salesforce Flow and Formstack to automate matching, evaluation, and email responses, cutting support email volume by 90%.",
+          url: "self-service-scholarship-status-tracker.html",
+          tags: ["Nonprofit", "Salesforce", "NPSP", "Formstack"]
+        },
+        {
+          title: "Real-Time Sync Between Salesforce and Jira",
+          description: "Built a real-time bi-directional integration between Salesforce Service Cloud and Jira at a B2B SaaS company where Support and Product had no automated path between systems. Escalations relied on Slack messages and hallway conversations, leaving reps with no visibility into resolution status. Replaced that fragmented handoff with an event-driven sync using Celigo, giving both teams accurate, up-to-date context without any manual effort.",
+          url: "salesforce-jira-integration.html",
+          tags: ["B2B SaaS", "Salesforce", "Jira", "Celigo"]
+        },
+        {
+          title: "Automating Contract Disbursement: From Google Sheets to Salesforce",
+          description: "Replaced a manual, spreadsheet-driven disbursement process at a national nonprofit with Salesforce automation, cutting administrative time by 90%. Built on NPSP with Salesforce Flow to track contract fulfillment milestones and trigger disbursements without staff intervention.",
+          url: "contract-fulfillment-and-disbursements.html",
+          tags: ["Nonprofit", "Salesforce", "NPSP", "Formstack"]
+        },
+        {
+          title: "Lost Deal Intelligence",
+          description: "A B2B SaaS company's sales team was logging loss reasons into a multi-select picklist field, data that looked useful but was nearly impossible to report on in Salesforce. The engagement replaced that broken field with a structured single-select system, cleaned up historical records, and built dashboards that surfaced clean win-loss trends by competitor, stage, and rep. For the first time, sales leadership had the data to settle internal debates and drive strategy with confidence.",
+          url: "lost-deal-intelligence.html",
+          tags: ["Salesforce"]
+        },
+        {
+          title: "Migrating from Salesforce Chat to Messaging",
+          description: "When Salesforce announced it was sunsetting legacy Chat, a support team that handled a high daily volume through it faced real risk to SLAs and customer experience. Led the end-to-end move to Salesforce's Messaging platform: audited the existing routing and automation, rebuilt it simpler and smarter than before, ran UAT sessions with the team using real examples, and rolled out reference guides, videos, and a live Q&A to prepare agents. The migration finished ahead of schedule with zero service disruption and a support team that adopted the new platform without missing a beat.",
+          url: "salesforce-chat-to-messaging-migration.html",
+          tags: ["Salesforce", "Service Cloud", "Change Management"]
+        },
+        {
+          title: "Automating Scholarship Intake and Eligibility Screening",
+          description: "A national athletic foundation's scholarship program was running on email threads, manual spreadsheet entry, and staff eyeballing each application against eligibility criteria. Designed and built an end-to-end Salesforce solution: a web-to-lead intake form, a record-triggered Flow that screens applicants against age, location, and income criteria, automated applicant communications, staff and partner routing, and a real-time dashboard connecting donation data to funding visibility for leadership. The result freed staff from manual screening work, gave every applicant a faster and clearer response, and gave leadership a live view of how many scholarships they could actually fund.",
+          url: "salesforce-scholarship-program-automation.html",
+          tags: ["Salesforce", "Nonprofit", "Flow Automation", "NPSP"]
+        }
+      ];
+
       var activeFilter = 'all';
+      var grid = document.getElementById('projectGrid');
+      var filterBar = document.getElementById('filterBar');
+
+      // Derive the filter bar's tags from the union of every project's tags,
+      // in first-seen order, so a brand-new tag just appears automatically.
+      function deriveTags(projects) {
+        var seen = {};
+        var ordered = [];
+        projects.forEach(function (p) {
+          p.tags.forEach(function (t) {
+            if (!seen[t]) { seen[t] = true; ordered.push(t); }
+          });
+        });
+        return ordered;
+      }
+
+      function renderFilterBar() {
+        var tags = deriveTags(PROJECTS);
+        var html = '<button class="filter-btn' + (activeFilter === 'all' ? ' active' : '') + '" data-filter="all">All</button>';
+        tags.forEach(function (tag) {
+          html += '<button class="filter-btn' + (activeFilter === tag ? ' active' : '') + '" data-filter="' + tag + '">' + tag + '</button>';
+        });
+        filterBar.innerHTML = html;
+      }
+
+      function renderCards() {
+        var html = '';
+        PROJECTS.forEach(function (p, i) {
+          var dimmed = (activeFilter !== 'all' && p.tags.indexOf(activeFilter) === -1) ? ' dimmed' : '';
+          var pills = p.tags.map(function (t) {
+            return '<span class="tag-pill" data-tag="' + t + '">' + t + '</span>';
+          }).join('');
+          html +=
+            '<div class="project-card' + dimmed + '" data-tags="' + p.tags.join(',') + '">' +
+              '<h3>' + p.title + '</h3>' +
+              '<p class="project-description">' + p.description + '</p>' +
+              '<a href="' + p.url + '" style="display:inline-block;margin-top:16px;color:var(--sf-blue);font-weight:600;font-size:0.9rem;text-decoration:none;">Read Case Study →</a>' +
+              '<div class="card-tags">' + pills + '</div>' +
+            '</div>';
+        });
+        grid.innerHTML = html;
+      }
+
+      function renderItemListSchema() {
+        var schema = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Salesforce Consulting Projects — Brian Hong",
+          "description": "A portfolio of Salesforce consulting projects spanning B2B SaaS and nonprofit organizations, delivered by Brian Hong in Columbus, Ohio.",
+          "numberOfItems": PROJECTS.length,
+          "itemListElement": PROJECTS.map(function (p, i) {
+            return {
+              "@type": "ListItem",
+              "position": i + 1,
+              "name": p.title,
+              "url": "https://brianhong.com/" + p.url,
+              "description": p.description
+            };
+          })
+        };
+        var script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(schema);
+        document.head.appendChild(script);
+      }
 
       function applyFilter(tag) {
         activeFilter = tag;
-
-        // Update filter bar buttons
-        document.querySelectorAll('.filter-btn').forEach(function (btn) {
-          btn.classList.toggle('active', btn.dataset.filter === tag);
-        });
-
-        // Dim/undim cards
-        document.querySelectorAll('.project-card').forEach(function (card) {
-          if (tag === 'all') {
-            card.classList.remove('dimmed');
-          } else {
-            var tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
-            card.classList.toggle('dimmed', !tags.includes(tag));
-          }
-        });
+        renderFilterBar();
+        renderCards();
       }
 
-      // Filter bar clicks
-      document.getElementById('filterBar').addEventListener('click', function (e) {
+      filterBar.addEventListener('click', function (e) {
         var btn = e.target.closest('.filter-btn');
         if (!btn) return;
         var tag = btn.dataset.filter;
         applyFilter(tag === activeFilter && tag !== 'all' ? 'all' : tag);
       });
 
-      // On-card tag pill clicks
-      document.addEventListener('click', function (e) {
+      grid.addEventListener('click', function (e) {
         var pill = e.target.closest('.tag-pill');
         if (!pill) return;
         var tag = pill.dataset.tag;
         applyFilter(tag === activeFilter ? 'all' : tag);
       });
+
+      renderFilterBar();
+      renderCards();
+      renderItemListSchema();
     })();
   </script>
 

@@ -1,0 +1,64 @@
+# Brian Hong
+
+> Salesforce consultant and senior Salesforce admin based in Columbus, Ohio, with 10+ years in the Salesforce ecosystem and 6 active Salesforce certifications. Available for full-time roles (Senior Salesforce Admin, Salesforce Manager, RevOps) and contract or consulting projects. Works remotely or hybrid in Columbus, OH.
+
+Brian automates manual processes, fixes data quality, and sets up governance and Centers of Excellence so sales and service teams can spend their time on customers. He has supported orgs from 200 users to 60,000+ users across enterprise SaaS, ed tech, supply chain, logistics, and nonprofits.
+
+## Key facts
+
+- Name: Brian Hong
+- Location: Columbus, Ohio, USA (serves Columbus metro, Ohio, and clients nationwide; mostly remote)
+- Current role: Consultant, Talution Group (2026 to present)
+- Experience: 10+ years in Salesforce (2014 to present)
+- Availability: Open to full-time roles and contract/consulting work
+- Contact: bghong1@gmail.com
+- LinkedIn: https://www.linkedin.com/in/brianghong
+- Trailblazer profile: https://www.salesforce.com/trailblazer/brianghong
+
+## Certifications
+
+- Salesforce Certified Administrator
+- Salesforce Certified Advanced Administrator
+- Salesforce Certified Sales Cloud Consultant
+- Salesforce Certified Service Cloud Consultant
+- Salesforce Certified Platform App Builder
+- Salesforce Certified Agentforce Specialist
+
+## Services
+
+- Full-time: Senior Salesforce Admin or Salesforce Manager; building and leading a Salesforce Center of Excellence
+- Contract and consulting: org health checks and cleanup; Sales Cloud, Service Cloud, and CPQ implementations; automation and data quality projects
+- Pro bono: 10 nonprofit projects and 400+ volunteer hours
+
+## Expertise
+
+- Sales Cloud: Lead-to-Opportunity automation with Salesloft, CPQ approval workflows and product rules, Slack alerts for MQL assignment and stage changes (40% less manual entry)
+- Service Cloud: migration from Live Agent Chat to Messaging, queue consolidation, escalation rules, automated spam case blocking (+25% CSAT, 25% faster critical cases)
+- Revenue Operations: validation tying Closed Won deals to POs and order forms, Einstein Activity Capture, data stewardship across Opportunity and CPQ objects (100% Closed Won audit alignment)
+- Go-to-market support: campaign members routed to Salesloft cadences, reports delivered to Slack, cases synced to Jira via Celigo (30% less manual effort)
+- Tools: Flow Builder, Screen Flows, Omni-Channel, CPQ, Data Loader, Workbench, SOQL, Permission Sets, Copado, Flosum, Jira, Slack, Okta SSO, Celigo, Zapier, DocuSign, Salesloft, Outreach, Clari, 6sense
+
+## Experience
+
+- Talution Group, Consultant (2026 to present). Logistics. 5K+ users, 3 orgs.
+- Digital Aid Seattle, Salesforce Consultant then Project Manager (2026 to present, pro bono). Nonprofit. 2 orgs. Salesforce configuration, API integrations, and data governance.
+- Newsela, Salesforce Administrator (2022 to 2025). Ed tech. 500 users, 2 orgs. Salesloft integration cut manual entry by 40%.
+- Interos, Associate Salesforce Program Analyst (2021 to 2022). Supply chain. 200+ users, 2 orgs. Consolidated flows and retired redundant automation.
+- Salesforce, Contractor to Techforce Analyst to System Specialist I (2014 to 2021). Enterprise SaaS. 60K+ users, 6 orgs. Led M&A transitions onto internal IT; intake flows cut turnaround time by 20%.
+
+## Case studies
+
+- Scholarship and donor CRM automation (nonprofit, pro bono): 3-year engagement automating applications, integrating donations, and adding self-service forms. Result: 95% less manual entry, 90% fewer status emails.
+- Service Cloud and Messaging overhaul (ed tech): consolidated queues, migrated to Messaging, blocked spam cases, synced escalations to Jira. Result: 25% faster critical cases, +25% CSAT.
+- CPQ and quote-to-cash controls (ed tech and supply chain): CPQ bundles, product rules, approval workflows, and Closed Won validation. Result: 100% Closed Won audit alignment.
+
+## Pages
+
+- [Home](https://brianhong.com/): Overview, services, case studies, recommendations, experience, expertise, certifications, and contact
+- [FAQ](https://brianhong.com/faq.html): Answers about hiring a Salesforce consultant, including when you need one, what they do, implementation process, timelines, managed services, cost, post-launch support, and working with Columbus, Ohio companies
+- [Resume (PDF)](https://brianhong.com/Brian-Hong-Resume.pdf): Full work history and certifications
+
+## Optional
+
+- [LinkedIn](https://www.linkedin.com/in/brianghong): Profile and recommendations
+- [Trailblazer](https://www.salesforce.com/trailblazer/brianghong): Verified Salesforce certifications and badges

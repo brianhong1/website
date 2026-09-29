@@ -4,8 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clicks to Customers Journal | Brian Hong</title>
-  <meta name="description" content="Insights on Salesforce, sales ops, and building better customer journeys — by Brian Hong." />
+  <meta name="description" content="Insights on Salesforce, revenue ops, and building better customer journeys — by Brian Hong." />
   <link rel="canonical" href="https://brianhong.com/blog.html" />
+  <!-- Structured Data: Person -->
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Person",
+ "@id": "https://www.brianhong.com/#person",
+ "name": "Brian Hong",
+ "url": "https://www.brianhong.com",
+ "image": "https://www.brianhong.com/images/brian-hong.jpg",
+ "jobTitle": "Salesforce Consultant",
+ "description": "Salesforce Consultant specializing in Sales Cloud, Service Cloud, CPQ, automation, and CRM optimization.",
+ "address": {
+   "@type": "PostalAddress",
+   "addressLocality": "Columbus",
+   "addressRegion": "OH",
+   "addressCountry": "US"
+ },
+ "knowsAbout": [
+   "Salesforce Administration",
+   "Salesforce CPQ",
+   "Sales Cloud",
+   "Service Cloud",
+   "Revenue Operations",
+   "Business Systems Analysis",
+   "CRM Optimization",
+   "Salesforce Automation",
+   "Project Management",
+   "Business Analyst",
+   "Impact Analyst"
+ ],
+ "hasCredential": [
+   {
+     "@type": "EducationalOccupationalCredential",
+     "name": "Salesforce Certified Administrator"
+   },
+   {
+    "@type": "EducationalOccupationalCredential",
+    "name": "Salesforce Certified Advanced Administrator"
+   },
+   {
+     "@type": "EducationalOccupationalCredential",
+     "name": "Salesforce Agentforce Specialist"
+   },
+   {
+     "@type": "EducationalOccupationalCredential",
+     "name": "Salesforce Platform App Builder"
+   },
+   {
+     "@type": "EducationalOccupationalCredential",
+     "name": "Salesforce Sales Cloud Consultant"
+   },
+   {
+     "@type": "EducationalOccupationalCredential",
+     "name": "Salesforce Service Cloud Consultant"
+   }
+ ],
+ "sameAs": [
+   "https://www.linkedin.com/in/brianghong"
+ ]
+}
+</script>
+  <!-- Structured Data: ProfessionalService -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Brian Hong — Salesforce Consulting",
+    "description": "Independent Salesforce consulting services specializing in Sales Cloud, Service Cloud, CPQ, Omni-Channel, and data analytics for businesses in Columbus, Ohio and nationwide.",
+    "url": "https://brianhong.com",
+    "areaServed": [
+      {"@type": "City", "name": "Columbus", "containedIn": "Ohio"},
+      {"@type": "Country", "name": "United States"}
+    ],
+    "provider": {"@type": "Person", "name": "Brian Hong"},
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Salesforce Services",
+      "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Salesforce Sales Cloud Implementation"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Salesforce Service Cloud Configuration"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Salesforce CPQ Implementation"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Omni-Channel Routing Setup"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Salesforce Data Analytics & Reporting"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Revenue Operations Strategy"}}
+      ]
+    }
+  }
+  </script>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
   <script>
@@ -333,7 +421,7 @@
     .contact-tagline {
       font-size: 1.05rem;
       color: rgba(255,255,255,0.6);
-      max-width: 520px;
+      max-width: none;
       margin: 0 auto 40px;
       line-height: 1.7;
     }
@@ -420,9 +508,10 @@
         <li><a href="index.html#specializations">Expertise</a></li>
         <li><a href="index.html#about">About</a></li>
         <li><a href="about.html">My Story</a></li>
+        <li><a href="projects.html">Projects</a></li>
         <li><a href="index.html#certifications">Certifications</a></li>
         <li><a href="faq.html">FAQ</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -431,7 +520,7 @@
     <div class="page-hero-inner">
       <div class="page-hero-tag">Insights &amp; Ideas</div>
       <h1 class="page-hero-title">Clicks to Customers <em>Journal</em></h1>
-      <p class="page-hero-sub">Insights on Salesforce, sales ops, and building better customer journeys, straight from the field.</p>
+      <p class="page-hero-sub">Insights on Salesforce, revenue ops, and building better customer journeys, straight from the field.</p>
     </div>
   </div>
 

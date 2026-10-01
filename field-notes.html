@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Notes: Salesforce Governance, Data Quality &amp; Automation | Brian Hong</title>
+<meta name="description" content="Short write-ups on Salesforce automation, data quality, and governance from Brian Hong. Written for admins, ops leads, and anyone who has inherited a messy org.">
+<link rel="canonical" href="https://brianhong.com/field-notes.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://brianhong.com/field-notes.html">
+<meta property="og:title" content="Field Notes | Brian Hong">
+<meta property="og:description" content="Short write-ups on automation, data quality, and running Salesforce like a product.">
+<meta property="og:image" content="https://brianhong.com/photos/center-of-excellence-loop.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Field Notes | Brian Hong">
+<meta name="twitter:description" content="Short write-ups on automation, data quality, and running Salesforce like a product.">
+<meta name="twitter:image" content="https://brianhong.com/photos/center-of-excellence-loop.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": "https://brianhong.com/field-notes.html#blog",
+      "url": "https://brianhong.com/field-notes.html",
+      "name": "Field Notes",
+      "description": "Short write-ups on automation, data quality, and running Salesforce like a product.",
+      "author": { "@id": "https://brianhong.com/#person" },
+      "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "headline": "Standing up a Salesforce Center of Excellence from scratch",
+          "url": "https://brianhong.com/center-of-excellence.html",
+          "image": "https://brianhong.com/photos/center-of-excellence-loop.png",
+          "author": { "@id": "https://brianhong.com/#person" }
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "Data stewardship is a people problem first",
+          "url": "https://brianhong.com/data-stewardship.html",
+          "author": { "@id": "https://brianhong.com/#person" }
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "Salesforce Consulting Services: A Complete Guide for Business Leaders",
+          "url": "https://brianhong.com/salesforce-consulting-services.html",
+          "author": { "@id": "https://brianhong.com/#person" }
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "What Does a Salesforce Consultant Do?",
+          "url": "https://brianhong.com/what-does-a-salesforce-consultant-do.html",
+          "author": { "@id": "https://brianhong.com/#person" }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/"
+    }
+  ]
+}
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden],[data-tag][hidden]{display:none !important}
+[data-filter]{font-family:'Geist',sans-serif;font-size:13px;padding:8px 15px;border-radius:100px;cursor:pointer;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(85% 0.02 150)}
+[data-filter][aria-pressed="true"]{border-color:oklch(95% 0.012 95);background:oklch(95% 0.012 95);color:oklch(22% 0.035 165)}
+.post{display:grid;grid-template-columns:120px minmax(0,1fr) 170px;gap:24px;padding:28px 0;border-top:1px solid oklch(34% 0.035 165);align-items:baseline}
+.post-meta{font-family:'Geist Mono',monospace;font-size:12px;color:oklch(72% 0.03 150)}
+.post-tag{text-align:right;white-space:nowrap}
+@media (max-width:639px){.post{grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;padding:24px 0}.post-body{grid-column:1 / -1;grid-row:2}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" aria-current="page" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" aria-current="page" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <div style="padding:clamp(48px,8vw,104px) clamp(20px,5vw,64px) 56px;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(72% 0.03 150);margin-bottom:24px;">Field notes</div>
+      <h1 style="font-size:clamp(36px,6.4vw,100px);line-height:0.98;font-weight:500;letter-spacing:-0.045em;margin:0;">Notes from <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">inside</span> the org.</h1>
+      <p style="font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:oklch(80% 0.02 150);margin:32px 0 0;">Short write-ups on automation, data quality, and running Salesforce like a product. Written for admins, ops leads, and anyone who's inherited a messy org.</p>
+      <div role="group" aria-label="Filter notes by topic" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:40px;">
+        <button type="button" data-filter="All" aria-pressed="true">All</button>
+        <button type="button" data-filter="Governance" aria-pressed="false">Governance</button>
+        <button type="button" data-filter="Data quality" aria-pressed="false">Data quality</button>
+        <button type="button" data-filter="Consulting" aria-pressed="false">Consulting</button>
+      </div>
+    </div>
+
+    <div data-tag="Governance" style="padding:0 clamp(20px,5vw,64px) 64px;">
+      <a href="center-of-excellence.html" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:40px;align-items:center;background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:24px;padding:16px;">
+        <img src="photos/center-of-excellence-loop.png" width="1920" height="920" alt="Clear owners, one loop: Intake, Prioritize, Release, Measure" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:14px;display:block;">
+        <div style="padding:16px 24px 16px 8px;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);margin-bottom:16px;">
+            <span style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:3px 9px;border-radius:100px;">Featured</span>
+            <span>Governance</span><span>14 min</span><span>Sep 2026</span>
+          </div>
+          <h2 style="font-size:clamp(26px,3vw,38px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 16px;text-wrap:balance;">Standing up a Salesforce Center of Excellence from scratch</h2>
+          <p style="font-size:15.5px;line-height:1.6;color:oklch(42% 0.03 165);margin:0 0 24px;">You don't need a team of ten. You need clear decision rights, one delivery loop, a handful of guardrails, and numbers that prove it's working.</p>
+          <div style="font-size:14px;font-weight:500;">Read the note →</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="padding:0 clamp(20px,5vw,64px) 96px;">
+
+      <a class="post" data-tag="Data quality" href="data-stewardship.html">
+        <span class="post-meta">Aug 2026</span>
+        <div class="post-body">
+          <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;margin:0 0 8px;">Data stewardship is a people problem first</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:oklch(76% 0.02 150);max-width:620px;margin:0;">Validation rules catch typos. They don't fix the reason reps skip fields. Clear owners, fewer fields, and a weekly habit do.</p>
+        </div>
+        <span class="post-meta post-tag">Data quality · 12 min</span>
+      </a>
+
+      <a class="post" data-tag="Consulting" href="salesforce-consulting-services.html">
+        <span class="post-meta">Mar 2026</span>
+        <div class="post-body">
+          <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;margin:0 0 8px;">Salesforce consulting services: a complete guide for business leaders</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:oklch(76% 0.02 150);max-width:620px;margin:0;">What consulting services include, how to choose a partner, and what outcomes to expect.</p>
+        </div>
+        <span class="post-meta post-tag">Consulting</span>
+      </a>
+
+      <a class="post" data-tag="Consulting" href="what-does-a-salesforce-consultant-do.html">
+        <span class="post-meta">Mar 2026</span>
+        <div class="post-body">
+          <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;margin:0 0 8px;">What does a Salesforce consultant do?</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:oklch(76% 0.02 150);max-width:620px;margin:0;">A guide for business decision-makers: core responsibilities, key skills, when to hire one, and what an engagement looks like.</p>
+        </div>
+        <span class="post-meta post-tag">Consulting</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+  var filters=document.querySelectorAll('[data-filter]'),posts=document.querySelectorAll('[data-tag]');
+  filters.forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-filter');
+    filters.forEach(function(o){o.setAttribute('aria-pressed',String(o===b));});
+    posts.forEach(function(p){p.hidden=t!=='All'&&p.getAttribute('data-tag')!==t;});});});
+  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
+})();
+</script>
+</body>
+</html>

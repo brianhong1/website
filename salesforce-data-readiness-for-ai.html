@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salesforce Data Readiness for AI and Agentforce | Brian Hong</title>
+<meta name="description" content="How to get Salesforce data ready for AI and Agentforce: six traits of AI-ready data, a per-use-case scorecard, permission checks, and a 30-60-90 day plan.">
+<link rel="canonical" href="https://brianhong.com/salesforce-data-readiness-for-ai.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-01T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-10-01T00:00:00-04:00">
+<meta property="og:url" content="https://brianhong.com/salesforce-data-readiness-for-ai.html">
+<meta property="og:title" content="Salesforce data readiness for AI: what to fix before you turn on Agentforce">
+<meta property="og:description" content="How to get Salesforce data ready for AI and Agentforce: six traits of AI-ready data, a per-use-case scorecard, permission checks, and a 30-60-90 day plan.">
+<meta property="og:image" content="https://brianhong.com/photos/data-readiness-for-ai.png">
+<meta property="og:image:alt" content="Fix the data, then add the agent: Pick a use case, Score the data, Fix what it reads, Launch and watch">
+<meta property="og:site_name" content="Brian Hong">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Salesforce data readiness for AI: what to fix before you turn on Agentforce">
+<meta name="twitter:description" content="How to get Salesforce data ready for AI and Agentforce: six traits of AI-ready data, a per-use-case scorecard, permission checks, and a 30-60-90 day plan.">
+<meta name="twitter:image" content="https://brianhong.com/photos/data-readiness-for-ai.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://brianhong.com/salesforce-data-readiness-for-ai.html#article",
+      "headline": "Salesforce data readiness for AI: what to fix before you turn on Agentforce",
+      "description": "How to get Salesforce data ready for AI and Agentforce: six traits of AI-ready data, a per-use-case scorecard, permission checks, and a 30-60-90 day plan.",
+      "url": "https://brianhong.com/salesforce-data-readiness-for-ai.html",
+      "mainEntityOfPage": "https://brianhong.com/salesforce-data-readiness-for-ai.html",
+      "image": "https://brianhong.com/photos/data-readiness-for-ai.png",
+      "datePublished": "2026-10-01T00:00:00-04:00",
+      "dateModified": "2026-10-01T00:00:00-04:00",
+      "articleSection": "AI",
+      "keywords": "AI, Agentforce, Data readiness, AI-ready data, Data quality, Data 360, Salesforce Knowledge",
+      "author": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "publisher": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "isPartOf": {
+        "@id": "https://brianhong.com/field-notes.html#blog"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brianhong.com/salesforce-data-readiness-for-ai.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is data readiness for AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Data readiness for AI is the degree to which the data an AI system reads is complete, accurate, unique, current, described, and correctly permissioned for a specific use case. It is measured per use case, not across the whole org."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How clean does Salesforce data need to be for Agentforce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Clean enough that you would trust a new hire to act on it without checking. That standard applies only to the objects, fields, and articles the agent actually reads for its job, which is usually a few dozen fields and not the whole org."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need Data Cloud to use Agentforce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, in the sense that it has to be turned on. Salesforce’s documentation says Data 360, formerly Data Cloud, must be provisioned and enabled for all Agentforce use, and that the Agentforce Data Library and Einstein Trust Layer don’t work without it. That is different from running a full data unification project before you start."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who owns AI data readiness?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The business owner of each object owns the quality of its data, and a data steward does the weekly work. The Salesforce admin owns the tooling, the metadata, and the agent’s permissions. Nobody owns it by default, so name the people."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to get Salesforce data ready for AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For one well-scoped use case, plan on about 90 days: a month to score the data, a month to fix it, and a month to test and launch. Trying to make the whole org ready at once takes far longer and usually stalls."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you measure data readiness for AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Score six things for each use case: fill rate on the fields the agent reads, accuracy on a sample of records, duplicate rate, age of records and articles, share of fields with a description, and whether the agent’s access matches what it needs."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/",
+      "image": "https://brianhong.com/photos/brian-headshot-clean.png",
+      "jobTitle": "Salesforce Consultant",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianghong",
+        "https://www.salesforce.com/trailblazer/brianghong"
+      ],
+      "knowsAbout": [
+        "Salesforce",
+        "Sales Cloud",
+        "Service Cloud",
+        "Salesforce CPQ",
+        "Salesforce Flow",
+        "Agentforce",
+        "CRM administration",
+        "RevOps",
+        "Data governance"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://brianhong.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://brianhong.com/field-notes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Salesforce data readiness for AI: what to fix before you turn on Agentforce",
+          "item": "https://brianhong.com/salesforce-data-readiness-for-ai.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden]{display:none !important}
+.note{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.note-toc{display:flex;flex-direction:column;gap:4px;max-width:360px}
+@media (min-width:960px){.note{grid-template-columns:220px minmax(0,880px);gap:clamp(40px,6vw,96px);align-items:start}.note-toc{position:sticky;top:32px}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:28px 28px 0 0;margin-top:24px;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);">
+    <article>
+    <div style="max-width:1200px;margin:0 auto;">
+      <a href="field-notes.html" style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(42% 0.03 165);">← All field notes</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin:40px 0 20px;">
+        <time datetime="2026-10-01">Oct 2026</time><span>AI</span><span>13 min</span>
+      </div>
+      <h1 style="font-size:clamp(34px,4.6vw,64px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 32px;max-width:1200px;text-wrap:balance;">Salesforce data readiness for AI: what to fix before you turn on Agentforce</h1>
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:oklch(35% 0.03 165);margin:0 0 48px;max-width:760px;text-wrap:pretty;">An agent is only as good as the records, articles, and permissions behind it. Pick one use case, score the data it reads, and fix that before you launch.</p>
+    </div>
+    <div style="max-width:1200px;margin:0 auto clamp(48px,7vw,88px);">
+      <img src="photos/data-readiness-for-ai.png" width="1920" height="920" alt="Fix the data, then add the agent: Pick a use case, Score the data, Fix what it reads, Launch and watch" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:16px;display:block;">
+    </div>
+
+    <div class="note">
+      <nav class="note-toc" aria-label="In this note">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">In this note</div>
+        <a href="#sec-1" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">01</span>
+          <span>What data readiness for AI means</span>
+        </a>
+        <a href="#sec-2" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">02</span>
+          <span>Why AI exposes what reports hid</span>
+        </a>
+        <a href="#sec-3" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">03</span>
+          <span>The six traits of AI-ready data</span>
+        </a>
+        <a href="#sec-4" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">04</span>
+          <span>Structured data: fields, duplicates, and descriptions</span>
+        </a>
+        <a href="#sec-5" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">05</span>
+          <span>Unstructured data: knowledge, files, and notes</span>
+        </a>
+        <a href="#sec-6" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">06</span>
+          <span>Permissions: what the agent is allowed to see</span>
+        </a>
+        <a href="#sec-7" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">07</span>
+          <span>Score readiness one use case at a time</span>
+        </a>
+        <a href="#sec-8" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">08</span>
+          <span>Start with one use case</span>
+        </a>
+        <a href="#sec-9" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">09</span>
+          <span>A 30-60-90 day plan</span>
+        </a>
+        <a href="#sec-10" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">10</span>
+          <span>Frequently asked questions</span>
+        </a>
+      </nav>
+      <div style="min-width:0;font-size:18.5px;line-height:1.8;color:oklch(28% 0.03 165);">
+        <p style="margin:0 0 28px;text-wrap:pretty;">The pattern is familiar by now. An AI agent looks great in the demo org, where every account has an industry and every case has a clean history. Then it meets production data, and it summarizes the wrong contact, quotes a return policy from 2021, or tells a customer it can’t find their order.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The model didn’t get worse between the demo and production. The data did. A stalled AI pilot is very often a data problem that nobody had a reason to fix until an agent started reading the records out loud.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Data readiness for AI is the degree to which the data an AI system reads is complete, accurate, unique, current, described, and correctly permissioned for a specific job. In Salesforce, that means the records, Knowledge articles, metadata, and access an Agentforce agent uses to answer a question or take an action.</p>
+        <h2 id="sec-1" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What data readiness for AI means</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">AI-ready data is data that is fit for one specific use case. It is not a property of the whole org, and it is not the same as “clean data.”</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">That distinction matters because it changes the size of the job. Nobody has ever finished cleaning an entire Salesforce org. But an agent that answers order status questions reads maybe twenty fields across three objects and a few dozen articles. Those can be made ready in weeks.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Gartner makes the same point about scale: the requirements for AI-ready data are different from traditional data management, and teams that miss the difference put their projects at risk. In a Gartner survey of 248 data management leaders, 63% of organizations either didn’t have or weren’t sure they had the right data management practices for AI. Gartner also predicts that through 2026, organizations will abandon 60% of AI projects that aren’t supported by AI-ready data.</p>
+        <h2 id="sec-2" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Why AI exposes what reports hid</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Reports and dashboards tolerate bad data because a person sits between the data and the decision. An agent removes that person.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A sales manager who sees a blank Industry field shrugs and moves on. A rep who finds two accounts for the same company knows which one is real. An agent does neither. It reads whatever it is given, treats it as true, and answers in a confident sentence.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Gaps become wrong answers</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A report shows a blank as a blank. An agent asked about a record with missing fields either says it doesn’t know or fills the gap from whatever else it can find.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Duplicates become coin flips</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">With two records for one customer, the agent picks one. The case history is on the other.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Old content sounds current</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A five-year-old article and last month’s article look the same to a retriever. The agent quotes whichever matches the question best.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Access becomes disclosure</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A field that was technically visible but that nobody opened is now one question away from being read back to a customer.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">None of these are AI problems. They’re the same data quality issues the org has always had, with the human safety net taken away.</p>
+        <h2 id="sec-3" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">The six traits of AI-ready data</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">AI-ready data has six traits. The first four are classic data quality. The last two are what AI adds.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Complete</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The fields the agent reads are filled in on the records it will touch. Measure fill rate on those fields only.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Accurate</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The values are true. Check a sample of records against the source: the contract, the invoice, the customer.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Unique</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">One record per real-world customer, contact, or product. Duplicates split history across records.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Current</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Records and articles reflect how things are today. Old content is archived, not left in place.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Described</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Objects, fields, and picklist values have labels and descriptions that say what they mean. The model reads them.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Permissioned</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The agent can see what it needs for the job and nothing else.</span>
+          </li>
+        </ul>
+        <blockquote style="margin:64px 0;padding:0;font-family:'Instrument Serif',serif;font-size:clamp(30px,3.4vw,42px);line-height:1.3;color:oklch(22% 0.035 165);text-wrap:balance;">“An agent can’t skip a bad record. It reads it out loud.”</blockquote>
+        <h2 id="sec-4" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Structured data: fields, duplicates, and descriptions</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Start with the fields the agent actually reads. For each one, check how often it’s filled, whether it’s right, and whether a stranger could tell what it means.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Fill rate is the easy one. An aggregate query gives you totals for a whole object in one call:</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// Fill rate on the fields the agent reads</div>
+          <div>SELECT COUNT(Id) total, COUNT(Industry) hasIndustry,</div>
+          <div style="color:oklch(72% 0.03 150);">COUNT(Phone) hasPhone, COUNT(BillingCountry) hasCountry</div>
+          <div style="color:oklch(72% 0.03 150);">FROM Account</div>
+          <div style="color:oklch(88% 0.17 115);margin-top:20px;margin-bottom:8px;">// Contacts with no activity in a year</div>
+          <div>SELECT COUNT() FROM Contact</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE LastActivityDate &lt; LAST_N_DAYS:365 OR LastActivityDate = null</div>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Duplicates come next. Turn on matching rules and duplicate rules for accounts, contacts, and leads if they aren’t on already, run duplicate record set reports to see the backlog, and merge the records the agent will touch first. Blocking new duplicates matters more than clearing every old one.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Then read your metadata the way a model would. Salesforce’s admin team puts it plainly: without metadata, the model can’t understand any of your customizations. Agents map what a user asks for to fields by reading labels and descriptions. Three fixes pay off quickly:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Labels people can read</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Rename fields like “Acct Stat 2” to what they mean. Keep the API name, change the label.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Descriptions on key fields</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">One or two sentences: what the field holds, who sets it, and what the valid values mean. Custom fields and picklists first.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Picklist values without codes</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Replace legacy abbreviations with explicit names, and retire values nobody has used in a year.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">This is the cheapest work in the whole project, and it helps the next admin as much as it helps the agent. If nobody owns these fields yet, sort that out first. I wrote about how in <a href="data-stewardship.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce data stewardship is a people problem first</a>.</p>
+        <h2 id="sec-5" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Unstructured data: knowledge, files, and notes</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">For a service agent, Knowledge articles matter more than fields. Most customer questions are answered from content, not from a record.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">In Agentforce, that content reaches the agent through an Agentforce Data Library, which indexes Knowledge articles and uploaded files and retrieves the passages that best match the question. Retrieval finds the closest match. It doesn’t know which article is still true. That part is on you.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">One answer per question</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Two articles that disagree about the refund window produce an agent that disagrees with itself. Merge them and archive the loser.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Archive, don’t ignore</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Outdated articles left published are still in the index. Unpublish anything that describes a product, price, or policy you no longer have.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Write for retrieval</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Short articles with one topic each and a title phrased the way a customer asks. A forty-page PDF buries the one paragraph that matters.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Give every article an owner</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A named person and a review date. Unowned articles are the ones that go stale.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Watch what’s in the files</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Uploaded documents and case notes can carry personal data, pricing exceptions, and internal comments. Review them before you index them.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A quick way to find the stale pile is to count published articles that haven’t been touched in a year:</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// Published articles not updated in 12 months</div>
+          <div>SELECT COUNT() FROM Knowledge__kav</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE PublishStatus = 'Online' AND Language = 'en_US'</div>
+          <div style="color:oklch(72% 0.03 150);">AND LastPublishedDate &lt; LAST_N_DAYS:365</div>
+        </div>
+        <h2 id="sec-6" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Permissions: what the agent is allowed to see</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">An agent can only use data it has access to, and it can repeat anything it has access to. Permissions are part of data readiness, not a separate security task.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">How access works depends on the type of agent. An employee-facing agent runs as the logged-in user, so it respects that person’s permission sets, field-level security, and sharing. A customer-facing service agent runs as a dedicated agent user, and that user record decides what the agent can read and edit.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Salesforce’s own guidance describes both ways this goes wrong. If the agent doesn’t have permission to view the data, it can’t answer questions about it. If it has access to data it doesn’t need, it can expose that information to customers. So the target is least privilege:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">List what the job needs</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Write down the objects and fields the use case requires before you grant anything. Grant those, read-only where possible.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Use permission sets</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Give the agent user its own permission set for each use case. It’s easier to review than a profile.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Check field-level security</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Object access isn’t enough. Look for sensitive fields on the same objects: margins, internal notes, personal data.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Test as the agent</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Ask it questions it shouldn’t be able to answer. If it answers, fix the access, not the prompt.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">For employee agents, the uncomfortable finding is usually that people already have more access than they need. An agent makes old over-sharing visible, because it will go and find the record nobody thought to look for.</p>
+        <h2 id="sec-7" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Score readiness one use case at a time</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Measure readiness per use case, with one row for each of the six traits. A scorecard turns “is our data ready?” into a question someone can answer with numbers.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:760px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Data readiness scorecard for one use case</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Trait</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">How to measure</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Starting bar</th></tr></thead>
+            <tbody style="color:oklch(72% 0.03 150);">
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Complete</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Fill rate on each field the agent reads</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">95% or higher</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Accurate</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Sample 50 records against the source</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">No more than 2 or 3 wrong</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Unique</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Duplicate record sets on the objects in scope</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Under 2%, new ones blocked</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Current</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Records and articles untouched in 12 months</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Reviewed or archived</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Described</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Fields in scope with a clear label and description</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">All of them</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Permissioned</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Agent access compared with the list of needs</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Exact match</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The bars are starting points, not standards. The business owner of the use case sets the real ones, because they know what a wrong answer costs. An agent drafting internal call notes can live with more gaps than one telling customers what they owe.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Score before you build, and write the numbers down. The gap between today’s score and the bar is your project plan. It’s also the before-and-after story you’ll want when someone asks whether the cleanup was worth it.</p>
+        <h2 id="sec-8" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Start with one use case</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Pick one job for the agent and make only that job’s data ready. This is the step that keeps the project from turning into an org-wide cleanup that never ends.</p>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Name the job</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">One sentence: “Answer order status questions for logged-in customers.” If it takes a paragraph, it’s more than one use case.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">List what it reads</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The objects, the ten to twenty fields, and the articles. That list is the scope of the data work.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Score it</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Run the scorecard on that list and nothing else.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Fix the gaps</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Backfill, merge, describe, archive, and tighten access until each row meets its bar.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Keep it ready</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Add validation, duplicate rules, and an owner so the data doesn’t slide back after launch.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">On the platform side, Salesforce says Data 360, formerly Data Cloud, must be provisioned and enabled for all Agentforce use. That’s a setup step. It doesn’t mean you have to unify every data source before your first agent. Agents can also be grounded through flows, Apex, prompt templates, and MuleSoft APIs, so a first use case can run on the CRM data you already have.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The second use case goes faster, because some of its fields were already fixed for the first one. After three or four, the most-used parts of the org are in good shape, and you got there by shipping things.</p>
+        <h2 id="sec-9" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A 30-60-90 day plan</h2>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 1–30: Assess</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Pick the use case and its business owner. List the objects, fields, and articles it reads. Run the scorecard and agree the bar for each row.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 31–60: Fix</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Backfill and correct the fields in scope. Merge duplicates and turn on duplicate rules. Add labels and descriptions. Archive stale articles. Build the agent’s permission set.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 61–90: Launch</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Test the agent against real records, including questions it should refuse. Go live with a small group. Review its answers weekly and feed misses back into the data.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">After day 90: Keep it</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Re-run the scorecard monthly. Hand the weekly review to the data steward. Pick the next use case.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The weekly review is what keeps this from being a one-time cleanup. Every wrong answer the agent gives points at a specific field, article, or permission. Fix that, and the next answer is better. If you run changes through a <a href="center-of-excellence.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Center of Excellence</a>, agent misses are just another intake source.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Data readiness for AI isn’t a new discipline. It’s the data quality, documentation, and access work most orgs have put off for years, with a deadline attached. The good news is that the scope is finally small enough to finish: one use case, a short list of fields, and a score you can show.</p>
+        <h2 id="sec-10" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Frequently asked questions</h2>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What is data readiness for AI?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Data readiness for AI is the degree to which the data an AI system reads is complete, accurate, unique, current, described, and correctly permissioned for a specific use case. It is measured per use case, not across the whole org.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How clean does Salesforce data need to be for Agentforce?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Clean enough that you would trust a new hire to act on it without checking. That standard applies only to the objects, fields, and articles the agent actually reads for its job, which is usually a few dozen fields and not the whole org.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Do I need Data Cloud to use Agentforce?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Yes, in the sense that it has to be turned on. Salesforce’s documentation says Data 360, formerly Data Cloud, must be provisioned and enabled for all Agentforce use, and that the Agentforce Data Library and Einstein Trust Layer don’t work without it. That is different from running a full data unification project before you start.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Who owns AI data readiness?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The business owner of each object owns the quality of its data, and a data steward does the weekly work. The Salesforce admin owns the tooling, the metadata, and the agent’s permissions. Nobody owns it by default, so name the people.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How long does it take to get Salesforce data ready for AI?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">For one well-scoped use case, plan on about 90 days: a month to score the data, a month to fix it, and a month to test and launch. Trying to make the whole org ready at once takes far longer and usually stalls.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How do you measure data readiness for AI?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Score six things for each use case: fill rate on the fields the agent reads, accuracy on a sample of records, duplicate rate, age of records and articles, share of fields with a description, and whether the agent’s access matches what it needs.</p>
+        <div style="margin:56px 0 0;padding:24px 28px;background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">Further reading</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="https://trailhead.salesforce.com/content/learn/modules/ai-data-readiness-assessment-fundamentals" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Trailhead: AI Data Readiness Assessment Fundamentals</a>
+            <a href="https://www.salesforce.com/blog/measure-your-data-readiness/" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce: Is your data ready for agents? 5 ways to tell</a>
+            <a href="https://admin.salesforce.com/blog/2025/prepare-your-data-for-agentforce-how-i-solved-it" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Admins: Prepare your data for Agentforce</a>
+            <a href="https://admin.salesforce.com/blog/2025/metadata-your-admin-blueprint-for-building-better-agents" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Admins: Metadata is your admin blueprint for building better agents</a>
+            <a href="https://help.salesforce.com/s/articleView?language=en_US&amp;id=ai.agent_user.htm&amp;type=5" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Help: Configure Service Agent access</a>
+            <a href="https://trailhead.salesforce.com/content/learn/modules/data-cloud-powered-agentforce/explore-data-cloud-and-agentforce" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Trailhead: Explore Data 360 and Agentforce</a>
+            <a href="https://www.gartner.com/en/newsroom/press-releases/2025-02-26-lack-of-ai-ready-data-puts-ai-projects-at-risk" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Gartner: Lack of AI-ready data puts AI projects at risk</a>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 0;">
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">AI</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Agentforce</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Data quality</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Data 360</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Knowledge</span>
+        </div>
+      </div>
+    </div>
+    </article>
+
+    <div style="max-width:1200px;margin:96px auto 0;padding-top:32px;border-top:1px solid oklch(86% 0.015 95);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <img src="photos/brian-headshot-clean.png" width="64" height="64" alt="Brian Hong" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:oklch(27% 0.035 165);">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:16px;font-weight:500;"><a href="about.html">Brian Hong</a></div>
+        <div style="font-size:14px;color:oklch(42% 0.03 165);line-height:1.5;">Senior Salesforce admin and consultant in Columbus, OH. 10+ years in the ecosystem and six Salesforce certifications. I write about the stuff that makes orgs easier to run.</div>
+      </div>
+      <a href="#contact" style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;">Work with me →</a>
+    </div>
+
+    <div style="max-width:1200px;margin:96px auto 0;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:16px;">Keep reading</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <a href="center-of-excellence.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Governance · 14 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Standing up a Salesforce Center of Excellence from scratch</span>
+        </a>
+        <a href="data-stewardship.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Data quality · 12 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Salesforce data stewardship is a people problem first</span>
+        </a>
+        <a href="field-notes.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Field notes</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">See all notes →</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
+})();
+</script>
+</body>
+</html>

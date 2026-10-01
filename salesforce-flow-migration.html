@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Migrating Workflow Rules and Process Builder to Flow | Brian Hong</title>
+<meta name="description" content="How to migrate Salesforce Workflow Rules and Process Builder to Flow: inventory, retire, consolidate, test, and cut over one object at a time.">
+<link rel="canonical" href="https://brianhong.com/salesforce-flow-migration.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-01T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-10-01T00:00:00-04:00">
+<meta property="og:url" content="https://brianhong.com/salesforce-flow-migration.html">
+<meta property="og:title" content="Migrating Workflow Rules and Process Builder to Flow without breaking the org">
+<meta property="og:description" content="How to migrate Salesforce Workflow Rules and Process Builder to Flow: inventory, retire, consolidate, test, and cut over one object at a time.">
+<meta property="og:image" content="https://brianhong.com/photos/flow-migration-steps.png">
+<meta property="og:image:alt" content="Retire first, then migrate: Inventory, Retire, Consolidate, Cut over">
+<meta property="og:site_name" content="Brian Hong">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Migrating Workflow Rules and Process Builder to Flow without breaking the org">
+<meta name="twitter:description" content="How to migrate Salesforce Workflow Rules and Process Builder to Flow: inventory, retire, consolidate, test, and cut over one object at a time.">
+<meta name="twitter:image" content="https://brianhong.com/photos/flow-migration-steps.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://brianhong.com/salesforce-flow-migration.html#article",
+      "headline": "Migrating Workflow Rules and Process Builder to Flow without breaking the org",
+      "description": "How to migrate Salesforce Workflow Rules and Process Builder to Flow: inventory, retire, consolidate, test, and cut over one object at a time.",
+      "url": "https://brianhong.com/salesforce-flow-migration.html",
+      "mainEntityOfPage": "https://brianhong.com/salesforce-flow-migration.html",
+      "image": "https://brianhong.com/photos/flow-migration-steps.png",
+      "datePublished": "2026-10-01T00:00:00-04:00",
+      "dateModified": "2026-10-01T00:00:00-04:00",
+      "articleSection": "Automation",
+      "keywords": "Automation, Salesforce Flow, Workflow Rules, Process Builder, Migrate to Flow, Technical debt",
+      "author": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "publisher": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "isPartOf": {
+        "@id": "https://brianhong.com/field-notes.html#blog"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brianhong.com/salesforce-flow-migration.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do Workflow Rules and Process Builder still work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Existing workflow rules and processes keep running, but Salesforce ended support for both on December 31, 2025. That means no bug fixes and no help from Salesforce Support when one of them misbehaves."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can the Migrate to Flow tool convert everything?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The Migrate to Flow tool converts one workflow rule or process into one inactive flow, and it only handles the criteria and action types it supports. It doesn’t retire dead automation or consolidate rules, so treat its output as a first draft."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many record-triggered flows should one object have?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There is no fixed number. A common pattern is one before-save flow for same-record field updates and a small number of after-save flows grouped by business function, each with tight entry conditions and a set trigger order."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I migrate to Flow or to Apex?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Flow is the default for most workflow rules and processes. Consider Apex when the logic is complex, handles very large data volumes, or the object already has a trigger framework that the automation belongs in."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/",
+      "image": "https://brianhong.com/photos/brian-headshot-clean.png",
+      "jobTitle": "Salesforce Consultant",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianghong",
+        "https://www.salesforce.com/trailblazer/brianghong"
+      ],
+      "knowsAbout": ["Salesforce", "Sales Cloud", "Service Cloud", "Salesforce CPQ", "Salesforce Flow", "Agentforce", "CRM administration", "RevOps", "Data governance"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://brianhong.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://brianhong.com/field-notes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Migrating Workflow Rules and Process Builder to Flow without breaking the org",
+          "item": "https://brianhong.com/salesforce-flow-migration.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden]{display:none !important}
+.note{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.note-toc{display:flex;flex-direction:column;gap:4px;max-width:360px}
+@media (min-width:960px){.note{grid-template-columns:220px minmax(0,880px);gap:clamp(40px,6vw,96px);align-items:start}.note-toc{position:sticky;top:32px}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:28px 28px 0 0;margin-top:24px;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);">
+    <article>
+    <div style="max-width:1200px;margin:0 auto;">
+      <a href="field-notes.html" style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(42% 0.03 165);">← All field notes</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin:40px 0 20px;">
+        <time datetime="2026-10-01">Oct 2026</time><span>Automation</span><span>11 min</span>
+      </div>
+      <h1 style="font-size:clamp(34px,4.6vw,64px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 32px;max-width:1200px;text-wrap:balance;">Migrating Workflow Rules and Process Builder to Flow without breaking the org</h1>
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:oklch(35% 0.03 165);margin:0 0 48px;max-width:760px;text-wrap:pretty;">The Migrate to Flow button is the easy part. The real work is deciding what to retire, what to combine, and how to cut over without anyone noticing.</p>
+    </div>
+    <div style="max-width:1200px;margin:0 auto clamp(48px,7vw,88px);">
+      <img src="photos/flow-migration-steps.png" width="1920" height="920" alt="Retire first, then migrate: Inventory, Retire, Consolidate, Cut over" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:16px;display:block;">
+    </div>
+
+    <div class="note">
+      <nav class="note-toc" aria-label="In this note">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">In this note</div>
+        <a href="#sec-1" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">01</span>
+          <span>What end of support actually means</span>
+        </a>
+        <a href="#sec-2" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">02</span>
+          <span>Inventory every rule and process first</span>
+        </a>
+        <a href="#sec-3" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">03</span>
+          <span>Retire, consolidate, or rebuild</span>
+        </a>
+        <a href="#sec-4" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">04</span>
+          <span>What the Migrate to Flow tool does and doesn’t do</span>
+        </a>
+        <a href="#sec-5" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">05</span>
+          <span>How the old concepts map to Flow</span>
+        </a>
+        <a href="#sec-6" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">06</span>
+          <span>Four behaviors that change</span>
+        </a>
+        <a href="#sec-7" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">07</span>
+          <span>Test and cut over one object at a time</span>
+        </a>
+        <a href="#sec-8" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">08</span>
+          <span>A 12-week migration plan</span>
+        </a>
+        <a href="#sec-9" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">09</span>
+          <span>Frequently asked questions</span>
+        </a>
+      </nav>
+      <div style="min-width:0;font-size:18.5px;line-height:1.8;color:oklch(28% 0.03 165);">
+        <p style="margin:0 0 28px;text-wrap:pretty;">Most orgs that have been around for a few years carry dozens of workflow rules and a handful of sprawling processes. Nobody remembers who built half of them. They still fire on every save, and some of them send emails to people who left the company.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The tempting plan is to open the Migrate to Flow tool, convert everything one for one, and call it done. That gives you the same mess in a newer tool. You end up with forty flows on Opportunity, no idea what order they run in, and the dead automation is still there.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Migrating Workflow Rules and Process Builder to Flow means replacing each rule and process with a record-triggered flow that does the same job. Done well, it’s also the one time you get to delete what nobody needs and put what’s left in a known order.</p>
+        <h2 id="sec-1" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What end of support actually means</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Salesforce stopped letting you create new workflow rules in Winter ’23 and new processes in Summer ’23. Support for both ended on December 31, 2025. Nothing was switched off that day. Existing rules and processes still run.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">What changed is the safety net. Salesforce no longer fixes bugs in either tool, and Support won’t help when one of them misbehaves. Every new platform feature lands in Flow only. So the risk isn’t a deadline. It’s that the automation your business depends on now runs on something nobody maintains.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">That’s good news for planning. You have time to do this in order, object by object, instead of in one weekend.</p>
+        <h2 id="sec-2" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Inventory every rule and process first</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">You can’t plan a migration from the Setup list views. Pull everything into one spreadsheet, one row per workflow rule and one row per process, grouped by object. Active processes are easy to list with a query:</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// Active Process Builder processes</div>
+          <div>SELECT ApiName, Label, ProcessType, LastModifiedDate FROM FlowDefinitionView</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE IsActive = true AND ProcessType IN ('Workflow', 'InvocableProcess', 'CustomEvent')</div>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Workflow rules live in metadata, so retrieve them with the CLI or a metadata tool, or export the Workflow Rules list view. For each row, capture the same six things:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Object and trigger</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Which object it runs on, and whether it fires on create, on every edit, or only when the record first meets the criteria.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Criteria</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The conditions in plain English. If you can’t explain them in one sentence, flag the row.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Actions</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Field updates, email alerts, tasks, outbound messages, record creates, Apex calls. Note which are immediate and which are time-based.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Last time it mattered</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Does it still fire? Check field history, email logs, and whether the fields and record types in the criteria are still in use.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Business owner</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The person who can say whether it’s still needed. No owner is a finding in itself.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Dependencies</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Other automation on the same object: Apex triggers, existing flows, validation rules, and approval processes that share the same field updates.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The last column is the one that saves you later. A field update that looks orphaned is often reused by an approval process. Approval processes still use those actions, so don’t delete them.</p>
+        <h2 id="sec-3" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Retire, consolidate, or rebuild</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">With the inventory in hand, give every row one of four outcomes before anyone opens Flow Builder.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Retire</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">It no longer fires, or nobody wants what it does. Deactivate it, wait a full business cycle, then delete it. This is the cheapest migration there is.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Replace with something simpler</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A field update that only copies or calculates a value can often become a formula field or a default value. No automation to maintain at all.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Consolidate</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Several rules on one object that do related things become one flow with decision branches. Ten rules that stamp dates on Opportunity are one before-save flow.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Rebuild as is</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">It’s needed, it’s self-contained, and it doesn’t belong with anything else. Convert it directly and move on.</span>
+          </li>
+        </ul>
+        <blockquote style="margin:64px 0;padding:0;font-family:'Instrument Serif',serif;font-size:clamp(30px,3.4vw,42px);line-height:1.3;color:oklch(22% 0.035 165);text-wrap:balance;">“The cheapest automation to migrate is the one you delete.”</blockquote>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Then decide the target shape for each object. A pattern that holds up well: one before-save flow for updates to the record itself, and a small number of after-save flows grouped by business function, such as notifications or related-record updates. Give each flow tight entry conditions so it only runs when it has work to do.</p>
+        <h2 id="sec-4" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What the Migrate to Flow tool does and doesn’t do</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The Migrate to Flow tool lives in Setup. You pick a workflow rule or a process, and it builds an inactive record-triggered flow with the same criteria and actions. You test the flow, then switch activations so the flow goes live and the old rule goes off.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">It’s useful for the "rebuild as is" pile. It has three limits worth knowing before you rely on it:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">One in, one out</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Thirty workflow rules become thirty flows. The tool never consolidates, so the design work from the last section is still yours.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Partial coverage</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Not every criteria type or action converts. The tool tells you when a rule or process can only be partly migrated. Read that message and build the rest by hand.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No judgment</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">It converts dead automation as faithfully as live automation. It also keeps the old names, so rename and describe every flow it produces.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Treat the output as a first draft. For anything you plan to consolidate, building the flow from scratch is usually faster than merging generated ones.</p>
+        <h2 id="sec-5" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">How the old concepts map to Flow</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Almost everything in a workflow rule or a process has a direct equivalent. Knowing the mapping makes the hand-built flows quick.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:640px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Workflow Rules and Process Builder → Flow</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Old</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Flow equivalent</th></tr></thead>
+            <tbody style="color:oklch(72% 0.03 150);">
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Rule or process criteria</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Entry conditions on the Start element</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">"Created, and edited to subsequently meet criteria"</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">"Only when a record is updated to meet the condition requirements"</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Field update, same record</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Before-save flow (Fast Field Updates)</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Update related or parent records</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">After-save flow, Update Records</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Email alert</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">After-save flow, same email alert as an action</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Task or record create</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">After-save flow, Create Records</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Outbound message</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">After-save flow, outbound message action</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Time-dependent or scheduled action</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Scheduled path on an after-save flow</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Process criteria nodes, in order</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Decision element with ordered outcomes</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">ISCHANGED / PRIORVALUE</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">"Is Changed" operator and $Record__Prior</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Process calls Apex or a flow</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Action element or subflow</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The split that matters most is before-save versus after-save. A before-save flow can only change fields on the record being saved, and it does that without a second save, so it’s fast. Everything else, including emails, related records, and scheduled paths, needs an after-save flow.</p>
+        <h2 id="sec-6" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Four behaviors that change</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A flow with the same criteria and the same actions can still behave differently from the rule it replaced. These four differences cause most post-migration surprises.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Where it runs in the save</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Workflow field updates run late, after validation rules and Apex triggers. Before-save flows run first, ahead of both. A value your old rule set quietly now has to pass validation, and triggers now see it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Triggers firing twice</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A workflow field update makes update triggers run a second time. A before-save flow doesn’t. That’s an improvement, unless some Apex was quietly relying on the second pass.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Re-evaluation</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Workflow field updates can re-evaluate other rules, and processes can evaluate a record more than once per transaction. Flows don’t chain that way by default. If rules depended on each other, put that sequence inside one flow.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Order between flows</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Several flows on one object run in an order you should set on purpose. Use Flow Trigger Explorer to see them together and give each a trigger order value.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Errors also get louder. A flow that hits an unhandled fault blocks the save and shows the user an error. Add fault paths to elements that create or update other records, and decide for each one whether the save should fail or the error should be logged and the save allowed.</p>
+        <h2 id="sec-7" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Test and cut over one object at a time</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Migrate a whole object in one release, not rule by rule. Running half an object on workflow rules and half on flows is the hardest state to reason about, so keep that window as short as you can.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Write the scenarios first</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">For each rule, one case that should fire and one that shouldn’t. Record what the old automation does in a sandbox before you change anything.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Test in bulk</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Load 200 records with Data Loader, not just one through the UI. Imports and integrations are where flows hit limits.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Never run both</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Activate the flow and deactivate the old rule in the same deployment. Both live at once means duplicate emails and double updates.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Check the time-based queue</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Look at the time-based workflow queue in Setup before deactivating. Records already waiting there won’t be picked up by the new scheduled path, so plan how those in-flight records get handled.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Keep the rollback</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Leave the old rules deactivated, not deleted, for two to four weeks. Rolling back is then two clicks.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Watch the first week</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Send flow error emails to a shared inbox someone reads, and review failed flow interviews daily for the first week after each cutover.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Start with a low-risk object to prove the process, then move to the busy ones. If you have a <a href="center-of-excellence.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">release process</a> already, each object is just another release.</p>
+        <h2 id="sec-8" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A 12-week migration plan</h2>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Weeks 1–2</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Build the inventory. Confirm a business owner for each row and mark every one retire, replace, consolidate, or rebuild.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Weeks 3–4</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Deactivate the retire pile. Agree naming conventions and the target flows per object. Migrate one low-risk object end to end.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Weeks 5–10</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Work through the remaining objects, one per release, busiest last. Test, cut over, and monitor each before starting the next.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Weeks 11–12</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Delete the deactivated rules and processes, document each flow’s purpose and owner, and show leadership the before-and-after count.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Scale the timeline to the org. A dozen rules on two objects is a few weeks. Hundreds of rules across a dozen objects is a couple of quarters. The sequence stays the same either way: inventory, decide, migrate by object, clean up.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The migration isn’t really about Flow. It’s the rare project where you get to read every piece of automation in the org and ask whether it should exist. Take that chance, and you end up with fewer moving parts and a clear order, not just newer tooling.</p>
+        <h2 id="sec-9" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Frequently asked questions</h2>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Do Workflow Rules and Process Builder still work?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Yes. Existing workflow rules and processes keep running, but Salesforce ended support for both on December 31, 2025. That means no bug fixes and no help from Salesforce Support when one of them misbehaves.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Can the Migrate to Flow tool convert everything?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">No. The Migrate to Flow tool converts one workflow rule or process into one inactive flow, and it only handles the criteria and action types it supports. It doesn’t retire dead automation or consolidate rules, so treat its output as a first draft.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How many record-triggered flows should one object have?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">There is no fixed number. A common pattern is one before-save flow for same-record field updates and a small number of after-save flows grouped by business function, each with tight entry conditions and a set trigger order.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Should I migrate to Flow or to Apex?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Flow is the default for most workflow rules and processes. Consider Apex when the logic is complex, handles very large data volumes, or the object already has a trigger framework that the automation belongs in.</p>
+        <div style="margin:56px 0 0;padding:24px 28px;background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">Further reading</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="https://architect.salesforce.com/docs/architect/decision-guides/guide/record-triggered" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Architects: Record-triggered automation decision guide</a>
+            <a href="https://help.salesforce.com/s/articleView?id=001096524&amp;language=en_US&amp;type=1" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Help: Workflow Rules and Process Builder end of support</a>
+            <a href="https://admin.salesforce.com/blog/2022/automate-this-migrate-workflow-rules-and-processes-to-flow" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Admins: Automate This! Migrate workflow rules and processes to Flow</a>
+            <a href="https://admin.salesforce.com/blog/2021/go-with-the-flow-whats-happening-with-workflow-rules-and-process-builder" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Admins: Go with the Flow, what’s happening with Workflow Rules and Process Builder</a>
+            <a href="https://trailhead.salesforce.com/content/learn/modules/record-triggered-flows" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Trailhead: Record-triggered flows</a>
+            <a href="https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_order_of_execution.htm" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Apex Developer Guide: Triggers and order of execution</a>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 0;">
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Automation</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Salesforce Flow</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Workflow Rules</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Process Builder</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Technical debt</span>
+        </div>
+      </div>
+    </div>
+    </article>
+
+    <div style="max-width:1200px;margin:96px auto 0;padding-top:32px;border-top:1px solid oklch(86% 0.015 95);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <img src="photos/brian-headshot-clean.png" width="64" height="64" alt="Brian Hong" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:oklch(27% 0.035 165);">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:16px;font-weight:500;"><a href="about.html">Brian Hong</a></div>
+        <div style="font-size:14px;color:oklch(42% 0.03 165);line-height:1.5;">Senior Salesforce admin and consultant in Columbus, OH. 10+ years in the ecosystem and six Salesforce certifications. I write about the stuff that makes orgs easier to run.</div>
+      </div>
+      <a href="#contact" style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;">Work with me →</a>
+    </div>
+
+    <div style="max-width:1200px;margin:96px auto 0;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:16px;">Keep reading</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <a href="center-of-excellence.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Governance · 14 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Standing up a Salesforce Center of Excellence from scratch</span>
+        </a>
+        <a href="data-stewardship.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Data quality · 12 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Salesforce data stewardship is a people problem first</span>
+        </a>
+        <a href="field-notes.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Field notes</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">See all notes →</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
+})();
+</script>
+</body>
+</html>

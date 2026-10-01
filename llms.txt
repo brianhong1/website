@@ -59,6 +59,7 @@ Brian automates manual processes, fixes data quality, and sets up governance and
 - [Field notes](https://brianhong.com/field-notes.html): Short write-ups on Salesforce governance, data quality, automation, and hiring a consultant
 - [Standing up a Salesforce Center of Excellence from scratch](https://brianhong.com/center-of-excellence.html): Field note on governance. Decision rights, operating models, the intake-prioritize-release-measure loop, architecture guardrails, environments, KPIs, and a 90-day plan
 - [Salesforce data stewardship is a people problem first](https://brianhong.com/data-stewardship.html): Field note on data quality. Owner, steward, and custodian roles, why fields go empty, critical data elements, stage-gated requirements, a weekly review habit, metrics, and a 60-day plan
+- [Migrating Workflow Rules and Process Builder to Flow without breaking the org](https://brianhong.com/salesforce-flow-migration.html): Field note on automation. What end of support means, inventorying rules and processes, retire-consolidate-rebuild decisions, limits of the Migrate to Flow tool, how old concepts map to Flow, behavior changes, testing and cutover, and a 12-week plan
 - [Resume (PDF)](https://brianhong.com/Brian-Hong-Resume.pdf): Full work history and certifications
 
 ## Optional

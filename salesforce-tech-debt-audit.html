@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salesforce Tech Debt Audit: A Step-by-Step Guide | Brian Hong</title>
+<meta name="description" content="How to run a Salesforce tech debt audit: seven areas to inventory, the free tools to use, a scoring model, safe deletion steps, and a 30-60-90 day plan.">
+<link rel="canonical" href="https://brianhong.com/salesforce-tech-debt-audit.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-01T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-10-01T00:00:00-04:00">
+<meta property="og:url" content="https://brianhong.com/salesforce-tech-debt-audit.html">
+<meta property="og:title" content="Salesforce tech debt audit: how to find, score, and pay down technical debt">
+<meta property="og:description" content="How to run a Salesforce tech debt audit: seven areas to inventory, the free tools to use, a scoring model, safe deletion steps, and a 30-60-90 day plan.">
+<meta property="og:image" content="https://brianhong.com/photos/tech-debt-audit.png">
+<meta property="og:image:alt" content="Find it, score it, then pay it down: Inventory, Score, Decide, Pay down">
+<meta property="og:site_name" content="Brian Hong">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Salesforce tech debt audit: how to find, score, and pay down technical debt">
+<meta name="twitter:description" content="How to run a Salesforce tech debt audit: seven areas to inventory, the free tools to use, a scoring model, safe deletion steps, and a 30-60-90 day plan.">
+<meta name="twitter:image" content="https://brianhong.com/photos/tech-debt-audit.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://brianhong.com/salesforce-tech-debt-audit.html#article",
+      "headline": "Salesforce tech debt audit: how to find, score, and pay down technical debt",
+      "description": "How to run a Salesforce tech debt audit: seven areas to inventory, the free tools to use, a scoring model, safe deletion steps, and a 30-60-90 day plan.",
+      "url": "https://brianhong.com/salesforce-tech-debt-audit.html",
+      "mainEntityOfPage": "https://brianhong.com/salesforce-tech-debt-audit.html",
+      "image": "https://brianhong.com/photos/tech-debt-audit.png",
+      "datePublished": "2026-10-01T00:00:00-04:00",
+      "dateModified": "2026-10-01T00:00:00-04:00",
+      "articleSection": "Governance",
+      "keywords": "Salesforce tech debt audit, Salesforce technical debt, Technical debt audit, Org health check, Org Check, Salesforce Code Analyzer, Governance",
+      "author": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "publisher": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "isPartOf": {
+        "@id": "https://brianhong.com/field-notes.html#blog"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brianhong.com/salesforce-tech-debt-audit.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Salesforce tech debt audit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Salesforce tech debt audit is a structured review of an org’s metadata, automation, code, security model, and integrations to find what is unused, duplicated, outdated, or risky. The output is a scored list of findings, each with an owner and a decision: retire, consolidate, refactor, or accept."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does a Salesforce technical debt audit take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a mid-sized org, plan on two to four weeks for the audit itself: about a week to inventory, a week to score, and a week or two to review findings with owners. Paying the debt down takes longer and works best as a fixed share of every sprint."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What tools do I need to audit Salesforce technical debt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can do a solid audit with free tools: Org Check from Salesforce Labs for metadata, Security Health Check for settings, Salesforce Code Analyzer for Apex and Flow, the Where is this used? button for field references, and SOQL or Tooling API queries for counts. Paid tools add deeper dependency mapping."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often should you audit a Salesforce org for tech debt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Run a full audit once a year and a light check every quarter. Tie the quarterly check to something that already happens, such as release planning after each Salesforce seasonal release, so new debt is caught while it is still small."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it safe to delete unused custom fields in Salesforce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, if you check first. Confirm the field is empty or stale, check every reference with Where is this used?, look for it in integrations and reports, then hide it for one full business cycle before deleting. Deleted custom fields can be restored for 15 days."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who should own technical debt in Salesforce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Salesforce platform owner or Center of Excellence owns the debt backlog, and each finding has a named business owner who decides whether the thing is still needed. The admin team does the cleanup. Without a named owner on each item, nothing gets retired."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much time should a team spend on technical debt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A common starting point is 15 to 20 percent of each sprint or release. A fixed share works better than a one-time cleanup project because debt keeps arriving, and small steady payments don’t need a separate budget approval."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/",
+      "image": "https://brianhong.com/photos/brian-headshot-clean.png",
+      "jobTitle": "Salesforce Consultant",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianghong",
+        "https://www.salesforce.com/trailblazer/brianghong"
+      ],
+      "knowsAbout": [
+        "Salesforce",
+        "Sales Cloud",
+        "Service Cloud",
+        "Salesforce CPQ",
+        "Salesforce Flow",
+        "Agentforce",
+        "CRM administration",
+        "RevOps",
+        "Data governance"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://brianhong.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://brianhong.com/field-notes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Salesforce tech debt audit: how to find, score, and pay down technical debt",
+          "item": "https://brianhong.com/salesforce-tech-debt-audit.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden]{display:none !important}
+.note{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.note-toc{display:flex;flex-direction:column;gap:4px;max-width:360px}
+@media (min-width:960px){.note{grid-template-columns:220px minmax(0,880px);gap:clamp(40px,6vw,96px);align-items:start}.note-toc{position:sticky;top:32px}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:28px 28px 0 0;margin-top:24px;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);">
+    <article>
+    <div style="max-width:1200px;margin:0 auto;">
+      <a href="field-notes.html" style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(42% 0.03 165);">← All field notes</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin:40px 0 20px;">
+        <time datetime="2026-10-01">Oct 2026</time><span>Governance</span><span>13 min</span>
+      </div>
+      <h1 style="font-size:clamp(34px,4.6vw,64px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 32px;max-width:1200px;text-wrap:balance;">Salesforce tech debt audit: how to find, score, and pay down technical debt</h1>
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:oklch(35% 0.03 165);margin:0 0 48px;max-width:1100px;text-wrap:balance;">Every org older than a few years is carrying debt. An audit turns a vague feeling into a scored list, and a scored list is something you can pay down a little every sprint.</p>
+    </div>
+    <div style="max-width:1200px;margin:0 auto clamp(48px,7vw,88px);">
+      <img src="photos/tech-debt-audit.png" width="1920" height="920" alt="Find it, score it, then pay it down: Inventory, Score, Decide, Pay down" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:16px;display:block;">
+    </div>
+
+    <div class="note">
+      <nav class="note-toc" aria-label="In this note">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">In this note</div>
+        <a href="#sec-1" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">01</span>
+          <span>What a Salesforce tech debt audit is</span>
+        </a>
+        <a href="#sec-2" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">02</span>
+          <span>Where Salesforce technical debt comes from</span>
+        </a>
+        <a href="#sec-3" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">03</span>
+          <span>Signs your org needs an audit</span>
+        </a>
+        <a href="#sec-4" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">04</span>
+          <span>The seven areas to audit</span>
+        </a>
+        <a href="#sec-5" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">05</span>
+          <span>The tools that do the inventory</span>
+        </a>
+        <a href="#sec-6" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">06</span>
+          <span>Score every finding</span>
+        </a>
+        <a href="#sec-7" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">07</span>
+          <span>Retire, consolidate, refactor, or accept</span>
+        </a>
+        <a href="#sec-8" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">08</span>
+          <span>How to delete things safely</span>
+        </a>
+        <a href="#sec-9" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">09</span>
+          <span>Make the case to leadership</span>
+        </a>
+        <a href="#sec-10" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">10</span>
+          <span>A 30-60-90 day plan</span>
+        </a>
+        <a href="#sec-11" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">11</span>
+          <span>Keep the debt from coming back</span>
+        </a>
+        <a href="#sec-12" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">12</span>
+          <span>Frequently asked questions</span>
+        </a>
+      </nav>
+      <div style="min-width:0;font-size:18.5px;line-height:1.8;color:oklch(28% 0.03 165);">
+        <p style="margin:0 0 28px;text-wrap:pretty;">You inherit an org. The Account object has hundreds of custom fields and nobody can say what a third of them do. One record save fires a Workflow Rule, two Process Builders, a Flow, and a trigger. A request to add one picklist value takes three weeks because nobody is sure what it will break.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">That is technical debt, and nearly every Salesforce org older than a few years has it. Most teams know it’s there. Few can say how much, where it is, or which parts are actually dangerous.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A Salesforce tech debt audit is a structured review of an org’s metadata, automation, code, security model, and integrations that finds what is unused, duplicated, outdated, or risky. It ends with a scored list of findings and a decision for each one: retire, consolidate, refactor, or accept.</p>
+        <h2 id="sec-1" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What a Salesforce tech debt audit is</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A tech debt audit is an inventory plus a judgment. The inventory counts what is in the org. The judgment says which of those things cost you something and what to do about each.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Technical debt is any past decision that makes today’s work slower, riskier, or more expensive than it should be. In Salesforce it rarely looks like bad code. It looks like a field nobody fills in, a flow nobody dares to turn off, a profile cloned eleven times, and an integration still calling an API version from 2015.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Salesforce treats this as core architecture work. Its Well-Architected guidance says that failing to plan for, audit for, and remediate technical debt is a sure way to end up with a poorly architected system, and that the work belongs on the roadmap with clear deliverables and dates.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">An audit is not a cleanup. Keeping the two apart is what makes the audit finishable. You can audit a large org in a few weeks. You pay the debt down over the following quarters, in priority order.</p>
+        <h2 id="sec-2" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Where Salesforce technical debt comes from</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Most Salesforce technical debt comes from reasonable decisions made under time pressure, then never revisited. It is rarely one person’s fault.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Deadlines</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The quick fix ships on Friday with a promise to do it properly later. Later never gets scheduled.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Turnover</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The admin who built it left. The reason it exists left with them, so nobody feels safe removing it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No intake process</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Every request gets built as asked. Nobody checks whether a field or flow for it already exists.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Platform change</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Salesforce retires features. Workflow Rules, Process Builder, old API versions, and Salesforce Classic pages become debt without anyone touching them.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Mergers and migrations</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Two orgs become one. Both data models survive, along with both sets of automation.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Abandoned projects</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A pilot ends or a package is uninstalled halfway. Its fields, permission sets, and page layouts stay behind.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Some debt is taken on deliberately, and that’s fine. A hard-coded value to hit a launch date is a fair trade if it’s written down and paid back. The damage comes from debt nobody recorded.</p>
+        <h2 id="sec-3" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Signs your org needs an audit</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">You need a tech debt audit when small changes start taking a long time and nobody can explain why. These are the usual symptoms:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Simple changes take weeks</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Most of the time goes to working out what the change might break, not to building it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Deployments fail on unrelated tests</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">An old Apex test breaks every release, and the fix is to comment it out again.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Nobody will delete anything</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Fields, flows, and reports only ever get added. The org grows every quarter.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Users see errors on save</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Row lock errors, CPU time limits, and “too many SOQL queries” show up on ordinary record edits.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">You’re near a platform limit</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">An object is close to its custom field cap, or the org is close to its Apex code limit.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">A deadline is coming</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A feature retirement, an Agentforce rollout, a merger, or a new team inheriting the org.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The last one matters more than it used to. AI agents read your metadata and your records. An org full of unlabeled fields and overlapping automation is harder for an agent to work in, for the same reasons it’s harder for a new admin. I covered that side in <a href="salesforce-data-readiness-for-ai.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce data readiness for AI</a>.</p>
+        <h2 id="sec-4" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">The seven areas to audit</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A complete Salesforce technical debt audit covers seven areas. For each one, count what exists, count what is actually used, and note anything that is risky.</p>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">1. Data model</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Custom objects and fields, fill rates, fields with no description, duplicate fields that hold the same thing, and how close each object is to its field limit. Enterprise Edition allows 500 custom fields per object and Unlimited allows 800.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">2. Automation</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Workflow Rules, Process Builders, flows, and triggers per object. Look for several automations on one object, inactive flows, old flow versions, and anything still on a retired tool.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">3. Apex and code</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Classes on old API versions, test coverage, tests that assert nothing, hard-coded IDs and URLs, SOQL or DML inside loops, and Visualforce or Aura that could be retired.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">4. Security and access</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Number of profiles, permission sets with no assignments, users with Modify All Data or View All Data, inactive users still holding licenses, and your Health Check score.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">5. Integrations</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Connected apps nobody recognizes, integrations calling old API versions, integration users with admin profiles, and credentials stored in code.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">6. Interface and reports</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Page layouts and record types nobody is assigned to, Lightning pages overloaded with components, and reports and dashboards nobody has run in a year.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">7. Documentation</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Fields and flows with blank descriptions, no data dictionary, no record of why anything was built. This is the debt that makes all the other debt expensive.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Automation is usually the heaviest area. If you still have Workflow Rules or Process Builder running, start there. They reached end of support on December 31, 2025, and the retire-or-rebuild decisions are the same ones this audit asks for. The steps are in <a href="salesforce-flow-migration.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">migrating Workflow Rules and Process Builder to Flow</a>.</p>
+        <blockquote style="margin:64px 0;padding:0;font-family:'Instrument Serif',serif;font-size:clamp(30px,3.4vw,42px);line-height:1.3;color:oklch(22% 0.035 165);text-wrap:balance;">“Nobody deletes what they don’t understand. So the org only ever grows.”</blockquote>
+        <h2 id="sec-5" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">The tools that do the inventory</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">You can run a thorough Salesforce tech debt audit with free tools. The main change to know about is that Salesforce Optimizer, the report many audit checklists still point to, has been retired. Salesforce began removing it with the Winter ’26 release.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Org Check</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A free, open-source app from Salesforce Labs, installed from AppExchange. It scores custom fields, flows, Apex, profiles, permission sets, and more, and flags items such as unused fields and roles without users. It is the closest replacement for Optimizer.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Security Health Check</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">In Setup. Compares your password, session, and sharing settings against the Salesforce baseline and gives you a score.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Salesforce Code Analyzer</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Free, from the CLI or VS Code. Version 5 runs PMD for Apex, ESLint for JavaScript, RetireJS, a regex engine, and a Flow Scanner in one pass.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Where is this used?</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A button on every custom field in Object Manager. It lists the layouts, flows, formulas, Apex, and reports that reference the field.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">SOQL and the Tooling API</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">For counts no screen gives you: classes by API version, inactive flows, unassigned permission sets, and reports nobody runs.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Event log files</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The API Total Usage event shows which integrations call which API versions, with the connected app and user behind each call.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A handful of queries cover a lot of ground. Run them in the Developer Console, the Salesforce CLI, or Salesforce Inspector:</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// Apex classes on old API versions</div>
+          <div>SELECT Name, ApiVersion FROM ApexClass</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE NamespacePrefix = null AND ApiVersion &lt; 45</div>
+          <div style="color:oklch(72% 0.03 150);">ORDER BY ApiVersion</div>
+          <div style="color:oklch(88% 0.17 115);margin-top:20px;margin-bottom:8px;">// Flows with no active version</div>
+          <div>SELECT ApiName, ProcessType, LastModifiedDate</div>
+          <div style="color:oklch(72% 0.03 150);">FROM FlowDefinitionView WHERE IsActive = false</div>
+          <div style="color:oklch(88% 0.17 115);margin-top:20px;margin-bottom:8px;">// Permission sets assigned to nobody</div>
+          <div>SELECT Name FROM PermissionSet</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE IsOwnedByProfile = false AND Id NOT IN</div>
+          <div style="color:oklch(72% 0.03 150);">(SELECT PermissionSetId FROM PermissionSetAssignment)</div>
+          <div style="color:oklch(88% 0.17 115);margin-top:20px;margin-bottom:8px;">// Reports nobody has run in a year</div>
+          <div>SELECT COUNT() FROM Report</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE LastRunDate &lt; LAST_N_DAYS:365 OR LastRunDate = null</div>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Check API versions on the integration side too. Salesforce retired Platform API versions 21.0 through 30.0 in Summer ’25. Versions 31.0 through 40.0 lose support in Summer ’27 and are scheduled for retirement in Summer ’28, when calls to them will fail. An integration built in 2016 and never touched since is probably on that list.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Paid tools such as Elements.cloud, Metazoa Snapshot, and Gearset go further on dependency mapping and change history. They save time in large orgs. They aren’t required to get a useful first audit done.</p>
+        <h2 id="sec-6" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Score every finding</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Score each finding on three things: the risk of leaving it, the drag it puts on daily work, and the effort to fix it. Without a score, an audit is a long list that nobody acts on.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Use a 1 to 5 scale for each. Then rank by risk plus drag, divided by effort. High numbers go first.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:760px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Scoring tech debt findings, 1 (low) to 5 (high)</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Finding</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Risk</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Drag</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Effort</th><th scope="col" style="padding:0 24px 8px 0;text-align:left;vertical-align:top;font-weight:400;">Priority</th></tr></thead>
+            <tbody style="color:oklch(72% 0.03 150);">
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Integration on API version 29.0</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">5</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">3.5</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">12 users with Modify All Data</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">5</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">6.0</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">4 automations on Opportunity</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">3</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">5</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">4</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2.0</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">140 Account fields under 1% filled</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">3</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2.0</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Trigger with no test assertions</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">3</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">3</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1.7</td></tr>
+              <tr><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">300 reports not run in a year</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">3.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Risk</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">What happens if you leave it. Security exposure, a retirement date, data loss, or a production outage score high.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Drag</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">How much it slows people down every week. Confusing layouts, slow saves, and changes that need three people to review score high.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Effort</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">How long the fix takes, including testing and the conversations needed to get a decision.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The numbers are a way to start the conversation. They aren’t precise, and they don’t need to be. What they do is move the cheap, high-risk items to the top, which is where most audits find their first month of work.</p>
+        <h2 id="sec-7" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Retire, consolidate, refactor, or accept</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Every finding gets one of four decisions. Writing the decision down, with a name next to it, is what turns an audit into a plan.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Retire</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Nobody uses it and nothing depends on it. Remove it. This is the cheapest fix and usually the largest group.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Consolidate</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Several things do one job. Merge five flows on one object into one or two, or forty profiles into a few profiles plus permission sets.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Refactor</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">It’s needed but badly built. Rebuild it properly: bulkify the trigger, replace hard-coded IDs with custom metadata, move it to a supported tool.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Accept</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">It’s debt, but fixing it costs more than living with it. Record why, set a date to look again, and move on.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Accept is a real answer. An audit that insists on fixing everything loses the room. An ugly but stable integration that nobody needs to change can sit at the bottom of the list for years.</p>
+        <h2 id="sec-8" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">How to delete things safely</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">To remove metadata safely, hide it before you delete it, and wait one full business cycle in between. Fear of breaking something is the main reason debt never gets paid, so make the process boring.</p>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Check the data</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Is the field empty, or last populated years ago? Is the flow’s last run date recent? Usage tells you more than opinions do.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Check references</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Use Where is this used?, search the code base, and check reports, list views, email templates, and integrations that name the field.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Ask the owner</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">One message to the business owner: “We plan to retire this on this date. Tell us if you need it.” Silence after two reminders is an answer.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Back it up</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Export the data and retrieve the metadata to source control, so both can be restored.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Hide first</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Remove the field from layouts and permissions, or deactivate the flow. Add “DEPRECATED” and the date to the label and description.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Wait, then delete</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Leave it hidden through a month-end and a quarter-end if you can. If nobody notices, delete it. Deleted custom fields stay restorable for 15 days.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Do this in batches by object, through a sandbox, with a normal deployment. Deleting metadata directly in production is how a cleanup turns into an incident.</p>
+        <h2 id="sec-9" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Make the case to leadership</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Leaders fund technical debt work when it’s described as business cost and risk. “We have 600 unused fields” gets a shrug. These get a budget:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Delivery speed</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">“Changes to Opportunity take three weeks because four automations overlap. After consolidation, the same change takes three days.”</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Risk with a date</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">“Two integrations call API versions that Salesforce will retire. When that happens, order sync stops.”</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Cost</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">“We pay for 60 licenses assigned to inactive users.”</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Readiness</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">“We can’t put an AI agent on this data until the fields it reads are labeled and deduplicated.”</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Then ask for a standing share of capacity, not a project. Many teams start with 15 to 20 percent of each sprint. A fixed share survives reprioritization better than a cleanup project, which is the first thing cut when a deadline moves.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Record the starting numbers before you fix anything. Salesforce’s Well-Architected guidance lists documented before-and-after KPIs as a mark of healthy debt work. Field counts, automations per object, deployment failure rate, and average time to deliver a change are enough.</p>
+        <h2 id="sec-10" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A 30-60-90 day plan</h2>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 1–30: Inventory</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Install Org Check, run Health Check and Code Analyzer, and run the queries. Count everything across the seven areas. Don’t fix anything yet except open security holes.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 31–60: Score and decide</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Score each finding. Review the top fifty with business owners and record a decision and an owner for each. Agree the capacity share with leadership.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 61–90: First payments</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Clear the cheap, high-risk items: excess admin permissions, inactive users, old API versions. Start hiding the first batch of unused fields and flows.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">After day 90: Keep paying</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Work the backlog every sprint. Re-run the counts each quarter and report the trend.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Resist the urge to fix things during the first month. Fixing while you inventory means you never finish the inventory, and you spend your effort on whatever you happened to find first.</p>
+        <h2 id="sec-11" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Keep the debt from coming back</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">An audit lowers the balance. Guardrails stop it from climbing again. Four are enough for most teams:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Descriptions are required</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">No new field, flow, or permission set without a description that says what it’s for and who asked.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">One intake path</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Every request goes through one queue, where someone checks whether the thing already exists.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Record debt when you take it</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">If you ship a shortcut, add a backlog item the same day. Deliberate debt with a ticket is manageable.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">A quarterly check</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Re-run the counts after each seasonal release and read the release updates for upcoming retirements.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">These are governance habits more than technical ones. If nobody owns them, they fade within a quarter. A small <a href="center-of-excellence.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Center of Excellence</a> gives them a home, and clear <a href="data-stewardship.html" style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">data stewardship</a> roles keep the field list honest.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A Salesforce tech debt audit doesn’t need a big team or a paid tool. It needs a few weeks of counting, a simple score, and a named owner for each decision. The org won’t be clean at the end of it. It will be understood, and after that every release can leave it a little better than before.</p>
+        <h2 id="sec-12" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Frequently asked questions</h2>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What is a Salesforce tech debt audit?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A Salesforce tech debt audit is a structured review of an org’s metadata, automation, code, security model, and integrations to find what is unused, duplicated, outdated, or risky. The output is a scored list of findings, each with an owner and a decision: retire, consolidate, refactor, or accept.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How long does a Salesforce technical debt audit take?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">For a mid-sized org, plan on two to four weeks for the audit itself: about a week to inventory, a week to score, and a week or two to review findings with owners. Paying the debt down takes longer and works best as a fixed share of every sprint.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What tools do I need to audit Salesforce technical debt?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">You can do a solid audit with free tools: Org Check from Salesforce Labs for metadata, Security Health Check for settings, Salesforce Code Analyzer for Apex and Flow, the Where is this used? button for field references, and SOQL or Tooling API queries for counts. Paid tools add deeper dependency mapping.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How often should you audit a Salesforce org for tech debt?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Run a full audit once a year and a light check every quarter. Tie the quarterly check to something that already happens, such as release planning after each Salesforce seasonal release, so new debt is caught while it is still small.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Is it safe to delete unused custom fields in Salesforce?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Yes, if you check first. Confirm the field is empty or stale, check every reference with Where is this used?, look for it in integrations and reports, then hide it for one full business cycle before deleting. Deleted custom fields can be restored for 15 days.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Who should own technical debt in Salesforce?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The Salesforce platform owner or Center of Excellence owns the debt backlog, and each finding has a named business owner who decides whether the thing is still needed. The admin team does the cleanup. Without a named owner on each item, nothing gets retired.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How much time should a team spend on technical debt?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A common starting point is 15 to 20 percent of each sprint or release. A fixed share works better than a one-time cleanup project because debt keeps arriving, and small steady payments don’t need a separate budget approval.</p>
+        <div style="margin:56px 0 0;padding:24px 28px;background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">Further reading</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="https://architect.salesforce.com/well-architected/easy/intentional" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Well-Architected: Intentional</a>
+            <a href="https://help.salesforce.com/s/articleView?id=005167013&amp;language=en_US&amp;type=1" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Help: Optimization without Salesforce Optimizer</a>
+            <a href="https://salesforcelabs.github.io/OrgCheck/" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Labs: Org Check</a>
+            <a href="https://developer.salesforce.com/docs/platform/salesforce-code-analyzer/guide/code-analyzer.html" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Developers: Overview of Salesforce Code Analyzer</a>
+            <a href="https://help.salesforce.com/s/articleView?id=005321531&amp;language=en_US&amp;type=1" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Help: Platform API Versions 31.0 through 40.0 Retirement</a>
+            <a href="https://help.salesforce.com/s/articleView?id=platform.custom_field_allocations.htm&amp;language=en_US" target="_blank" rel="noopener" style="font-size:15px;line-height:1.45;color:oklch(22% 0.035 165);text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;">Salesforce Help: Custom Fields Allowed Per Object</a>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 0;">
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Governance</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Technical debt</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Org health</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Automation</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Security</span>
+        </div>
+      </div>
+    </div>
+    </article>
+
+    <div style="max-width:1200px;margin:96px auto 0;padding-top:32px;border-top:1px solid oklch(86% 0.015 95);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <img src="photos/brian-headshot-clean.png" width="64" height="64" alt="Brian Hong" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:oklch(27% 0.035 165);">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:16px;font-weight:500;"><a href="about.html">Brian Hong</a></div>
+        <div style="font-size:14px;color:oklch(42% 0.03 165);line-height:1.5;">Senior Salesforce admin and consultant in Columbus, OH. 10+ years in the ecosystem and six Salesforce certifications. I write about the stuff that makes orgs easier to run.</div>
+      </div>
+      <a href="#contact" style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;">Work with me →</a>
+    </div>
+
+    <div style="max-width:1200px;margin:96px auto 0;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:16px;">Keep reading</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <a href="salesforce-flow-migration.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Automation · 11 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Migrating Workflow Rules and Process Builder to Flow without breaking the org</span>
+        </a>
+        <a href="center-of-excellence.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Governance · 14 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Standing up a Salesforce Center of Excellence from scratch</span>
+        </a>
+        <a href="field-notes.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Field notes</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">See all notes →</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
+})();
+</script>
+</body>
+</html>

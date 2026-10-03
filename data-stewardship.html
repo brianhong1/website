@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Salesforce Data Stewardship Is a People Problem First | Brian Hong</title>
 <meta name="description" content="Salesforce data stewardship starts with people. Validation rules catch typos; clear owners, fewer fields, and a weekly habit fix why reps skip fields.">
 <link rel="canonical" href="https://brianhong.com/data-stewardship.html">
@@ -473,15 +476,16 @@
     </div>
     <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
-      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="mailto:bghong1@gmail.com" style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Email me →</a>
       <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
       <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
     </div>
     <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
       <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
-      <div style="display:flex;gap:24px;">
+      <div style="display:flex;gap:12px 24px;flex-wrap:wrap;">
         <a href="index.html">Home</a>
         <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="mailto:bghong1@gmail.com">bghong1@gmail.com</a>
         <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
         <a href="#top">Back to top ↑</a>
       </div>
@@ -494,7 +498,6 @@
 (function(){
   var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
   if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
-  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
 })();
 </script>
 </body>

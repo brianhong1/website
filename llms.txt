@@ -1,6 +1,6 @@
 # Brian Hong
 
-> Salesforce consultant and senior Salesforce admin based in Columbus, Ohio, with 12 years in the Salesforce ecosystem and 6 active Salesforce certifications. Available for full-time roles (Senior Salesforce Admin, Salesforce Manager, RevOps) and contract or consulting projects. Works remotely or hybrid in Columbus, OH.
+> Senior Salesforce Administrator, RevOps specialist, and Salesforce consultant based in Columbus, Ohio, with 12 years in the Salesforce ecosystem and 6 active Salesforce certifications. Available for full-time roles (Senior Salesforce Administrator, Salesforce Manager, Revenue Operations) and contract or consulting projects. Works remotely or hybrid in Columbus, OH.
 
 Brian automates manual processes, fixes data quality, and sets up governance and Centers of Excellence so sales and service teams can spend their time on customers. He has supported orgs from 200 users to 60,000+ users across enterprise SaaS, ed tech, supply chain, logistics, and nonprofits.
 
@@ -26,8 +26,9 @@ Brian automates manual processes, fixes data quality, and sets up governance and
 
 ## Services
 
-- Full-time: Senior Salesforce Admin or Salesforce Manager; building and leading a Salesforce Center of Excellence
+- Full-time: Senior Salesforce Administrator, Salesforce Manager, or Revenue Operations; building and leading a Salesforce Center of Excellence
 - Contract and consulting: org health checks and cleanup; Sales Cloud, Service Cloud, and CPQ implementations; automation and data quality projects
+- Web design: website design and build for small teams and nonprofits (designed and built brianhong.com)
 - Pro bono: 10 nonprofit projects and 400+ volunteer hours
 
 ## Expertise
@@ -56,7 +57,10 @@ Brian automates manual processes, fixes data quality, and sets up governance and
 
 - [Home](https://brianhong.com/): Overview, services, case studies, recommendations, experience, expertise, certifications, and contact
 - [FAQ](https://brianhong.com/faq.html): Answers about hiring a Salesforce consultant, including when you need one, what they do, implementation process, timelines, managed services, cost, post-launch support, and working with Columbus, Ohio companies
-- [Field notes](https://brianhong.com/field-notes.html): Short write-ups on Salesforce governance, technical debt, data quality, automation, AI readiness, and hiring a consultant
+- [Field notes](https://brianhong.com/field-notes.html): Short write-ups on Salesforce governance, technical debt, data quality, automation, AI readiness, RevOps, and web design
+- [Salesforce lead routing and speed-to-lead: a RevOps playbook](https://brianhong.com/salesforce-lead-routing.html): Field note on RevOps. What lead routing covers, why leads stall between marketing and sales, assignment rules vs. Flow vs. routing tools, MQL and ownership decisions, handoff to Salesloft or Outreach cadences, Slack alerts, measuring speed-to-lead, and a 30-60-90 day plan
+- [Auditing quote-to-cash in Salesforce: Closed Won data you can trust](https://brianhong.com/salesforce-quote-to-cash-audit.html): Field note on RevOps. What quote-to-cash covers, signs the data can't be trusted, tracing a deal end to end, CPQ bundles, product rules and approvals, gating Closed Won on the PO and order form, stewardship of opportunity data, an audit scorecard, and a 30-60-90 day plan
+- [How I designed and built brianhong.com](https://brianhong.com/building-brianhong-com.html): Web design case study. Audience brief, before and after, information architecture with 301 redirects, an OKLCH color and type system, hand-built HTML without a framework, structured data and llms.txt, and accessibility details
 - [Standing up a Salesforce Center of Excellence from scratch](https://brianhong.com/center-of-excellence.html): Field note on governance. Decision rights, operating models, the intake-prioritize-release-measure loop, architecture guardrails, environments, KPIs, and a 90-day plan
 - [Salesforce data stewardship is a people problem first](https://brianhong.com/data-stewardship.html): Field note on data quality. Owner, steward, and custodian roles, why fields go empty, critical data elements, stage-gated requirements, a weekly review habit, metrics, and a 60-day plan
 - [Migrating Workflow Rules and Process Builder to Flow without breaking the org](https://brianhong.com/salesforce-flow-migration.html): Field note on automation. What end of support means, inventorying rules and processes, retire-consolidate-rebuild decisions, limits of the Migrate to Flow tool, how old concepts map to Flow, behavior changes, testing and cutover, and a 12-week plan

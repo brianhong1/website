@@ -1,6 +1,6 @@
 # Brian Hong — Personal Website
 
-Personal portfolio and professional website for Brian Hong, Salesforce Solutions Architect.
+Personal portfolio and professional website for Brian Hong, Senior Salesforce Administrator, RevOps specialist, and Salesforce consultant.
 
 ## Overview
 

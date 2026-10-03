@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I Designed and Built brianhong.com: A Web Design Case Study | Brian Hong</title>
+<meta name="description" content="A web design case study: how Brian Hong redesigned brianhong.com, from information architecture and a color and type system to hand-built HTML, structured data, and 301 redirects.">
+<link rel="canonical" href="https://brianhong.com/building-brianhong-com.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-02T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-10-02T00:00:00-04:00">
+<meta property="og:url" content="https://brianhong.com/building-brianhong-com.html">
+<meta property="og:title" content="How I designed and built brianhong.com">
+<meta property="og:description" content="A web design case study: how Brian Hong redesigned brianhong.com, from information architecture and a color and type system to hand-built HTML, structured data, and 301 redirects.">
+<meta property="og:image" content="https://brianhong.com/photos/building-brianhong-com.png">
+<meta property="og:image:alt" content="Fewer pages, more signal: Audit, Design, Build, Measure">
+<meta property="og:site_name" content="Brian Hong">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How I designed and built brianhong.com">
+<meta name="twitter:description" content="A web design case study: how Brian Hong redesigned brianhong.com, from information architecture and a color and type system to hand-built HTML, structured data, and 301 redirects.">
+<meta name="twitter:image" content="https://brianhong.com/photos/building-brianhong-com.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://brianhong.com/building-brianhong-com.html#article",
+      "headline": "How I designed and built brianhong.com",
+      "description": "A web design case study: how Brian Hong redesigned brianhong.com, from information architecture and a color and type system to hand-built HTML, structured data, and 301 redirects.",
+      "url": "https://brianhong.com/building-brianhong-com.html",
+      "mainEntityOfPage": "https://brianhong.com/building-brianhong-com.html",
+      "image": "https://brianhong.com/photos/building-brianhong-com.png",
+      "datePublished": "2026-10-02T00:00:00-04:00",
+      "dateModified": "2026-10-02T00:00:00-04:00",
+      "articleSection": "Web design",
+      "keywords": "Web design, Information architecture, Technical SEO, Structured data, Accessibility",
+      "author": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "publisher": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "isPartOf": {
+        "@id": "https://brianhong.com/field-notes.html#blog"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brianhong.com/building-brianhong-com.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who designed and built brianhong.com?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Brian Hong designed and built brianhong.com himself, in hand-written HTML and CSS, hosted on Vercel. The redesign launched in September 2026."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why build a site without a framework?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A small content site doesn’t need one. Static HTML loads quickly, has no build step to maintain, and keeps working for years without dependency updates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you redesign a site without losing search rankings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Map every old URL to the page that replaces it and add a permanent 301 redirect for each one. Keep canonical tags accurate, update the sitemap to list only live pages, and resubmit it in Search Console."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Brian Hong build websites for other organizations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. He takes on a small number of website design and build projects for small teams and nonprofits, alongside his Salesforce work."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/",
+      "image": "https://brianhong.com/photos/brian-headshot-clean.png",
+      "jobTitle": "Senior Salesforce Administrator",
+      "hasOccupation": [
+        {
+          "@type": "Occupation",
+          "name": "Senior Salesforce Administrator"
+        },
+        {
+          "@type": "Occupation",
+          "name": "Salesforce Consultant"
+        },
+        {
+          "@type": "Occupation",
+          "name": "Revenue Operations"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianghong",
+        "https://www.salesforce.com/trailblazer/brianghong"
+      ],
+      "knowsAbout": [
+        "Salesforce",
+        "Sales Cloud",
+        "Service Cloud",
+        "Salesforce CPQ",
+        "Salesforce Flow",
+        "Agentforce",
+        "CRM administration",
+        "Revenue Operations",
+        "Go-to-market systems",
+        "Lead routing",
+        "Quote-to-cash",
+        "Data governance",
+        "Web design"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://brianhong.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://brianhong.com/field-notes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How I designed and built brianhong.com",
+          "item": "https://brianhong.com/building-brianhong-com.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7DQ6CZVNX8');
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden]{display:none !important}
+.note{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.note-toc{display:flex;flex-direction:column;gap:4px;max-width:360px}
+@media (min-width:960px){.note{grid-template-columns:220px minmax(0,880px);gap:clamp(40px,6vw,96px);align-items:start}.note-toc{position:sticky;top:32px}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:28px 28px 0 0;margin-top:24px;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);">
+    <article>
+    <div style="max-width:1200px;margin:0 auto;">
+      <a href="field-notes.html" style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(42% 0.03 165);">← All field notes</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin:40px 0 20px;">
+        <time datetime="2026-10-02">Oct 2026</time><span>Web design</span><span>4 min</span>
+      </div>
+      <h1 style="font-size:clamp(34px,4.6vw,64px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 32px;max-width:1200px;text-wrap:balance;">How I designed and built brianhong.com</h1>
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:oklch(35% 0.03 165);margin:0 0 48px;max-width:760px;text-wrap:pretty;">A personal site cut down to a few pages that each do one job. Plain HTML, no framework, built for people, search, and AI.</p>
+    </div>
+    <div style="max-width:1200px;margin:0 auto clamp(48px,7vw,88px);">
+      <img src="photos/building-brianhong-com.png" width="1920" height="920" alt="Fewer pages, more signal: Audit, Design, Build, Measure" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:16px;display:block;">
+    </div>
+
+    <div class="note">
+      <nav class="note-toc" aria-label="In this note">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">In this note</div>
+        <a href="#sec-1" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">01</span>
+          <span>The brief: who the site is for</span>
+        </a>
+        <a href="#sec-2" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">02</span>
+          <span>Before and after</span>
+        </a>
+        <a href="#sec-3" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">03</span>
+          <span>Information architecture: fewer pages, one job each</span>
+        </a>
+        <a href="#sec-4" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">04</span>
+          <span>A small visual system</span>
+        </a>
+        <a href="#sec-5" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">05</span>
+          <span>Built without a framework</span>
+        </a>
+        <a href="#sec-6" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">06</span>
+          <span>SEO, AEO, and GEO from the start</span>
+        </a>
+        <a href="#sec-7" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">07</span>
+          <span>Accessibility details</span>
+        </a>
+        <a href="#sec-8" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">08</span>
+          <span>What this means for your site</span>
+        </a>
+        <a href="#sec-9" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">09</span>
+          <span>Frequently asked questions</span>
+        </a>
+      </nav>
+      <div style="min-width:0;font-size:18.5px;line-height:1.8;color:oklch(28% 0.03 165);">
+        <p style="margin:0 0 28px;text-wrap:pretty;">The first version of this site did what most personal sites do. It said everything, on a lot of pages. There was a blue gradient hero, a circular headshot, seven navigation links, a dozen case study pages, and two long SEO articles. It had all the information and almost none of the signal.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The redesign started with one question: who opens this site, and what do they need in the first ten seconds? The answer shaped every decision after that, from cutting pages to the type scale.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">I designed and built it myself, in plain HTML and CSS, hosted on Vercel. This note walks through the decisions, because the same approach works for small business and nonprofit sites, which I also take on.</p>
+        <h2 id="sec-1" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">The brief: who the site is for</h2>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Recruiters and hiring managers</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Need the title, years, certifications, and proof in one scroll, plus a resume link that’s always visible.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Ops and sales leaders</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Have a messy org and want to know if I’ve fixed one like it. They need outcomes, not a list of tools.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Search engines and AI assistants</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Need clear entities and consistent facts on every page, so the answer to ‘who is Brian Hong’ is the same everywhere.</span>
+          </li>
+        </ul>
+        <h2 id="sec-2" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Before and after</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px;margin:16px 0 44px;">
+          <figure style="margin:0;display:flex;flex-direction:column;gap:10px;"><img src="photos/site-before.jpg" width="1440" height="900" alt="The previous brianhong.com homepage: blue gradient, circular headshot, seven nav links" loading="lazy" style="width:100%;height:auto;border-radius:12px;border:1px solid oklch(86% 0.015 95);display:block;"><figcaption style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);">Before · March 2026</figcaption></figure>
+          <figure style="margin:0;display:flex;flex-direction:column;gap:10px;"><img src="photos/site-after.jpg" width="1440" height="900" alt="The redesigned brianhong.com homepage: dark green, large headline, status line, and key numbers" loading="lazy" style="width:100%;height:auto;border-radius:12px;border:1px solid oklch(86% 0.015 95);display:block;"><figcaption style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);">After · September 2026</figcaption></figure>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The old hero led with a name and a list of labels. The new one leads with what I do in plain language, a status line saying I’m open to work, and four numbers a recruiter can check in a few seconds.</p>
+        <h2 id="sec-3" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Information architecture: fewer pages, one job each</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Twelve legacy pages were folded in: case studies became cards on the homepage, the long SEO guides became the <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="faq.html">FAQ</a>, and the old blog became <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="field-notes.html">field notes</a>. Every page that’s left has one job and one search intent.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Nothing was deleted without a redirect. Each retired URL gets a permanent 301 to the page that replaced it, so old links and search rankings carry over.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// vercel.json: retire a page without losing its links</div>
+          <div>{ &quot;source&quot;: &quot;/projects(\\.html)?&quot;,</div>
+          <div style="color:oklch(72% 0.03 150);">  &quot;destination&quot;: &quot;/#work&quot;, &quot;permanent&quot;: true }</div>
+        </div>
+        <h2 id="sec-4" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A small visual system</h2>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Color in OKLCH</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Three working colors: a deep green ground, a warm cream, and one lime accent saved for things that matter. OKLCH keeps lightness consistent across tints, so contrast is predictable.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Three typefaces, three jobs</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Geist for reading, Geist Mono for labels and metadata, and Instrument Serif italic for a single word of emphasis per headline.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Fluid type and spacing</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Headlines and padding scale with clamp() instead of breakpoints, so the layout holds from a phone to a wide monitor.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Repeatable pieces</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Stat rows, outcome pills, numbered lists, and a field-note template, so each new page is assembled, not designed from scratch.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The note images, like the one at the top of this page, come from the same system: one HTML template rendered to PNG, so every share card matches.</p>
+        <h2 id="sec-5" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Built without a framework</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The site is static HTML with inline styles and a few small scripts: a mobile menu toggle, a filter on the field notes page, and an email link that’s assembled on click to keep scrapers out. There’s no build step and no client-side framework, so pages are light and nothing breaks when dependencies age.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Layouts use CSS grid with auto-fit columns, so cards reflow without media queries. The few breakpoints that exist handle the navigation and the field-note table of contents.</p>
+        <h2 id="sec-6" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">SEO, AEO, and GEO from the start</h2>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">One entity everywhere</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Every page carries the same Person record in JSON-LD with a shared @id, so search engines connect the pages to one person with one job title.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Answers in the markup</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">FAQ sections use FAQPage schema, field notes use BlogPosting with breadcrumbs, and answers are written to stand alone when quoted.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">llms.txt</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A plain-text summary of who I am, what I do, and which page answers what, written for AI assistants that read it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Titles by intent</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Each page targets one phrase: the homepage for Senior Salesforce Administrator and RevOps, the about page for consultant, field notes for their topic.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Canonicals and sitemap</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Every page declares its canonical URL, and the sitemap lists only live pages with real last-modified dates.</span>
+          </li>
+        </ul>
+        <h2 id="sec-7" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Accessibility details</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Visible focus outlines in the accent color, a menu button that reports its state with aria-expanded, real headings in order, alt text on every image, and width and height on images so the page doesn’t jump while it loads. Body text keeps line lengths short enough to read comfortably.</p>
+        <h2 id="sec-8" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What this means for your site</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">I take on a small number of website projects for small teams and nonprofits: a clear structure, a simple visual system, clean HTML that’s easy to maintain, and the technical SEO done properly from the first page. If your site has grown into a pile of pages nobody owns, <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="#contact">get in touch</a>.</p>
+        <h2 id="sec-9" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Frequently asked questions</h2>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Who designed and built brianhong.com?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Brian Hong designed and built brianhong.com himself, in hand-written HTML and CSS, hosted on Vercel. The redesign launched in September 2026.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Why build a site without a framework?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A small content site doesn’t need one. Static HTML loads quickly, has no build step to maintain, and keeps working for years without dependency updates.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How do you redesign a site without losing search rankings?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Map every old URL to the page that replaces it and add a permanent 301 redirect for each one. Keep canonical tags accurate, update the sitemap to list only live pages, and resubmit it in Search Console.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Does Brian Hong build websites for other organizations?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Yes. He takes on a small number of website design and build projects for small teams and nonprofits, alongside his Salesforce work.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 0;">
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Web design</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Information architecture</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Technical SEO</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Structured data</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Accessibility</span>
+        </div>
+      </div>
+    </div>
+    </article>
+
+    <div style="max-width:1200px;margin:96px auto 0;padding-top:32px;border-top:1px solid oklch(86% 0.015 95);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <img src="photos/brian-headshot-clean.png" width="64" height="64" alt="Brian Hong" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:oklch(27% 0.035 165);">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:16px;font-weight:500;"><a href="about.html">Brian Hong</a></div>
+        <div style="font-size:14px;color:oklch(42% 0.03 165);line-height:1.5;">Senior Salesforce Administrator and consultant in Columbus, OH. 12 years in the ecosystem and six Salesforce certifications. I write about the stuff that makes orgs easier to run.</div>
+      </div>
+      <a href="#contact" style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;">Work with me →</a>
+    </div>
+
+    <div style="max-width:1200px;margin:96px auto 0;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:16px;">Keep reading</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <a href="index.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Home</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">See the result: the brianhong.com homepage</span>
+        </a>
+        <a href="salesforce-lead-routing.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">RevOps · Field note</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Salesforce lead routing and speed-to-lead: a RevOps playbook</span>
+        </a>
+        <a href="field-notes.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Field notes</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">See all notes →</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
+})();
+</script>
+</body>
+</html>

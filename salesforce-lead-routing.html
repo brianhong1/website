@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salesforce Lead Routing and Speed-to-Lead: A RevOps Playbook | Brian Hong</title>
+<meta name="description" content="A RevOps playbook for Salesforce lead routing: assignment rules vs. Flow, MQL ownership, Salesloft and Outreach handoffs, Slack alerts, and measuring speed-to-lead.">
+<link rel="canonical" href="https://brianhong.com/salesforce-lead-routing.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-02T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-10-02T00:00:00-04:00">
+<meta property="og:url" content="https://brianhong.com/salesforce-lead-routing.html">
+<meta property="og:title" content="Salesforce lead routing and speed-to-lead: a RevOps playbook">
+<meta property="og:description" content="A RevOps playbook for Salesforce lead routing: assignment rules vs. Flow, MQL ownership, Salesloft and Outreach handoffs, Slack alerts, and measuring speed-to-lead.">
+<meta property="og:image" content="https://brianhong.com/photos/lead-routing-speed-to-lead.png">
+<meta property="og:image:alt" content="Route it fast, then follow up: Capture, Qualify, Route, Follow up">
+<meta property="og:site_name" content="Brian Hong">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Salesforce lead routing and speed-to-lead: a RevOps playbook">
+<meta name="twitter:description" content="A RevOps playbook for Salesforce lead routing: assignment rules vs. Flow, MQL ownership, Salesloft and Outreach handoffs, Slack alerts, and measuring speed-to-lead.">
+<meta name="twitter:image" content="https://brianhong.com/photos/lead-routing-speed-to-lead.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://brianhong.com/salesforce-lead-routing.html#article",
+      "headline": "Salesforce lead routing and speed-to-lead: a RevOps playbook",
+      "description": "A RevOps playbook for Salesforce lead routing: assignment rules vs. Flow, MQL ownership, Salesloft and Outreach handoffs, Slack alerts, and measuring speed-to-lead.",
+      "url": "https://brianhong.com/salesforce-lead-routing.html",
+      "mainEntityOfPage": "https://brianhong.com/salesforce-lead-routing.html",
+      "image": "https://brianhong.com/photos/lead-routing-speed-to-lead.png",
+      "datePublished": "2026-10-02T00:00:00-04:00",
+      "dateModified": "2026-10-02T00:00:00-04:00",
+      "articleSection": "RevOps",
+      "keywords": "RevOps, Lead routing, Speed-to-lead, Sales engagement, Go-to-market",
+      "author": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "publisher": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "isPartOf": {
+        "@id": "https://brianhong.com/field-notes.html#blog"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brianhong.com/salesforce-lead-routing.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is lead routing in Salesforce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Lead routing in Salesforce is the set of rules that decides who owns a new lead, how they’re notified, and what follow-up starts. It usually combines lead assignment rules or Flow with account matching, round-robin, and a handoff to a sales engagement tool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I use lead assignment rules or Flow for routing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use assignment rules when routing is simple: geography, segment, or source into users or queues. Use a record-triggered Flow when you need account matching, round-robin, rep availability, or fallbacks. Pick one method so only one thing changes the lead owner."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is speed-to-lead?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Speed-to-lead is the time between a lead becoming ready for sales and the first real contact from a rep. Track it with two timestamps on the lead, MQL date and first touch date, and report the median and the share of leads contacted inside your SLA."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I route leads from existing customers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Match the lead to an existing account by domain or company before distributing, and assign it to the account owner. A tool or a Flow with a lookup on email domain handles this. Otherwise current customers get treated like cold prospects."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/",
+      "image": "https://brianhong.com/photos/brian-headshot-clean.png",
+      "jobTitle": "Senior Salesforce Administrator",
+      "hasOccupation": [
+        {
+          "@type": "Occupation",
+          "name": "Senior Salesforce Administrator"
+        },
+        {
+          "@type": "Occupation",
+          "name": "Salesforce Consultant"
+        },
+        {
+          "@type": "Occupation",
+          "name": "Revenue Operations"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianghong",
+        "https://www.salesforce.com/trailblazer/brianghong"
+      ],
+      "knowsAbout": [
+        "Salesforce",
+        "Sales Cloud",
+        "Service Cloud",
+        "Salesforce CPQ",
+        "Salesforce Flow",
+        "Agentforce",
+        "CRM administration",
+        "Revenue Operations",
+        "Go-to-market systems",
+        "Lead routing",
+        "Quote-to-cash",
+        "Data governance",
+        "Web design"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://brianhong.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://brianhong.com/field-notes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Salesforce lead routing and speed-to-lead: a RevOps playbook",
+          "item": "https://brianhong.com/salesforce-lead-routing.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7DQ6CZVNX8');
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden]{display:none !important}
+.note{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.note-toc{display:flex;flex-direction:column;gap:4px;max-width:360px}
+@media (min-width:960px){.note{grid-template-columns:220px minmax(0,880px);gap:clamp(40px,6vw,96px);align-items:start}.note-toc{position:sticky;top:32px}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:28px 28px 0 0;margin-top:24px;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);">
+    <article>
+    <div style="max-width:1200px;margin:0 auto;">
+      <a href="field-notes.html" style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(42% 0.03 165);">← All field notes</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin:40px 0 20px;">
+        <time datetime="2026-10-02">Oct 2026</time><span>RevOps</span><span>6 min</span>
+      </div>
+      <h1 style="font-size:clamp(34px,4.6vw,64px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 32px;max-width:1200px;text-wrap:balance;">Salesforce lead routing and speed-to-lead: a RevOps playbook</h1>
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:oklch(35% 0.03 165);margin:0 0 48px;max-width:760px;text-wrap:pretty;">Most lead leakage isn’t a marketing problem. It happens in the gap between a form fill and the first touch, and routing is where you close it.</p>
+    </div>
+    <div style="max-width:1200px;margin:0 auto clamp(48px,7vw,88px);">
+      <img src="photos/lead-routing-speed-to-lead.png" width="1920" height="920" alt="Route it fast, then follow up: Capture, Qualify, Route, Follow up" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:16px;display:block;">
+    </div>
+
+    <div class="note">
+      <nav class="note-toc" aria-label="In this note">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">In this note</div>
+        <a href="#sec-1" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">01</span>
+          <span>What lead routing in Salesforce covers</span>
+        </a>
+        <a href="#sec-2" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">02</span>
+          <span>Why leads stall between marketing and sales</span>
+        </a>
+        <a href="#sec-3" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">03</span>
+          <span>Choosing a routing method: assignment rules, Flow, or a routing tool</span>
+        </a>
+        <a href="#sec-4" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">04</span>
+          <span>Define MQL and ownership before you build</span>
+        </a>
+        <a href="#sec-5" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">05</span>
+          <span>Hand off to the sales engagement tool</span>
+        </a>
+        <a href="#sec-6" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">06</span>
+          <span>Alerts reps actually act on</span>
+        </a>
+        <a href="#sec-7" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">07</span>
+          <span>How to measure speed-to-lead</span>
+        </a>
+        <a href="#sec-8" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">08</span>
+          <span>A 30-60-90 day lead routing plan</span>
+        </a>
+        <a href="#sec-9" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">09</span>
+          <span>Frequently asked questions</span>
+        </a>
+      </nav>
+      <div style="min-width:0;font-size:18.5px;line-height:1.8;color:oklch(28% 0.03 165);">
+        <p style="margin:0 0 28px;text-wrap:pretty;">Marketing hands over a lead that hit every scoring threshold. It sits in a queue overnight, gets assigned to a rep who is on PTO, and finally gets a generic email three days later. By then the buyer has booked a demo with someone else. Nobody did anything wrong on paper. The routing just wasn’t designed.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Lead routing in Salesforce is the set of rules that decides who owns a new lead, how fast they hear about it, and what happens next. Good routing is boring: the right rep gets the right lead in minutes, the follow-up starts automatically, and RevOps can prove it with a report.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">At Newsela I built Lead-to-Opportunity automation with Salesloft so reps could book meetings straight from the record, routed campaign members into cadences, and sent MQL assignments and stage changes to Slack. It cut manual entry by about 40%. This note is the playbook I’d use again.</p>
+        <h2 id="sec-1" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What lead routing in Salesforce covers</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Routing is more than the assignment rule. It’s a chain, and every link can drop the lead:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Capture</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Web-to-lead, form tools, list imports, events, and integrations. Each one needs the same required fields and the same source values, or routing has nothing to work with.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Qualify</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Scoring and the MQL decision. Usually lives in the marketing automation platform, but the status that lands in Salesforce is what routing reads.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Route</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Assignment rules, Flow, or a routing tool decide the owner, plus round-robin, territory, account matching, and fallbacks.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Follow up</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Notify the owner, enroll the lead in a cadence, and start the clock. Routing that ends at ‘owner assigned’ is only half built.</span>
+          </li>
+        </ul>
+        <h2 id="sec-2" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Why leads stall between marketing and sales</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">When I audit a routing setup, the same handful of problems show up:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Queues nobody watches</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Leads land in a queue as a safety net, and the queue becomes the destination. Every queue needs a named owner and an age alert.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Existing accounts ignored</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">A new lead from a current customer gets round-robined to a new-business rep instead of the account owner. Match to accounts before you distribute.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Out-of-office owners</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Round-robin keeps assigning to reps who are out. Without an availability flag, leads wait for someone who isn’t there.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Rules nobody can read</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Forty assignment rule entries built over five years, with order that matters and no documentation. Nobody wants to touch it, so nobody fixes it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Status drift</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Marketing says MQL, sales says Working, and the lead status picklist has eleven values that mean roughly the same thing. Routing can’t key off a status nobody agrees on.</span>
+          </li>
+        </ul>
+        <blockquote style="margin:64px 0;padding:0;font-family:'Instrument Serif',serif;font-size:clamp(30px,3.4vw,42px);line-height:1.3;color:oklch(22% 0.035 165);text-wrap:balance;">“A lead that waits in a queue isn’t a marketing number or a sales number. It’s nobody’s number.”</blockquote>
+        <h2 id="sec-3" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Choosing a routing method: assignment rules, Flow, or a routing tool</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">There are three common options. Pick the simplest one that handles your real rules, not the rules you might have next year.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Lead assignment rules</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Native, simple, and fine for routing by geography, segment, or source into users or queues. Weak at round-robin, account matching, and capacity.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Record-triggered Flow</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Handles account matching, round-robin with a counter, availability checks, and fallbacks. Keep the logic in one flow per object with clear decision elements, and document it. If you’re still on old automation, <a href="salesforce-flow-migration.html">migrate it to Flow</a> first.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Dedicated routing tool</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Worth it when you route across Leads, Contacts, and Accounts, need weighted capacity, or have many teams changing rules weekly. Adds cost and another admin surface.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Whichever you choose, use exactly one. Assignment rules plus a flow plus a tool that all touch OwnerId is the most common reason a lead ends up with the wrong person.</p>
+        <h2 id="sec-4" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Define MQL and ownership before you build</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Routing logic is easy to build and hard to agree on. Get these decisions written down and signed off by marketing and sales leadership before touching Flow:</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:640px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Routing decisions to agree on first</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Decision</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Example answer</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Owner</th></tr></thead>
+            <tbody><tr style="color:oklch(72% 0.03 150);"><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">What makes an MQL</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Score ≥ 60 and a business email</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Marketing ops</td></tr><tr style="color:oklch(72% 0.03 150);"><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Existing account?</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Goes to the account owner</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Sales leadership</td></tr><tr style="color:oklch(72% 0.03 150);"><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Distribution</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Round-robin within segment team</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Sales ops</td></tr><tr style="color:oklch(72% 0.03 150);"><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Unavailable rep</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Skip and assign to the next rep</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Sales ops</td></tr><tr style="color:oklch(72% 0.03 150);"><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">SLA</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">First touch within 1 business hour</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">VP Sales</td></tr><tr style="color:oklch(72% 0.03 150);"><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Recycle rule</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">No response after cadence → Nurture</td><td style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Marketing ops</td></tr></tbody>
+          </table>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The SLA row is the one most teams skip. Without it, there’s nothing to measure, and routing problems stay anecdotal.</p>
+        <h2 id="sec-5" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Hand off to the sales engagement tool</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Assignment isn’t the finish line. The first touch is. If reps use Salesloft or Outreach, the lead should enter the right cadence automatically when it’s routed, based on source, persona, or campaign.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Cadence by source</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Demo requests get a short, phone-heavy cadence. Content downloads get a slower, email-led one. Map them in a table, not in someone’s head.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Campaign members</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Event and webinar attendees come in as campaign members. Route them into the matching cadence so follow-up happens the same day.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Write back to Salesforce</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Activities, cadence status, and meetings booked must sync to the lead and opportunity. Otherwise reporting on speed-to-lead and conversion breaks.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Convert cleanly</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">When the meeting is booked, convert to Contact and Opportunity with the right account, campaign, and source. That’s where pipeline attribution starts.</span>
+          </li>
+        </ul>
+        <h2 id="sec-6" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Alerts reps actually act on</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Email notifications from Salesforce get filtered and ignored. A Slack message in the rep’s DM or team channel, with the lead’s name, company, source, and a link to the record, gets clicked.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Keep alerts narrow: new MQL assigned, SLA about to be breached, and stage changes on deals that matter. If every update pings Slack, reps mute the channel and you’re back to email.</p>
+        <h2 id="sec-7" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">How to measure speed-to-lead</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Speed-to-lead is the time between a lead becoming routable and the first real touch from a rep. Capture both timestamps on the record so you can report on it in Salesforce, not in a spreadsheet.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// Minutes from MQL to first touch (formula, Number)</div>
+          <div>(First_Touch_Date__c - MQL_Date__c) * 24 * 60</div>
+        </div>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <div style="color:oklch(88% 0.17 115);margin-bottom:8px;">// MQLs still waiting on a first touch</div>
+          <div>SELECT Id, Name, Owner.Name, LeadSource, MQL_Date__c FROM Lead</div>
+          <div style="color:oklch(72% 0.03 150);">WHERE MQL_Date__c != null AND First_Touch_Date__c = null AND IsConverted = false</div>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Set First_Touch_Date__c from the first logged call or sent email, not from a status change, since reps change status without contacting anyone. Then report median minutes by team and by source, and the share of MQLs touched inside the SLA.</p>
+        <h2 id="sec-8" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A 30-60-90 day lead routing plan</h2>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 1–30</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Map every lead source and every rule that touches OwnerId. Agree on the MQL definition, ownership rules, and SLA. Add MQL and first-touch timestamps and baseline speed-to-lead.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 31–60</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Consolidate routing into one method. Add account matching, availability, and a queue fallback with an owner. Turn on Slack alerts for new MQLs and SLA breaches.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 61–90</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Connect routing to cadences in your engagement tool. Publish a speed-to-lead dashboard by team and source. Review it with sales and marketing leadership every month.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Routing quality depends on data quality. If source values, account names, and lead status are a mess, start with <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="data-stewardship.html">data stewardship</a>, or the rules will route garbage very quickly.</p>
+        <h2 id="sec-9" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Frequently asked questions</h2>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What is lead routing in Salesforce?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Lead routing in Salesforce is the set of rules that decides who owns a new lead, how they’re notified, and what follow-up starts. It usually combines lead assignment rules or Flow with account matching, round-robin, and a handoff to a sales engagement tool.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Should I use lead assignment rules or Flow for routing?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Use assignment rules when routing is simple: geography, segment, or source into users or queues. Use a record-triggered Flow when you need account matching, round-robin, rep availability, or fallbacks. Pick one method so only one thing changes the lead owner.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What is speed-to-lead?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Speed-to-lead is the time between a lead becoming ready for sales and the first real contact from a rep. Track it with two timestamps on the lead, MQL date and first touch date, and report the median and the share of leads contacted inside your SLA.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How do I route leads from existing customers?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Match the lead to an existing account by domain or company before distributing, and assign it to the account owner. A tool or a Flow with a lookup on email domain handles this. Otherwise current customers get treated like cold prospects.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 0;">
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">RevOps</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Lead routing</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Speed-to-lead</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Sales engagement</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Go-to-market</span>
+        </div>
+      </div>
+    </div>
+    </article>
+
+    <div style="max-width:1200px;margin:96px auto 0;padding-top:32px;border-top:1px solid oklch(86% 0.015 95);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <img src="photos/brian-headshot-clean.png" width="64" height="64" alt="Brian Hong" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:oklch(27% 0.035 165);">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:16px;font-weight:500;"><a href="about.html">Brian Hong</a></div>
+        <div style="font-size:14px;color:oklch(42% 0.03 165);line-height:1.5;">Senior Salesforce Administrator and consultant in Columbus, OH. 12 years in the ecosystem and six Salesforce certifications. I write about the stuff that makes orgs easier to run.</div>
+      </div>
+      <a href="#contact" style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;">Work with me →</a>
+    </div>
+
+    <div style="max-width:1200px;margin:96px auto 0;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:16px;">Keep reading</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <a href="salesforce-quote-to-cash-audit.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">RevOps · Field note</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Auditing quote-to-cash in Salesforce: Closed Won data you can trust</span>
+        </a>
+        <a href="data-stewardship.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Data quality · 12 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Salesforce data stewardship is a people problem first</span>
+        </a>
+        <a href="field-notes.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Field notes</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">See all notes →</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="#contact" data-email style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+  document.querySelectorAll('[data-email]').forEach(function(a){a.addEventListener('click',function(){a.href='mai'+'lto:'+['bghong1','gmail.com'].join('@')+'?subject='+encodeURIComponent('Hello from brianhong.com');});});
+})();
+</script>
+</body>
+</html>

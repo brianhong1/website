@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Field Notes: Salesforce Governance, Data Quality &amp; Automation | Brian Hong</title>
-<meta name="description" content="Short write-ups on Salesforce automation, data quality, and governance from Brian Hong. Written for admins, ops leads, and anyone who has inherited a messy org.">
+<title>Field Notes: Salesforce Admin, RevOps &amp; Data Quality | Brian Hong</title>
+<meta name="description" content="Short write-ups on Salesforce administration, RevOps and go-to-market systems, data quality, and governance from Brian Hong. Written for admins, ops leads, and anyone who has inherited a messy org.">
 <link rel="canonical" href="https://brianhong.com/field-notes.html">
 <meta name="author" content="Brian Hong">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://brianhong.com/field-notes.html">
 <meta property="og:title" content="Field Notes | Brian Hong">
-<meta property="og:description" content="Short write-ups on automation, data quality, and running Salesforce like a product.">
+<meta property="og:description" content="Short write-ups on automation, data quality, RevOps, and running Salesforce like a product.">
 <meta property="og:image" content="https://brianhong.com/photos/center-of-excellence-loop.png">
 <meta property="og:image:alt" content="Clear owners, one loop: Intake, Prioritize, Release, Measure">
 <meta property="og:site_name" content="Brian Hong">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Field Notes | Brian Hong">
-<meta name="twitter:description" content="Short write-ups on automation, data quality, and running Salesforce like a product.">
+<meta name="twitter:description" content="Short write-ups on automation, data quality, RevOps, and running Salesforce like a product.">
 <meta name="twitter:image" content="https://brianhong.com/photos/center-of-excellence-loop.png">
 <script type="application/ld+json">
 {
@@ -28,9 +28,33 @@
       "@id": "https://brianhong.com/field-notes.html#blog",
       "url": "https://brianhong.com/field-notes.html",
       "name": "Field Notes",
-      "description": "Short write-ups on automation, data quality, and running Salesforce like a product.",
+      "description": "Short write-ups on automation, data quality, RevOps, and running Salesforce like a product.",
       "author": { "@id": "https://brianhong.com/#person" },
       "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "headline": "Salesforce lead routing and speed-to-lead: a RevOps playbook",
+          "url": "https://brianhong.com/salesforce-lead-routing.html",
+          "datePublished": "2026-10-02T00:00:00-04:00",
+          "image": "https://brianhong.com/photos/lead-routing-speed-to-lead.png",
+          "author": { "@id": "https://brianhong.com/#person" }
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "Auditing quote-to-cash in Salesforce: Closed Won data you can trust",
+          "url": "https://brianhong.com/salesforce-quote-to-cash-audit.html",
+          "datePublished": "2026-10-02T00:00:00-04:00",
+          "image": "https://brianhong.com/photos/quote-to-cash-audit.png",
+          "author": { "@id": "https://brianhong.com/#person" }
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "How I designed and built brianhong.com",
+          "url": "https://brianhong.com/building-brianhong-com.html",
+          "datePublished": "2026-10-02T00:00:00-04:00",
+          "image": "https://brianhong.com/photos/building-brianhong-com.png",
+          "author": { "@id": "https://brianhong.com/#person" }
+        },
         {
           "@type": "BlogPosting",
           "headline": "Standing up a Salesforce Center of Excellence from scratch",
@@ -78,13 +102,18 @@
       "name": "Brian Hong",
       "url": "https://brianhong.com/",
       "image": "https://brianhong.com/photos/brian-headshot-clean.png",
-      "jobTitle": "Salesforce Consultant",
+      "jobTitle": "Senior Salesforce Administrator",
+      "hasOccupation": [
+        { "@type": "Occupation", "name": "Senior Salesforce Administrator" },
+        { "@type": "Occupation", "name": "Salesforce Consultant" },
+        { "@type": "Occupation", "name": "Revenue Operations" }
+      ],
       "address": { "@type": "PostalAddress", "addressLocality": "Columbus", "addressRegion": "OH", "addressCountry": "US" },
       "sameAs": [
         "https://www.linkedin.com/in/brianghong",
         "https://www.salesforce.com/trailblazer/brianghong"
       ],
-      "knowsAbout": ["Salesforce", "Sales Cloud", "Service Cloud", "Salesforce CPQ", "Salesforce Flow", "Agentforce", "CRM administration", "RevOps", "Data governance"]
+      "knowsAbout": ["Salesforce", "Sales Cloud", "Service Cloud", "Salesforce CPQ", "Salesforce Flow", "Agentforce", "CRM administration", "Revenue Operations", "Go-to-market systems", "Lead routing", "Quote-to-cash", "Data governance", "Web design"]
     }
   ]
 }
@@ -165,13 +194,15 @@
     <div style="padding:clamp(48px,8vw,104px) clamp(20px,5vw,64px) 56px;">
       <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(72% 0.03 150);margin-bottom:24px;">Field notes</div>
       <h1 style="font-size:clamp(36px,6.4vw,100px);line-height:0.98;font-weight:500;letter-spacing:-0.045em;margin:0;">Notes from <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">inside</span> the org.</h1>
-      <p style="font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:oklch(80% 0.02 150);margin:32px 0 0;">Short write-ups on automation, data quality, and running Salesforce like a product. Written for admins, ops leads, and anyone who's inherited a messy org.</p>
+      <p style="font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:oklch(80% 0.02 150);margin:32px 0 0;">Short write-ups on automation, data quality, RevOps, and running Salesforce like a product. Written for admins, ops leads, and anyone who's inherited a messy org.</p>
       <div role="group" aria-label="Filter notes by topic" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:40px;">
         <button type="button" data-filter="All" aria-pressed="true">All</button>
         <button type="button" data-filter="Governance" aria-pressed="false">Governance</button>
         <button type="button" data-filter="Data quality" aria-pressed="false">Data quality</button>
         <button type="button" data-filter="Automation" aria-pressed="false">Automation</button>
         <button type="button" data-filter="AI" aria-pressed="false">AI</button>
+        <button type="button" data-filter="RevOps" aria-pressed="false">RevOps</button>
+        <button type="button" data-filter="Web design" aria-pressed="false">Web design</button>
       </div>
     </div>
 
@@ -191,6 +222,33 @@
     </div>
 
     <div style="padding:0 clamp(20px,5vw,64px) 96px;">
+
+      <a class="post" data-tag="RevOps" href="salesforce-lead-routing.html">
+        <span class="post-meta">Oct 2026</span>
+        <div class="post-body">
+          <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;margin:0 0 8px;">Salesforce lead routing and speed-to-lead: a RevOps playbook</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:oklch(76% 0.02 150);max-width:620px;margin:0;">Most lead leakage happens between a form fill and the first touch. Pick one routing method, agree on ownership and an SLA, and measure speed-to-lead in Salesforce.</p>
+        </div>
+        <span class="post-meta post-tag">RevOps · 6 min</span>
+      </a>
+
+      <a class="post" data-tag="RevOps" href="salesforce-quote-to-cash-audit.html">
+        <span class="post-meta">Oct 2026</span>
+        <div class="post-body">
+          <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;margin:0 0 8px;">Auditing quote-to-cash in Salesforce: Closed Won data you can trust</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:oklch(76% 0.02 150);max-width:620px;margin:0;">If finance rebuilds bookings in a spreadsheet, quote-to-cash has a leak. Trace a deal end to end, gate Closed Won on the paperwork, and score what you find.</p>
+        </div>
+        <span class="post-meta post-tag">RevOps · 5 min</span>
+      </a>
+
+      <a class="post" data-tag="Web design" href="building-brianhong-com.html">
+        <span class="post-meta">Oct 2026</span>
+        <div class="post-body">
+          <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;margin:0 0 8px;">How I designed and built brianhong.com</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:oklch(76% 0.02 150);max-width:620px;margin:0;">A personal site cut down to a few pages that each do one job. Plain HTML, a small visual system, and structured data for search and AI answers.</p>
+        </div>
+        <span class="post-meta post-tag">Web design · 4 min</span>
+      </a>
 
       <a class="post" data-tag="Governance" href="salesforce-tech-debt-audit.html">
         <span class="post-meta">Oct 2026</span>

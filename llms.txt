@@ -1,6 +1,6 @@
 # Brian Hong
 
-> Salesforce consultant and senior Salesforce admin based in Columbus, Ohio, with 10+ years in the Salesforce ecosystem and 6 active Salesforce certifications. Available for full-time roles (Senior Salesforce Admin, Salesforce Manager, RevOps) and contract or consulting projects. Works remotely or hybrid in Columbus, OH.
+> Salesforce consultant and senior Salesforce admin based in Columbus, Ohio, with 12 years in the Salesforce ecosystem and 6 active Salesforce certifications. Available for full-time roles (Senior Salesforce Admin, Salesforce Manager, RevOps) and contract or consulting projects. Works remotely or hybrid in Columbus, OH.
 
 Brian automates manual processes, fixes data quality, and sets up governance and Centers of Excellence so sales and service teams can spend their time on customers. He has supported orgs from 200 users to 60,000+ users across enterprise SaaS, ed tech, supply chain, logistics, and nonprofits.
 
@@ -9,7 +9,7 @@ Brian automates manual processes, fixes data quality, and sets up governance and
 - Name: Brian Hong
 - Location: Columbus, Ohio, USA (serves Columbus metro, Ohio, and clients nationwide; mostly remote)
 - Current role: Consultant, Talution Group (2026 to present)
-- Experience: 10+ years in Salesforce (2014 to present)
+- Experience: 12 years in Salesforce (2014 to present)
 - Availability: Open to full-time roles and contract/consulting work
 - Contact: bghong1@gmail.com
 - LinkedIn: https://www.linkedin.com/in/brianghong

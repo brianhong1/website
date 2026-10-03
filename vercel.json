@@ -1,0 +1,16 @@
+{
+  "redirects": [
+    { "source": "/blog(\\.html)?", "destination": "/field-notes.html", "permanent": true },
+    { "source": "/projects(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/closing-the-gap-between-sales-and-onboarding(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/contract-fulfillment-and-disbursements(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/from-slow-handoffs-to-instant-action(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/lost-deal-intelligence(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/salesforce-chat-to-messaging-migration(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/salesforce-jira-integration(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/salesforce-scholarship-program-automation(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/self-service-scholarship-status-tracker(\\.html)?", "destination": "/#work", "permanent": true },
+    { "source": "/what-does-a-salesforce-consultant-do(\\.html)?", "destination": "/faq.html", "permanent": true },
+    { "source": "/salesforce-consulting-services(\\.html)?", "destination": "/faq.html", "permanent": true }
+  ]
+}

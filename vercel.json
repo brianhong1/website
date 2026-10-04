@@ -11,6 +11,13 @@
     { "source": "/salesforce-scholarship-program-automation(\\.html)?", "destination": "/#work", "permanent": true },
     { "source": "/self-service-scholarship-status-tracker(\\.html)?", "destination": "/#work", "permanent": true },
     { "source": "/what-does-a-salesforce-consultant-do(\\.html)?", "destination": "/faq.html", "permanent": true },
-    { "source": "/salesforce-consulting-services(\\.html)?", "destination": "/faq.html", "permanent": true }
+    { "source": "/salesforce-consulting-services(\\.html)?", "destination": "/faq.html", "permanent": true },
+    { "source": "/homicide-victim-support/ohio-oregon-rights(\\.html)?", "destination": "/homicide-victim-support/which-rights-apply", "permanent": true },
+    { "source": "/homicide-victim-support.html","destination": "/homicide-victim-support", "permanent": true },
+    { "source": "/homicide-victim-support/:slug.html", "destination": "/homicide-victim-support/:slug", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/homicide-victim-support", "destination": "/homicide-victim-support.html" },
+    { "source": "/homicide-victim-support/:slug", "destination": "/homicide-victim-support/:slug.html" }
   ]
 }

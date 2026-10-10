@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>How to Tell If Your Salesforce Implementation Is Failing | Brian Hong</title>
+<meta name="description" content="Nine signs your Salesforce implementation is failing, how to check each one in your own org, a health scorecard, and when to fix, rescue, or start over.">
+<link rel="canonical" href="https://brianhong.com/salesforce-implementation-failing.html">
+<meta name="author" content="Brian Hong">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-08T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-10-08T00:00:00-04:00">
+<meta property="og:url" content="https://brianhong.com/salesforce-implementation-failing.html">
+<meta property="og:title" content="How to tell if your Salesforce implementation is failing">
+<meta property="og:description" content="Nine signs your Salesforce implementation is failing, how to check each one in your own org, a health scorecard, and when to fix, rescue, or start over.">
+<meta property="og:image" content="https://brianhong.com/photos/salesforce-implementation-failing.png">
+<meta property="og:image:alt" content="Go-live isn’t the finish line: adoption, data, delivery, ownership">
+<meta property="og:site_name" content="Brian Hong">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to tell if your Salesforce implementation is failing">
+<meta name="twitter:description" content="Nine signs your Salesforce implementation is failing, how to check each one in your own org, a health scorecard, and when to fix, rescue, or start over.">
+<meta name="twitter:image" content="https://brianhong.com/photos/salesforce-implementation-failing.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://brianhong.com/salesforce-implementation-failing.html#article",
+      "headline": "How to tell if your Salesforce implementation is failing",
+      "description": "Nine signs your Salesforce implementation is failing, how to check each one in your own org, a health scorecard, and when to fix, rescue, or start over.",
+      "url": "https://brianhong.com/salesforce-implementation-failing.html",
+      "mainEntityOfPage": "https://brianhong.com/salesforce-implementation-failing.html",
+      "image": "https://brianhong.com/photos/salesforce-implementation-failing.png",
+      "datePublished": "2026-10-08T00:00:00-04:00",
+      "dateModified": "2026-10-08T00:00:00-04:00",
+      "articleSection": "Strategy",
+      "keywords": "Salesforce implementation, Failed Salesforce implementation, Salesforce user adoption, Salesforce implementation rescue, Salesforce health check, CRM implementation failure, Lightning Usage App, Technical debt, Salesforce reimplementation",
+      "wordCount": 3207,
+      "author": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "publisher": {
+        "@id": "https://brianhong.com/#person"
+      },
+      "isPartOf": {
+        "@id": "https://brianhong.com/field-notes.html#blog"
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Salesforce implementation"
+        },
+        {
+          "@type": "Thing",
+          "name": "CRM implementation failure"
+        },
+        {
+          "@type": "Thing",
+          "name": "Salesforce user adoption"
+        },
+        {
+          "@type": "Thing",
+          "name": "Salesforce implementation rescue"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brianhong.com/salesforce-implementation-failing.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are the signs a Salesforce implementation is failing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The clearest signs are reps keeping their pipeline in spreadsheets, logins and record updates falling after launch, a forecast leadership rebuilds by hand, empty or wrong key fields, reports that contradict each other, a request backlog that only grows, automation errors nobody is alerted to, changes that break other things, and no internal owner. Three or more at once, and getting worse, means the implementation is failing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do Salesforce implementations fail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most Salesforce implementations fail for reasons outside the software: no measurable business goal, no executive sponsor, processes that were never agreed before they were automated, poor data migration, too much customization too early, and nobody who owns the org after go-live. The platform usually works. The ownership, the process, and the adoption plan are what’s missing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What percentage of CRM implementations fail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Estimates vary widely. Writing in Harvard Business Review, Scott Edinger noted that CIO magazine put the figure at around one-third of CRM projects, averaged across analyst reports that ranged from 18% to 69%. When he asked executives whether their CRM was helping the business grow, he put the failure rate closer to 90%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you measure Salesforce user adoption?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Measure three things: usage, data quality, and business results. Usage is logins plus records created and edited per user, which you can see in the Lightning Usage App and in standard reports. Data quality is how complete your key fields are. Business results are the outcomes the project was meant to improve. Review them at least once a month."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can a failed Salesforce implementation be fixed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, in most cases without rebuilding. If the data model fits how the business works, the fix is ownership, cleanup, and adoption: name an internal owner, stabilize the automation, remove what users don’t need, and repair the data leadership reports on. A structured recovery usually takes three to six months."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should we start over with a new Salesforce org?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually not. Reimplementing makes sense only when the data model itself doesn’t match how the business operates, or when custom code and automation are so tangled that nobody can maintain them. A new org built with the same missing owner, the same unagreed process, and the same data will fail the same way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long after go-live should Salesforce show results?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As a rule of thumb, usage should settle into a steady pattern within the first 30 to 60 days, and the outcomes the project was meant to deliver should be visible within two quarters. If adoption is still falling 90 days after go-live, treat it as a warning sign and not a slow start."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brianhong.com/#person",
+      "name": "Brian Hong",
+      "url": "https://brianhong.com/",
+      "image": "https://brianhong.com/photos/brian-headshot-clean.png",
+      "jobTitle": "Senior Salesforce Administrator",
+      "hasOccupation": [
+        {
+          "@type": "Occupation",
+          "name": "Senior Salesforce Administrator"
+        },
+        {
+          "@type": "Occupation",
+          "name": "Salesforce Consultant"
+        },
+        {
+          "@type": "Occupation",
+          "name": "Revenue Operations"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Columbus",
+        "addressRegion": "OH",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianghong",
+        "https://www.salesforce.com/trailblazer/brianghong"
+      ],
+      "knowsAbout": [
+        "Salesforce",
+        "Sales Cloud",
+        "Service Cloud",
+        "Salesforce CPQ",
+        "Salesforce Flow",
+        "Agentforce",
+        "CRM administration",
+        "Revenue Operations",
+        "Go-to-market systems",
+        "Lead routing",
+        "Quote-to-cash",
+        "Data governance",
+        "Duplicate management",
+        "Web design"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://brianhong.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Field notes",
+          "item": "https://brianhong.com/field-notes.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How to tell if your Salesforce implementation is failing",
+          "item": "https://brianhong.com/salesforce-implementation-failing.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7DQ6CZVNX8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7DQ6CZVNX8');
+</script>
+<style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: oklch(22% 0.035 165); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.75; }
+    a:focus-visible, button:focus-visible { outline: 2px solid oklch(88% 0.17 115); outline-offset: 3px; }
+    ::selection { background: oklch(88% 0.17 115); color: oklch(22% 0.035 165); }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+[data-bp="m"]{display:none}
+@media (max-width:859px){[data-bp="d"]{display:none}[data-bp="m"]{display:block}}
+#mnav[hidden]{display:none !important}
+.note{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.note-toc{display:flex;flex-direction:column;gap:4px;max-width:360px}
+@media (min-width:960px){.note{grid-template-columns:220px minmax(0,880px);gap:clamp(40px,6vw,96px);align-items:start}.note-toc{position:sticky;top:32px}}
+</style>
+</head>
+<body>
+
+<div id="top" style="font-family:'Geist',sans-serif;background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);min-height:100vh;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px clamp(20px,5vw,64px);flex-wrap:wrap;">
+    <a href="index.html" style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-size:17px;font-weight:600;letter-spacing:-0.02em;">Brian Hong</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(72% 0.03 150);">SFDC / RevOps</span>
+    </a>
+    <div data-bp="m">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 14px;border-radius:100px;font-size:13.5px;font-weight:500;">Let's talk</a>
+        <button data-menu aria-label="Menu" aria-controls="mnav" aria-expanded="false" style="width:44px;height:44px;border-radius:100px;border:1px solid oklch(40% 0.035 165);background:transparent;color:oklch(95% 0.012 95);font-size:13px;font-family:'Geist',sans-serif;cursor:pointer;">Menu</button>
+      </div>
+    </div>
+    <nav id="mnav" hidden aria-label="Mobile" style="width:100%">
+      <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid oklch(34% 0.035 165);margin-top:4px;">
+        <a href="index.html#work" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Work</a>
+        <a href="index.html#experience" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Experience</a>
+        <a href="index.html#expertise" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">Expertise</a>
+        <a href="index.html#about" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">About</a>
+        <a href="field-notes.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);color:oklch(88% 0.17 115);">Writing</a>
+        <a href="faq.html" style="padding:14px 0;font-size:17px;border-bottom:1px solid oklch(34% 0.035 165);">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="padding:14px 0;font-size:17px;color:oklch(88% 0.17 115);">Resume (PDF) →</a>
+      </div>
+    </nav>
+    <nav data-bp="d" aria-label="Main">
+      <div style="display:flex;gap:28px;align-items:center;font-size:14px;color:oklch(80% 0.02 150);">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#expertise">Expertise</a>
+        <a href="index.html#about">About</a>
+        <a href="field-notes.html" style="color:oklch(95% 0.012 95);border-bottom:1px solid oklch(88% 0.17 115);padding-bottom:2px;">Writing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="border:1px solid oklch(40% 0.035 165);padding:8px 15px;border-radius:100px;font-weight:500;">Resume →</a>
+        <a href="#contact" style="color:oklch(22% 0.035 165);background:oklch(88% 0.17 115);padding:9px 16px;border-radius:100px;font-weight:500;">Let's talk</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);border-radius:28px 28px 0 0;margin-top:24px;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);">
+    <article>
+    <div style="max-width:1200px;margin:0 auto;">
+      <a href="field-notes.html" style="font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(42% 0.03 165);">← All field notes</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin:40px 0 20px;">
+        <time datetime="2026-10-08">Oct 2026</time><span>Strategy</span><span>15 min</span>
+      </div>
+      <h1 style="font-size:clamp(34px,4.6vw,64px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;margin:0 0 32px;max-width:1200px;text-wrap:balance;">How to tell if your Salesforce implementation is failing</h1>
+      <p style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:oklch(35% 0.03 165);margin:0 0 48px;max-width:760px;text-wrap:pretty;">Failing implementations rarely crash. They go quiet, and the work moves back into spreadsheets.</p>
+    </div>
+    <div style="max-width:1200px;margin:0 auto clamp(48px,7vw,88px);">
+      <img src="photos/salesforce-implementation-failing.png" width="1920" height="920" alt="Go-live isn’t the finish line: adoption, data, delivery, ownership" fetchpriority="high" style="width:100%;aspect-ratio:1920/920;height:auto;object-fit:cover;border-radius:16px;display:block;">
+    </div>
+
+    <div class="note">
+      <nav class="note-toc" aria-label="In this note">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:12px;">In this note</div>
+        <a href="#sec-1" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">01</span>
+          <span>What a failing Salesforce implementation looks like</span>
+        </a>
+        <a href="#sec-2" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">02</span>
+          <span>Nine signs your Salesforce implementation is failing</span>
+        </a>
+        <a href="#sec-3" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">03</span>
+          <span>How to check each sign in your own org</span>
+        </a>
+        <a href="#sec-4" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">04</span>
+          <span>Signs of trouble before go-live</span>
+        </a>
+        <a href="#sec-5" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">05</span>
+          <span>Why Salesforce implementations fail</span>
+        </a>
+        <a href="#sec-6" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">06</span>
+          <span>A Salesforce implementation health scorecard</span>
+        </a>
+        <a href="#sec-7" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">07</span>
+          <span>Fix, rescue, or reimplement?</span>
+        </a>
+        <a href="#sec-8" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">08</span>
+          <span>A 30-60-90 day recovery plan</span>
+        </a>
+        <a href="#sec-9" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">09</span>
+          <span>When to bring in outside help</span>
+        </a>
+        <a href="#sec-10" style="display:flex;gap:12px;padding:8px 0;border-top:1px solid oklch(88% 0.015 95);font-size:14px;line-height:1.4;color:oklch(35% 0.03 165);">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(55% 0.03 165);padding-top:2px;">10</span>
+          <span>Frequently asked questions</span>
+        </a>
+      </nav>
+      <div style="min-width:0;font-size:18.5px;line-height:1.8;color:oklch(28% 0.03 165);">
+        <p style="margin:0 0 28px;text-wrap:pretty;">I spent seven years on Salesforce’s own internal IT team. A large part of that job was leading M&amp;A transitions: moving newly acquired companies onto an org that more than 60,000 employees already used. The lesson I took from it is the one I still build every engagement around. A migration succeeds or fails on adoption, not architecture. Go-live tells you the build is finished. It doesn’t tell you whether it worked.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;"><strong>The short answer:</strong> a Salesforce implementation is failing when people do their real work somewhere else and leadership doesn’t trust the numbers that come out of it. The clearest signs are shadow spreadsheets, falling logins, a forecast nobody believes, empty key fields, a backlog that only grows, and nobody inside the company who owns the org. You can measure most of them in an afternoon.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">I’ve spent 12 years in Salesforce orgs from 200 users to more than 60,000, as an in-house admin and as a consultant. Most of my current work is paying down technical debt and resolving Flow errors in orgs that have been live for years. This note covers the nine signs I look for, how to check each one in your own org, a scorecard, and how to decide between fixing, rescuing, and starting over.</p>
+        <h2 id="sec-1" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">What a failing Salesforce implementation looks like</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A failing Salesforce implementation is one that is live but isn’t producing the outcome it was bought for. The system works, users can log in, and the project was signed off. But the business still runs on spreadsheets, email, and exports, and leaders can’t rely on what Salesforce reports.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">That’s why failure is easy to miss. Nothing crashes, and nobody sends an alert. Usage drifts down and the workarounds multiply. A year later someone asks why the company pays for licenses it barely uses. It helps to separate three states that get lumped together:</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Unfinished</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Scope was cut to hit the launch date and phase two never arrived. People use what exists and keep asking for the rest. You finish this. You don’t rescue it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Messy</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The org works and people rely on it, but it carries years of unused fields, overlapping automation, and permission sprawl. That is technical debt, and a <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="salesforce-tech-debt-audit.html">tech debt audit</a> is the right tool.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Failing</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">People have stopped relying on it. Adoption and trust are both falling, and each quarter more work moves outside the system. This is the state the rest of this note is about.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The distinction matters because the fixes are different. An unfinished org needs delivery. A messy org needs cleanup. A failing org needs someone to find out why people left before anything else gets built.</p>
+        <h2 id="sec-2" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Nine signs your Salesforce implementation is failing</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">These are the nine signs I look for, roughly in the order they show up. The first five are about adoption and data. The last four are about delivery and ownership.</p>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">1. Real work happens in spreadsheets</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Reps keep their pipeline in a sheet and update Salesforce on Friday because a manager asks. Salesforce has become a reporting chore, not the place work gets done.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">2. Logins and updates are falling</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Usage peaks at launch and declines every month after. Or people still log in but create and edit almost nothing.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">3. Nobody trusts the forecast</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Leadership asks for an export and rebuilds the number by hand. Open opportunities sit with close dates in the past and stages nobody has updated.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">4. Key fields are empty or wrong</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The fields leadership reports on are blank, defaulted, or filled with whatever got past the validation rule. <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="salesforce-duplicate-management.html">Duplicates</a> pile up because nobody owns the data.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">5. Reports contradict each other</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Two dashboards show different numbers for the same metric, and meetings get spent arguing about which one is right.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">6. The backlog only grows</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Requests wait weeks or months. Eventually users stop asking, which looks like calm and is really the moment they gave up.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">7. Automation breaks and nobody is told</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Users hit errors when they save a record. Flow error emails go to a mailbox nobody reads, or to someone who left the company.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">8. Every change breaks something else</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Changes go straight into production with no sandbox testing and no release notes. Each fix causes the next problem.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">9. Nobody inside the company owns it</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The implementation partner has gone, and no named person decides priorities, says no to requests, or answers for the result.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">One of these on its own is normal. Every org has a few. Three or more at once, and getting worse from one quarter to the next, is an implementation that is failing.</p>
+        <blockquote style="margin:64px 0;padding:0;font-family:'Instrument Serif',serif;font-size:clamp(30px,3.4vw,42px);line-height:1.3;color:oklch(22% 0.035 165);text-wrap:balance;">“Users rarely tell you an implementation is failing. They just stop using it and open a spreadsheet.”</blockquote>
+        <h2 id="sec-3" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">How to check each sign in your own org</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">You can check most of these signs with standard reports and Setup pages, without buying a tool. Start with usage, then data, then how changes get made. The red flags below are the rules of thumb I use. They aren’t Salesforce benchmarks.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:820px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Where to look for each sign</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Sign</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Where to look</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Red flag</th></tr></thead>
+            <tbody><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Logins</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Lightning Usage App for daily and monthly active users, plus a Users report on Last Login</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">More than 20% of licensed users haven’t logged in for 30 days</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Real usage</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Reports on opportunities, activities, and cases created or edited per user in the last 30 days</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">People who log in but create or edit almost nothing</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Forecast</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Open opportunities with a close date in the past, and open opportunities with no activity in 30 days</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">More than 10% of open pipeline has a past close date</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Key fields</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">A report on the ten fields leadership actually reports on, showing blank vs. filled</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Any of them under 80% filled</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Conflicting reports</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">The reports behind your two most-used dashboards, compared filter by filter</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">The same metric defined two different ways</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Backlog</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Your request queue or ticketing tool</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Median request age over 30 days and rising</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Automation</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Paused and Failed Flow Interviews in Setup, and who receives Flow error emails in Process Automation Settings</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">The same error every week, or errors sent to someone who left</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Change control</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Setup Audit Trail, which lists setup changes from the last 180 days</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Changes made in production with no matching request</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Ownership</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Ask three leaders who owns Salesforce</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Three different answers, or none</td></tr></tbody>
+          </table>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Salesforce’s own guidance lines up with this. The Trailhead unit <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="https://trailhead.salesforce.com/content/learn/modules/user-adoption-metrics/measure-salesforce-usage" rel="noopener">Measure Salesforce Usage</a> recommends tracking the login rate over the last seven days, records created in the last 30, and who is not logging in and why, and reviewing the numbers at least once a month. The <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="https://admin.salesforce.com/lightning-usage-app" rel="noopener">Lightning Usage App</a> is free and already in your org: open the App Launcher and search for Usage.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Two cautions. Login rate is the weakest measure here, because someone can log in every day and do nothing. Always pair it with records created and edited. And the trend matters more than the number. An org at 70% and climbing is in better shape than one at 85% and falling.</p>
+        <h2 id="sec-4" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Signs of trouble before go-live</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Before go-live, a Salesforce implementation is in trouble when dates slip without a change in scope, the people who will use the system haven’t seen it, and testing or data migration is being squeezed to protect the launch date. These are the easiest problems to fix and the ones most often waved through.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Users haven’t touched it</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Demos have gone to sponsors and managers only. The first time a rep sees their new screen is in training, a week before launch.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Requirements came from one level</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The design reflects how leadership thinks the process works. Nobody sat with the people who do it every day.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">UAT is being shortened</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Testing gets cut from two weeks to three days to hold the date, and defects are deferred to after launch.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No data migration dry run</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Old data will be loaded for the first time during cutover weekend. Duplicates and bad mappings will be found by users.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Hours are burning faster than scope</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Most of the budget is spent and half the build remains, and nobody has reset the plan.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No plan for the day after</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Training is a single session, there’s no support channel, and nobody has been named to own the org once the partner leaves.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">If you see three of these, slow down. Moving a launch by two weeks is uncomfortable. Relaunching a system people have already written off is much harder, because the second time you’re asking them to trust something that already let them down.</p>
+        <h2 id="sec-5" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Why Salesforce implementations fail</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Salesforce implementations usually fail for reasons that have little to do with Salesforce. The common causes are no clear business outcome, no executive sponsor, processes that were never agreed before they were automated, poorly migrated data, too much customization too early, and nobody who owns the org after go-live.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The numbers are sobering. Writing in <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="https://hbr.org/2018/12/why-crm-projects-fail-and-how-to-make-them-more-successful" rel="noopener">Harvard Business Review</a>, Scott Edinger noted that CIO magazine put the CRM project failure rate at around one-third, averaged across analyst reports that ranged from 18% to 69%. When he asked executives whether their CRM was helping the business grow, he put the failure rate closer to 90%. The gap between those two figures is the point of this note. A project can be delivered on time and still fail the business.</p>
+        <ul style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No measurable goal</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The project was to “implement Salesforce.” Nobody wrote down what should be faster, cheaper, or more visible afterward, so nobody can say whether it worked.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No executive sponsor</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Leadership approved the budget and stepped back. When managers don’t run their meetings from Salesforce, reps learn it’s optional.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">The process was never agreed</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Sales, marketing, and finance each described a different process, and the build tried to serve all three. Automating a disagreement doesn’t settle it.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Bad data on day one</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Old records were loaded without cleanup. Users found duplicates and wrong owners in the first week and decided the system couldn’t be trusted.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Too much customization too early</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Every request became a field, a Flow, or code before anyone had used the standard features. The org got hard to change before it got useful.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">No owner after go-live</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">The partner delivered and left. Nobody inside the company was given the time, the authority, or the budget to keep it working.</span>
+          </li>
+        </ul>
+        <p style="margin:0 0 28px;text-wrap:pretty;">In my experience the last cause sits underneath most of the others. An org with a real owner recovers from a weak launch, because someone notices the spreadsheet coming back and asks why. An org without one drifts, however good the original build was. That owner might be an admin, a manager, or eventually a <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="center-of-excellence.html">Center of Excellence</a>. It has to be somebody.</p>
+        <blockquote style="margin:64px 0;padding:0;font-family:'Instrument Serif',serif;font-size:clamp(30px,3.4vw,42px);line-height:1.3;color:oklch(22% 0.035 165);text-wrap:balance;">“Go-live tells you the build is finished. It doesn’t tell you whether it worked.”</blockquote>
+        <h2 id="sec-6" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A Salesforce implementation health scorecard</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">To turn a feeling into a number, score the org from 0 to 2 in eight areas. A total of 12 or more is healthy, 7 to 11 is at risk, and 6 or less is failing. It takes about an hour and gives leadership something concrete to react to.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:860px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Salesforce implementation health scorecard</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Area</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">0 points</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">1 point</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">2 points</th></tr></thead>
+            <tbody><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Adoption</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Work happens outside Salesforce</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Used because managers insist</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Daily work happens in it</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Data</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Key fields mostly blank or wrong</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Reliable on some objects</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Key fields complete and trusted</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Reporting</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Leaders rebuild numbers in spreadsheets</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Dashboards used with caveats</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Decisions made from dashboards</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Automation</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Errors every week, nobody alerted</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Errors fixed after users complain</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Errors monitored and rare</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Delivery</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Requests wait months</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Urgent work ships, the roadmap doesn’t</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">A predictable release rhythm</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Change control</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Changes made in production</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Sandbox used for big changes</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Every change tested and documented</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Ownership</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">No named owner</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">An admin with no authority</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">An owner with a sponsor and a roadmap</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Outcomes</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">No goals were set, or none were met</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Some goals met</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Goals met and still measured</td></tr></tbody>
+          </table>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Have three people score it separately: an executive, a front-line manager, and someone who uses Salesforce all day. The gap between their scores is a finding in itself. When the executive scores 13 and the daily user scores 5, leadership is looking at a different system than the one people work in.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The bands are mine, and they’re deliberately rough. Use the score to start a conversation and to measure again in 90 days. A score is only useful if you can watch it move.</p>
+        <h2 id="sec-7" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Fix, rescue, or reimplement?</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Most failing Salesforce implementations should be fixed in place, not rebuilt. Fix when the data model is sound and the problems are adoption, data, and backlog. Run a rescue when automation and ownership have broken down. Reimplement only when the data model itself doesn’t match how the business works.</p>
+        <div style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);border-radius:14px;padding:24px 28px;margin:32px 0;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.7;overflow-x:auto;">
+          <table style="border-collapse:collapse;min-width:900px;font:inherit;">
+            <caption style="caption-side:top;text-align:left;color:oklch(88% 0.17 115);padding-bottom:8px;">// Three ways to recover a failing implementation</caption>
+            <thead><tr><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Option</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">When it fits</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">What it involves</th><th scope="col" style="padding:0 24px 0 0;text-align:left;vertical-align:top;font-weight:400;">Rough timeline</th></tr></thead>
+            <tbody><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Fix in place</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Score of 7 to 11. The structure is sound, but usage and data have slipped.</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Name an owner, clean up key data, simplify screens, retrain by role</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">1 to 3 months</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Rescue</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">Score of 6 or less. Automation is unreliable and nobody owns the org.</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">An assessment, a freeze on new work, stabilization, then a keep, fix, rebuild, or retire decision for each component</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">3 to 6 months</td></tr><tr style="color:oklch(72% 0.03 150);border-top:1px solid oklch(34% 0.035 165);"><th scope="row" style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;color:oklch(95% 0.012 95);">Reimplement</th><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">The data model doesn’t fit the business, or the customization can’t be maintained.</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">A new design, a migration, and a second launch</td><td style="padding:10px 24px 10px 0;text-align:left;vertical-align:top;font-weight:400;">6 to 12 months</td></tr></tbody>
+          </table>
+        </div>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Starting over is tempting because a new org feels like a clean slate. But a new org built with the same missing owner, the same unagreed process, and the same data will fail the same way, and it will cost a second implementation to find that out. Before anyone proposes a rebuild, ask what would be different this time besides the build.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Reimplementation is the right call in a few cases. The core objects were modeled for a business you no longer are. Several orgs were merged after acquisitions and their models conflict. Or there’s more custom code and automation than anyone on staff can explain. When so much of the org has to be replaced that there’s little left to keep, a new build is the cheaper path.</p>
+        <h2 id="sec-8" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">A 30-60-90 day recovery plan</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">A recovery works in three stages: stabilize the org, fix what users feel every day, and then rebuild trust in the numbers. Do them in that order. Trust in reporting can’t come back while the screens are painful and the automation is throwing errors.</p>
+        <ol style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:28px 40px;margin:16px 0 44px;">
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 1–30: Diagnose and stabilize</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Score the org and run the checks above. Name one internal owner. Fix the automation errors users hit most, route error emails to someone who reads them, and stop making changes directly in production.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 31–60: Fix what users feel</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Sit with five to ten users and watch them work. Remove fields nobody needs, cut clicks from the most common tasks, clear the top five complaints, and retrain by role instead of by feature.</span>
+          </li>
+          <li style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid oklch(84% 0.015 95);">
+            <strong style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:oklch(22% 0.035 165);line-height:1.4;">Days 61–90: Rebuild trust in the numbers</strong>
+            <span style="font-size:16px;line-height:1.65;color:oklch(35% 0.03 165);text-wrap:pretty;">Agree on definitions for the metrics leadership uses. Clean the fields behind them, publish one forecast dashboard, and have leaders run their meetings from it. Report adoption every month.</span>
+          </li>
+        </ol>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Tell users what you fixed. People come back to a system when they see their own complaints acted on, and that does more for adoption than another training session. Keeping the data clean after day 90 is a habit, and <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="data-stewardship.html">data stewardship</a> covers how to build it.</p>
+        <h2 id="sec-9" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">When to bring in outside help</h2>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Bring in outside help when nobody on staff has the time or the distance to run the diagnosis, when the scorecard lands at 6 or less, or when the people who built the org are the ones being asked to judge it. An outside reviewer has no attachment to past decisions.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Ask for a time-boxed assessment with written findings, not an open-ended retainer. You want a scored list of what’s wrong, a recommendation to fix, rescue, or reimplement, and a plan your own team can carry out. Whoever does the work, the handover should go to an internal owner. Which kind of help fits depends on the work, and I’ve compared the options in <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="salesforce-consultant-vs-admin-vs-managed-services.html">Salesforce consultant vs. admin vs. managed services</a>. The <a style="text-decoration:underline;text-decoration-color:oklch(80% 0.02 150);text-underline-offset:3px;" href="faq.html">consulting FAQ</a> covers how engagements usually run.</p>
+        <p style="margin:0 0 28px;text-wrap:pretty;">If you’re not sure where your org stands, start with the scorecard. It costs an hour, and it will tell you whether you have an unfinished project, a messy org, or an implementation that’s failing.</p>
+        <h2 id="sec-10" style="scroll-margin-top:24px;font-size:clamp(26px,2.6vw,32px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:oklch(22% 0.035 165);margin:72px 0 20px;">Frequently asked questions</h2>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What are the signs a Salesforce implementation is failing?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">The clearest signs are reps keeping their pipeline in spreadsheets, logins and record updates falling after launch, a forecast leadership rebuilds by hand, empty or wrong key fields, reports that contradict each other, a request backlog that only grows, automation errors nobody is alerted to, changes that break other things, and no internal owner. Three or more at once, and getting worse, means the implementation is failing.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Why do Salesforce implementations fail?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Most Salesforce implementations fail for reasons outside the software: no measurable business goal, no executive sponsor, processes that were never agreed before they were automated, poor data migration, too much customization too early, and nobody who owns the org after go-live. The platform usually works. The ownership, the process, and the adoption plan are what’s missing.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">What percentage of CRM implementations fail?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Estimates vary widely. Writing in Harvard Business Review, Scott Edinger noted that CIO magazine put the figure at around one-third of CRM projects, averaged across analyst reports that ranged from 18% to 69%. When he asked executives whether their CRM was helping the business grow, he put the failure rate closer to 90%.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How do you measure Salesforce user adoption?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Measure three things: usage, data quality, and business results. Usage is logins plus records created and edited per user, which you can see in the Lightning Usage App and in standard reports. Data quality is how complete your key fields are. Business results are the outcomes the project was meant to improve. Review them at least once a month.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Can a failed Salesforce implementation be fixed?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Yes, in most cases without rebuilding. If the data model fits how the business works, the fix is ownership, cleanup, and adoption: name an internal owner, stabilize the automation, remove what users don’t need, and repair the data leadership reports on. A structured recovery usually takes three to six months.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">Should we start over with a new Salesforce org?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">Usually not. Reimplementing makes sense only when the data model itself doesn’t match how the business operates, or when custom code and automation are so tangled that nobody can maintain them. A new org built with the same missing owner, the same unagreed process, and the same data will fail the same way.</p>
+        <h3 style="font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.35;color:oklch(22% 0.035 165);margin:32px 0 8px;">How long after go-live should Salesforce show results?</h3>
+        <p style="margin:0 0 28px;text-wrap:pretty;">As a rule of thumb, usage should settle into a steady pattern within the first 30 to 60 days, and the outcomes the project was meant to deliver should be visible within two quarters. If adoption is still falling 90 days after go-live, treat it as a warning sign and not a slow start.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 0;">
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Strategy</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Salesforce implementation</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">User adoption</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Implementation rescue</span>
+          <span style="border:1px solid oklch(84% 0.015 95);border-radius:100px;padding:6px 13px;font-size:13px;line-height:1.4;">Org health</span>
+        </div>
+      </div>
+    </div>
+    </article>
+
+    <div style="max-width:1200px;margin:96px auto 0;padding-top:32px;border-top:1px solid oklch(86% 0.015 95);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <img src="photos/brian-headshot-clean.png" width="64" height="64" alt="Brian Hong" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:oklch(27% 0.035 165);">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:16px;font-weight:500;"><a href="about.html">Brian Hong</a></div>
+        <div style="font-size:14px;color:oklch(42% 0.03 165);line-height:1.5;">Senior Salesforce Administrator and consultant in Columbus, OH. 12 years in the ecosystem and six Salesforce certifications. I write about the stuff that makes orgs easier to run.</div>
+      </div>
+      <a href="#contact" style="background:oklch(22% 0.035 165);color:oklch(95% 0.012 95);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;">Work with me →</a>
+    </div>
+
+    <div style="max-width:1200px;margin:96px auto 0;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:oklch(42% 0.03 165);margin-bottom:16px;">Keep reading</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <a href="salesforce-consultant-vs-admin-vs-managed-services.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Strategy · 13 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Salesforce consultant vs. admin vs. managed services: which one you actually need</span>
+        </a>
+        <a href="salesforce-tech-debt-audit.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Governance · 15 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Technical debt in Salesforce: how to audit it and what to retire first</span>
+        </a>
+        <a href="center-of-excellence.html" style="background:oklch(99% 0.006 95);border:1px solid oklch(90% 0.012 95);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:oklch(42% 0.03 165);">Governance · 14 min</span>
+          <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;line-height:1.3;">Standing up a Salesforce Center of Excellence from scratch</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="contact" style="padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px) 56px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'Geist Mono',monospace;font-size:12.5px;color:oklch(80% 0.02 150);">
+      <span style="width:8px;height:8px;border-radius:100px;background:oklch(88% 0.17 115);box-shadow:0 0 0 4px oklch(88% 0.17 115 / 0.2);"></span><span>Open to new work</span>
+    </div>
+    <h2 style="font-size:clamp(40px,7vw,104px);font-weight:500;letter-spacing:-0.045em;line-height:1;margin:0;max-width:1100px;text-wrap:balance;">You run the business. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:oklch(88% 0.17 115);">I'll run Salesforce.</span></h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;">
+      <a href="mailto:bghong1@gmail.com" style="background:oklch(95% 0.012 95);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Email me →</a>
+      <a href="./Brian-Hong-Resume.pdf" target="_blank" rel="noopener" style="background:oklch(88% 0.17 115);color:oklch(22% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">Download resume (PDF) →</a>
+      <a href="https://www.linkedin.com/in/brianghong" style="border:1px solid oklch(40% 0.035 165);padding:15px 24px;border-radius:100px;font-size:15px;font-weight:500;">LinkedIn →</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:96px;padding-top:24px;border-top:1px solid oklch(34% 0.035 165);font-size:13px;color:oklch(72% 0.03 150);">
+      <span>© 2026 Brian Hong · Salesforce Consultant · Columbus, OH</span>
+      <div style="display:flex;gap:12px 24px;flex-wrap:wrap;">
+        <a href="index.html">Home</a>
+        <a href="https://www.linkedin.com/in/brianghong">LinkedIn</a>
+        <a href="mailto:bghong1@gmail.com">bghong1@gmail.com</a>
+        <a href="https://www.salesforce.com/trailblazer/brianghong">Trailblazer</a>
+        <a href="/homicide-victim-support">Homicide victim support</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+  var nav=document.getElementById('mnav'),btn=document.querySelector('[data-menu]');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.hidden=!nav.hidden;btn.textContent=nav.hidden?'Menu':'✕';btn.setAttribute('aria-expanded',String(!nav.hidden));});}
+})();
+</script>
+</body>
+</html>
